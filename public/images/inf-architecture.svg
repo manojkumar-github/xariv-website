@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+    <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8b3aa8"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="780" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">A stateless shell around a scarce GPU core</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">A cheap, horizontally-scalable front end wraps a precious GPU fleet; the control plane manages that core without ever sitting on its critical path.</text>
+
+  <!-- DATA PLANE -->
+  <text x="40" y="100" font-size="12.5" font-weight="700" fill="#3730a3">DATA PLANE · hot path</text>
+  <g font-size="12" fill="#0b1020">
+    <rect x="40" y="112" width="110" height="58" rx="11" fill="#f1f4fb" stroke="#d8dce8"/><text x="95" y="140" text-anchor="middle" font-weight="600">Client</text><text x="95" y="158" text-anchor="middle" font-size="11" fill="#6b7280">stream</text>
+    <rect x="170" y="112" width="120" height="58" rx="11" fill="#fff" stroke="#d8dce8"/><text x="230" y="140" text-anchor="middle" font-weight="600">Load balancer</text><text x="230" y="158" text-anchor="middle" font-size="11" fill="#6b7280">L7 · multi-AZ</text>
+    <rect x="310" y="112" width="200" height="58" rx="11" fill="#fff" stroke="#d8dce8"/><text x="410" y="136" text-anchor="middle" font-weight="600">API Gateway</text><text x="410" y="156" text-anchor="middle" font-size="11" fill="#6b7280">auth · quota · moderation · idempotency</text>
+    <rect x="530" y="112" width="210" height="58" rx="11" fill="#fff" stroke="#d8dce8"/><text x="635" y="136" text-anchor="middle" font-weight="600">Inference Router</text><text x="635" y="156" text-anchor="middle" font-size="11" fill="#6b7280">model·ver·adapter · priority · load-aware</text>
+  </g>
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#a)" fill="none"><path d="M150 141 H168"/><path d="M290 141 H308"/><path d="M510 141 H528"/><path d="M740 141 H778"/></g>
+
+  <!-- Serving pool -->
+  <rect x="780" y="100" width="380" height="170" rx="14" fill="#fbfcff" stroke="#dfe4f1"/>
+  <text x="800" y="122" font-size="12.5" font-weight="700" fill="#3730a3">Model serving pool · vLLM replicas on GPUs</text>
+  <g font-size="11.5" fill="#0b1020">
+    <rect x="800" y="134" width="165" height="56" rx="10" fill="#fef3e2" stroke="#f6c98a"/><text x="882" y="158" text-anchor="middle" font-weight="600" fill="#b45309">Prefill pool</text><text x="882" y="176" text-anchor="middle" font-size="10.5" fill="#92400e">compute-bound</text>
+    <rect x="975" y="134" width="165" height="56" rx="10" fill="#eef9f4" stroke="#bfe6d4"/><text x="1057" y="158" text-anchor="middle" font-weight="600" fill="#047857">Decode pool</text><text x="1057" y="176" text-anchor="middle" font-size="10.5" fill="#047857">memory-bound</text>
+    <path d="M965 162 H973" stroke="#94a0b8" stroke-width="2" marker-end="url(#a)" marker-start="url(#a)"/>
+    <rect x="800" y="200" width="340" height="50" rx="10" fill="#eef1fb" stroke="#cdd5ee"/><text x="970" y="222" text-anchor="middle" font-weight="600" fill="#3730a3">KV cache + prefix cache (PagedAttention)</text><text x="970" y="240" text-anchor="middle" font-size="10.5" fill="#6b7280">the binding resource</text>
+  </g>
+  <!-- stream back -->
+  <path d="M780 130 C600 60 420 70 410 110" stroke="#10b981" stroke-width="2" stroke-dasharray="5 4" fill="none" marker-end="url(#a)"/>
+  <text x="560" y="78" font-size="11" fill="#047857">tokens stream back through the gateway (SSE)</text>
+
+  <!-- artifact store -->
+  <rect x="780" y="300" width="380" height="50" rx="11" fill="#fff" stroke="#d8dce8"/>
+  <text x="970" y="322" text-anchor="middle" font-size="12" font-weight="600" fill="#0b1020">Model artifact store (object storage)</text>
+  <text x="970" y="340" text-anchor="middle" font-size="11" fill="#6b7280">base weights + LoRA adapters · pulled on deploy (slow cold start)</text>
+  <path d="M970 300 V272" stroke="#94a0b8" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#a)"/>
+
+  <!-- CONTROL PLANE -->
+  <rect x="32" y="390" width="700" height="150" rx="14" fill="#fbf6fe" stroke="#e3b8f0"/>
+  <text x="48" y="412" font-size="12.5" font-weight="700" fill="#8b3aa8">CONTROL PLANE · off the hot path (router runs off a cached routing table)</text>
+  <g font-size="12" fill="#0b1020">
+    <rect x="48" y="424" width="200" height="50" rx="10" fill="#fff" stroke="#e3b8f0"/><text x="148" y="446" text-anchor="middle" font-weight="600">Model Registry / Catalog</text><text x="148" y="464" text-anchor="middle" font-size="11" fill="#9a52b3">source of truth</text>
+    <rect x="262" y="424" width="220" height="50" rx="10" fill="#fff" stroke="#e3b8f0"/><text x="372" y="446" text-anchor="middle" font-weight="600">Orchestrator (Kubernetes)</text><text x="372" y="464" text-anchor="middle" font-size="11" fill="#9a52b3">deploy · canary · rollback</text>
+    <rect x="496" y="424" width="220" height="50" rx="10" fill="#fff" stroke="#e3b8f0"/><text x="606" y="446" text-anchor="middle" font-weight="600">Autoscaler</text><text x="606" y="464" text-anchor="middle" font-size="11" fill="#9a52b3">predictive · cold-start aware</text>
+    <text x="48" y="500" font-size="11.5" fill="#9a52b3">leader-election &amp; quorum confined here — the data plane needs neither</text>
+    <text x="48" y="522" font-size="11.5" fill="#9a52b3">a control-plane outage never stops in-flight inference</text>
+  </g>
+  <path d="M482 449 C740 449 880 360 940 274" stroke="#8b3aa8" stroke-width="1.6" stroke-dasharray="5 4" fill="none" marker-end="url(#ag)"/>
+  <text x="700" y="400" font-size="11" fill="#8b3aa8">manage / scale</text>
+
+  <!-- METERING + OBS -->
+  <rect x="752" y="390" width="408" height="150" rx="14" fill="#f7f8fe" stroke="#e3e7f0"/>
+  <text x="768" y="412" font-size="12.5" font-weight="700" fill="#3730a3">OFF-PATH ASYNC</text>
+  <g font-size="12" fill="#0b1020">
+    <rect x="768" y="424" width="180" height="46" rx="10" fill="#fef3e2" stroke="#f6c98a"/><text x="858" y="451" text-anchor="middle" font-weight="600" fill="#b45309">Metering · Kafka</text>
+    <rect x="962" y="424" width="184" height="46" rx="10" fill="#fff" stroke="#d8dce8"/><text x="1054" y="451" text-anchor="middle" font-weight="600">Aggregator → quota / billing</text>
+    <text x="768" y="494" font-size="11.5" fill="#6b7280">usage events (tokens in/out per tenant) never touch the hot path</text>
+    <text x="768" y="516" font-size="11.5" fill="#6b7280">Observability taps gateway · router · serving pool → SLOs &amp; alerts</text>
+  </g>
+  <path d="M948 447 H960" stroke="#94a0b8" stroke-width="2" marker-end="url(#a)" fill="none"/>
+
+  <text x="40" y="588" font-size="12.5" fill="#6b7280">Everything is stateless and trivially scalable except the GPU serving pool and the stores — so that is where the entire design effort concentrates.</text>
+</svg>

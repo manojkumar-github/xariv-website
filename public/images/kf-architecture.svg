@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 380" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#06b6d4"/>
+    </linearGradient>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="1160" height="380" fill="#ffffff"/>
+  <text x="40" y="46" font-size="22" font-weight="700" fill="#0b1020">Serving stack — short-form answer generation</text>
+  <text x="40" y="72" font-size="14" fill="#6b7280">The whole model fits on one GPU; the challenge is execution efficiency, not distribution.</text>
+
+  <g font-size="14" fill="#0b1020">
+    <rect x="40" y="110" width="150" height="74" rx="14" fill="#f1f4fb" stroke="#d8dce8"/>
+    <text x="115" y="144" text-anchor="middle" font-weight="600">Client query</text>
+    <text x="115" y="166" text-anchor="middle" font-size="12" fill="#6b7280">billions / day</text>
+
+    <rect x="232" y="110" width="160" height="74" rx="14" fill="#fff" stroke="#d8dce8"/>
+    <text x="312" y="138" text-anchor="middle" font-weight="600">Request router</text>
+    <text x="312" y="158" text-anchor="middle" font-size="12" fill="#6b7280">10k+ QPS · SLO</text>
+
+    <rect x="434" y="110" width="190" height="74" rx="14" fill="#fff" stroke="#d8dce8"/>
+    <text x="529" y="138" text-anchor="middle" font-weight="600">Continuous batching</text>
+    <text x="529" y="158" text-anchor="middle" font-size="12" fill="#6b7280">vLLM · paged KV cache</text>
+
+    <rect x="666" y="110" width="190" height="74" rx="14" fill="#fff" stroke="#d8dce8"/>
+    <text x="761" y="138" text-anchor="middle" font-weight="600">TensorRT-LLM engine</text>
+    <text x="761" y="158" text-anchor="middle" font-size="12" fill="#6b7280">fused kernels · FP8</text>
+  </g>
+
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#ar)" fill="none">
+    <path d="M190 147 H228"/>
+    <path d="M392 147 H430"/>
+    <path d="M624 147 H662"/>
+    <path d="M856 147 H902"/>
+  </g>
+
+  <!-- single GPU -->
+  <rect x="906" y="96" width="214" height="200" rx="16" fill="#fbfcff" stroke="#dfe4f1"/>
+  <text x="1013" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3">1× NVIDIA H100 (80 GB)</text>
+  <rect x="930" y="140" width="166" height="46" rx="10" fill="url(#g)"/>
+  <text x="1013" y="168" text-anchor="middle" fill="#fff" font-size="13" font-weight="600">32B LLM weights</text>
+  <rect x="930" y="196" width="166" height="34" rx="9" fill="#eef1fb" stroke="#cdd5ee"/>
+  <text x="1013" y="218" text-anchor="middle" font-size="12" fill="#3730a3">KV cache (paged)</text>
+  <rect x="930" y="240" width="166" height="34" rx="9" fill="#eef1fb" stroke="#cdd5ee"/>
+  <text x="1013" y="262" text-anchor="middle" font-size="12" fill="#3730a3">HBM3 ~3.35 TB/s</text>
+
+  <rect x="40" y="300" width="816" height="48" rx="10" fill="#eef9f4" stroke="#bfe6d4"/>
+  <text x="60" y="330" font-size="13.5" fill="#047857"><tspan font-weight="700">Target:</tspan> p99 &lt; 500 ms · short prompts, short answers (often &lt; 40 tokens) · cost per request must stay low</text>
+</svg>

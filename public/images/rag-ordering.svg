@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 470" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="1020" height="470" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Ordering is a correctness problem, not a performance one</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">A document's create → update → delete must stay ordered, or a deleted email lives on in the index — a compliance violation.</text>
+
+  <!-- WRONG -->
+  <text x="40" y="108" font-size="14" font-weight="700" fill="#b91c1c">Partition by the wrong key — events split across partitions</text>
+  <g font-size="12" fill="#0b1020">
+    <rect x="40" y="120" width="120" height="44" rx="9" fill="#fde8e8" stroke="#ef4444"/><text x="100" y="147" text-anchor="middle">delete</text>
+    <rect x="180" y="120" width="120" height="44" rx="9" fill="#fde8e8" stroke="#ef4444"/><text x="240" y="147" text-anchor="middle">create</text>
+    <rect x="320" y="120" width="120" height="44" rx="9" fill="#fde8e8" stroke="#ef4444"/><text x="380" y="147" text-anchor="middle">update</text>
+  </g>
+  <text x="470" y="148" font-size="12.5" fill="#ef4444">processed out of order →</text>
+  <rect x="700" y="118" width="290" height="48" rx="10" fill="#fde8e8" stroke="#ef4444"/>
+  <text x="845" y="140" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b91c1c">ghost document</text>
+  <text x="845" y="158" text-anchor="middle" font-size="11.5" fill="#ef4444">deleted mail still retrievable</text>
+
+  <line x1="40" y1="196" x2="990" y2="196" stroke="#e3e7f0"/>
+
+  <!-- RIGHT -->
+  <text x="40" y="230" font-size="14" font-weight="700" fill="#047857">Partition by hash(user_id, doc_id) — per-document order preserved</text>
+  <g font-size="12" fill="#0b1020">
+    <text x="40" y="266" font-size="12" fill="#6b7280">one partition:</text>
+    <rect x="130" y="248" width="120" height="44" rx="9" fill="#eef9f4" stroke="#bfe6d4"/><text x="190" y="275" text-anchor="middle">create (v1)</text>
+    <rect x="270" y="248" width="120" height="44" rx="9" fill="#eef9f4" stroke="#bfe6d4"/><text x="330" y="275" text-anchor="middle">update (v2)</text>
+    <rect x="410" y="248" width="120" height="44" rx="9" fill="#eef9f4" stroke="#bfe6d4"/><text x="470" y="275" text-anchor="middle">delete (v3)</text>
+  </g>
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#ao)" fill="none">
+    <path d="M250 270 H268"/><path d="M390 270 H408"/>
+  </g>
+  <text x="560" y="274" font-size="12.5" fill="#047857">in order → correct end state</text>
+
+  <!-- backstop -->
+  <rect x="40" y="320" width="950" height="120" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="60" y="348" font-size="13.5" font-weight="700" fill="#0b1020">Defense in depth: version-guarded idempotent upserts</text>
+  <g font-size="12.5" fill="#6b7280">
+    <text x="60" y="374">• Partition key gives ordering at exactly the granularity correctness needs — no finer (which would concentrate load).</text>
+    <text x="60" y="396">• Each event carries a monotonic version; the writer <tspan fill="#0b1020" font-weight="600">rejects a write older than what's stored</tspan> — a stale update can't clobber a newer delete.</text>
+    <text x="60" y="418">• Content-hash dedup key + upsert makes at-least-once Kafka delivery <tspan fill="#0b1020" font-weight="600">effectively-once</tspan>, and makes replay safe for recovery.</text>
+  </g>
+</svg>

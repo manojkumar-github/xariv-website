@@ -3,7 +3,7 @@ export const site = {
   tagline: "Infrastructure Intelligence for the Age of AI",
   description:
     "Software for understanding, optimizing, and planning AI infrastructure — before you provision a single GPU.",
-  url: "https://xariv.com",
+  url: "https://xariv-website.vercel.app",
   github: "https://github.com/manojkumar-github",
   linkedin: "https://www.linkedin.com/company/xariv",
   email: "hello@xariv.com",

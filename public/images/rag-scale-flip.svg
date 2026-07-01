@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <rect width="1000" height="470" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">The numbers flip the intuition</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">RAG sounds read-heavy. At per-user-mail scale it is write-dominated — and the LLM bill dwarfs everything.</text>
+
+  <!-- read vs write bars -->
+  <text x="60" y="120" font-size="13" font-weight="700" fill="#0b1020">Read vs write throughput</text>
+  <g font-size="12.5" fill="#0b1020">
+    <text x="60" y="160" font-weight="600">Query reads</text>
+    <rect x="200" y="146" width="150" height="22" rx="5" fill="#cbd2e0"/>
+    <text x="360" y="163" font-size="12" fill="#6b7280">~23K avg / ~70K peak QPS</text>
+
+    <text x="60" y="210" font-weight="600">Embedding writes</text>
+    <rect x="200" y="196" width="430" height="22" rx="5" fill="url(#wg)"/>
+    <text x="640" y="213" font-size="12" fill="#3730a3" font-weight="600">~310K / sec</text>
+  </g>
+  <defs><linearGradient id="wg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
+  <text x="60" y="250" font-size="12.5" fill="#b45309" font-weight="600">→ the ingestion/embedding pipeline, not query serving, is the volume bottleneck</text>
+
+  <!-- cost headline -->
+  <rect x="60" y="280" width="880" height="150" rx="14" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="84" y="312" font-size="14" font-weight="700" fill="#b45309">The cost headline that shapes the whole design</text>
+  <g font-size="13" fill="#0b1020">
+    <text x="84" y="342">2B queries/day × ~5K input tokens  ≈  <tspan font-weight="700">~10 trillion input tokens/day</tspan></text>
+    <text x="84" y="368">× ~$0.15 / M tokens  ≈  <tspan font-weight="700" fill="#b91c1c">~$1.5M/day  →  $500M+/year</tspan>  (input alone)</text>
+    <text x="84" y="402" font-size="13" fill="#92400e" font-weight="600">Deflecting 30% of queries with a semantic cache ≈ $150M/year saved — caching is architecture, not tuning.</text>
+  </g>
+</svg>

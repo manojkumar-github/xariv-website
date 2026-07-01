@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 480" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <rect width="820" height="480" fill="#ffffff"/>
+  <text x="60" y="46" font-size="22" font-weight="700" fill="#0b1020">Throughput stops following the GPU count</text>
+
+  <!-- axes -->
+  <g stroke="#d8dce8" stroke-width="1.5">
+    <line x1="100" y1="90" x2="100" y2="400"/>
+    <line x1="100" y1="400" x2="760" y2="400"/>
+  </g>
+  <!-- gridlines -->
+  <g stroke="#eef1f6" stroke-width="1">
+    <line x1="100" y1="322" x2="760" y2="322"/>
+    <line x1="100" y1="244" x2="760" y2="244"/>
+    <line x1="100" y1="166" x2="760" y2="166"/>
+  </g>
+  <!-- y labels (relative throughput) -->
+  <g font-size="12" fill="#6b7280" text-anchor="end">
+    <text x="90" y="404">1×</text>
+    <text x="90" y="326">2×</text>
+    <text x="90" y="248">3×</text>
+    <text x="90" y="170">4×</text>
+  </g>
+  <text x="44" y="250" font-size="13" fill="#6b7280" transform="rotate(-90 44 250)">relative throughput</text>
+  <!-- x labels (GPUs) -->
+  <g font-size="12" fill="#6b7280" text-anchor="middle">
+    <text x="100" y="422">64</text>
+    <text x="320" y="422">128</text>
+    <text x="540" y="422">256</text>
+    <text x="760" y="422">512</text>
+  </g>
+  <text x="430" y="452" font-size="13" fill="#6b7280" text-anchor="middle">GPU count (fixed model, scaled fleet)</text>
+
+  <!-- ideal line: 1x@64 ->8x@512 but clipped; map 1x=400,4x=166 (each x = 78px). ideal at 512 = 8x off-chart, draw to top -->
+  <polyline points="100,400 320,244 540,-68 760,-380" fill="none" stroke="#cbd2e0" stroke-width="2.5" stroke-dasharray="6 6"/>
+  <!-- clip ideal visually with a short segment to 128 then arrow note -->
+  <polyline points="100,400 320,244" fill="none" stroke="#9aa3b5" stroke-width="2.5" stroke-dasharray="6 6"/>
+  <text x="332" y="232" font-size="12" fill="#9aa3b5">ideal (linear)</text>
+
+  <!-- measured: 1.0,1.7,2.1,2.25 -> y: 400, 400-0.7*156=291, 400-1.1*156=228 (3x is at244 so 2.1x~244+? recompute) -->
+  <!-- scale: 1x=400, +1x = -78px. 1.0->400, 1.7->346.6, 2.1->314.2, 2.25->302.5 -->
+  <polyline points="100,400 320,346 540,314 760,302" fill="none" stroke="#4f46e5" stroke-width="3"/>
+  <g fill="#4f46e5">
+    <circle cx="100" cy="400" r="5"/><circle cx="320" cy="346" r="5"/>
+    <circle cx="540" cy="314" r="5"/><circle cx="760" cy="302" r="5"/>
+  </g>
+  <g font-size="11.5" fill="#3730a3" text-anchor="middle">
+    <text x="320" y="336">1.7×</text><text x="540" y="304">2.1×</text><text x="760" y="292">2.25×</text>
+  </g>
+  <text x="540" y="350" font-size="12" font-weight="600" fill="#4f46e5">measured</text>
+
+  <text x="540" y="378" font-size="12" fill="#ef4444">gap = network, not compute</text>
+</svg>

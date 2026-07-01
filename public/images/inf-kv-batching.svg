@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 500" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <rect width="1040" height="500" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Keeping scarce GPU compute densely packed</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">Serving one request at a time leaves the math units ~95% idle. Batching is the throughput lever that pays for the whole fleet.</text>
+
+  <!-- continuous batching -->
+  <rect x="40" y="96" width="470" height="180" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="60" y="122" font-size="13.5" font-weight="700" fill="#3730a3">Continuous (in-flight) batching</text>
+  <text x="60" y="146" font-size="12" fill="#6b7280">The batch is a living set, not a fixed group. Each decode</text>
+  <text x="60" y="164" font-size="12" fill="#6b7280">step emits one token per active request; finished requests</text>
+  <text x="60" y="182" font-size="12" fill="#6b7280">leave immediately and waiting ones join on the next step.</text>
+  <!-- steps -->
+  <g font-size="10" fill="#0b1020">
+    <text x="60" y="206" font-size="11" fill="#6b7280">step →</text>
+    <g fill="#c7cdf2"><rect x="110" y="198" width="22" height="14" rx="3"/><rect x="110" y="216" width="22" height="14" rx="3"/><rect x="110" y="234" width="22" height="14" rx="3"/></g>
+    <g fill="#c7cdf2"><rect x="140" y="198" width="22" height="14" rx="3"/><rect x="140" y="216" width="22" height="14" rx="3"/></g>
+    <g fill="#34d399"><rect x="170" y="234" width="22" height="14" rx="3"/></g>
+    <g fill="#c7cdf2"><rect x="170" y="198" width="22" height="14" rx="3"/><rect x="170" y="216" width="22" height="14" rx="3"/></g>
+    <g fill="#34d399"><rect x="200" y="216" width="22" height="14" rx="3"/></g>
+    <g fill="#c7cdf2"><rect x="200" y="198" width="22" height="14" rx="3"/><rect x="200" y="234" width="22" height="14" rx="3"/></g>
+  </g>
+  <text x="60" y="266" font-size="11.5" fill="#047857">vs static batching: ~2–4× fewer GPUs for the same SLO</text>
+
+  <!-- KV cache binding -->
+  <rect x="530" y="96" width="470" height="180" rx="12" fill="#fde8e8" stroke="#ef4444"/>
+  <text x="550" y="122" font-size="13.5" font-weight="700" fill="#b91c1c">The KV cache is the binding constraint</text>
+  <text x="550" y="146" font-size="12" fill="#0b1020">The attention state grows per token, per request, and lives</text>
+  <text x="550" y="164" font-size="12" fill="#0b1020">in GPU memory. On an 80 GB H100, ~16 GB goes to weights,</text>
+  <text x="550" y="182" font-size="12" fill="#0b1020">leaving ~60 GB for KV — and that, not compute, caps the batch.</text>
+  <text x="550" y="214" font-size="12.5" fill="#b91c1c" font-weight="600">batch size → throughput → cost all trace back to KV memory</text>
+  <text x="550" y="244" font-size="11.5" fill="#ef4444">one long-context request can eat hundreds of MB of KV</text>
+
+  <!-- PagedAttention -->
+  <rect x="40" y="296" width="960" height="180" rx="12" fill="#eef9f4" stroke="#bfe6d4"/>
+  <text x="60" y="322" font-size="13.5" font-weight="700" fill="#047857">PagedAttention — virtual memory for the KV cache</text>
+  <text x="60" y="348" font-size="12.5" fill="#0b1020">Classic serving reserves a contiguous block per request sized to the max possible length → massive internal fragmentation</text>
+  <text x="60" y="368" font-size="12.5" fill="#0b1020">(reserve 2,000 slots, emit 50, waste 1,950). PagedAttention chops KV into fixed-size pages, allocated on demand and freed instantly.</text>
+
+  <!-- fragmentation visual -->
+  <g font-size="10">
+    <text x="60" y="404" font-size="11.5" fill="#ef4444">reserved-contiguous (wasteful)</text>
+    <rect x="60" y="412" width="320" height="22" rx="4" fill="#fde8e8" stroke="#ef4444"/>
+    <rect x="60" y="412" width="60" height="22" rx="4" fill="#ef4444"/>
+    <text x="390" y="428" font-size="11" fill="#ef4444">~40% KV utilization</text>
+
+    <text x="60" y="456" font-size="11.5" fill="#047857">paged on-demand (dense)</text>
+    <g fill="#10b981"><rect x="60" y="448" width="36" height="22" rx="4"/><rect x="100" y="448" width="36" height="22" rx="4"/><rect x="140" y="448" width="36" height="22" rx="4"/><rect x="180" y="448" width="36" height="22" rx="4"/><rect x="220" y="448" width="36" height="22" rx="4"/><rect x="260" y="448" width="36" height="22" rx="4"/><rect x="300" y="448" width="36" height="22" rx="4"/><rect x="340" y="448" width="36" height="22" rx="4"/></g>
+    <text x="390" y="464" font-size="11" fill="#047857">~95% utilization ≈ 2× effective throughput</text>
+  </g>
+  <text x="640" y="412" font-size="12" fill="#6b7280">Once KV is block-structured, <tspan fill="#047857" font-weight="600">prefix caching</tspan> falls out:</text>
+  <text x="640" y="432" font-size="12" fill="#6b7280">reuse the KV blocks of a shared system prompt or RAG</text>
+  <text x="640" y="452" font-size="12" fill="#6b7280">context across requests — skip re-running that prefill entirely.</text>
+</svg>

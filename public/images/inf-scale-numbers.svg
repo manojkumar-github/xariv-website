@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 500" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="an" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="500" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Requests is the wrong unit. The GPUs only care about tokens.</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">The scale math runs straight from users to a GPU count to a nine-figure dollar bill — which is what the whole design lives or dies on.</text>
+
+  <!-- traffic chain -->
+  <rect x="40" y="96" width="960" height="54" rx="12" fill="#eef1fb" stroke="#cdd5ee"/>
+  <text x="64" y="122" font-size="13.5" font-weight="700" fill="#3730a3">~200M DAU → ~2B requests/day → ~20K avg QPS → ~50K peak QPS</text>
+  <text x="64" y="142" font-size="11.5" fill="#6b7280">peak-to-average ≈ 2.5–3× for a consumer product</text>
+
+  <!-- token split -->
+  <g font-size="12.5">
+    <rect x="40" y="172" width="470" height="92" rx="12" fill="#fef3e2" stroke="#f6c98a"/>
+    <text x="60" y="198" font-weight="700" fill="#b45309">Prefill — compute-bound</text>
+    <text x="60" y="224" fill="#0b1020">50K QPS × 500 input tok = <tspan font-weight="700">25M input tok/sec</tspan></text>
+    <text x="60" y="248" fill="#92400e">saturates the GPU's math units (one big pass)</text>
+
+    <rect x="530" y="172" width="470" height="92" rx="12" fill="#eef9f4" stroke="#bfe6d4"/>
+    <text x="550" y="198" font-weight="700" fill="#047857">Decode — memory-bandwidth-bound</text>
+    <text x="550" y="224" fill="#0b1020">50K QPS × 300 output tok = <tspan font-weight="700">15M output tok/sec</tspan></text>
+    <text x="550" y="248" fill="#047857">shuffles weights + KV cache (token by token)</text>
+  </g>
+  <text x="520" y="290" text-anchor="middle" font-size="12.5" fill="#6b7280">prefill : decode ≈ <tspan fill="#0b1020" font-weight="600">1.7 : 1</tspan> — literally the pool-sizing ratio if we disaggregate</text>
+
+  <!-- GPU count -->
+  <rect x="40" y="306" width="600" height="120" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="60" y="332" font-size="13.5" font-weight="700" fill="#0b1020">The number that matters — GPU count</text>
+  <text x="60" y="358" font-size="12.5" fill="#6b7280">15M decode tok/s ÷ ~2,500 tok/s/GPU = 6,000 GPUs (at 100%)</text>
+  <text x="60" y="380" font-size="12.5" fill="#6b7280">÷ 60% utilization (headroom for bursts, tail, failures) ≈ 10,000</text>
+  <text x="60" y="402" font-size="12.5" fill="#0b1020" font-weight="600">+ ~1–2K for prefill ≈ a 10,000–12,000-GPU fleet</text>
+
+  <rect x="660" y="306" width="340" height="120" rx="12" fill="#fde8e8" stroke="#ef4444"/>
+  <text x="680" y="332" font-size="13.5" font-weight="700" fill="#b91c1c">≈ $200M+ / year</text>
+  <text x="680" y="358" font-size="12" fill="#ef4444">10K H100s × ~$2.50/hr × 24 × 365</text>
+  <text x="680" y="382" font-size="12" fill="#0b1020">a 1% throughput gain ≈ 100 GPUs ≈ ~$2M/yr</text>
+  <text x="680" y="404" font-size="12" fill="#ef4444">→ cost is a first-class SLO</text>
+
+  <!-- KV binding -->
+  <rect x="40" y="446" width="960" height="40" rx="10" fill="#0b1020"/>
+  <text x="520" y="471" text-anchor="middle" font-size="13" font-weight="700" fill="#e6e9f5">The binding constraint is KV-cache memory, not raw compute — it caps batch size → throughput → cost.</text>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 480" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="arh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="480" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Incast: a popular expert becomes a network hotspot</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">Many GPUs dispatch to the same expert in the same step → converging flows overload one switch port.</text>
+
+  <!-- source GPUs -->
+  <g font-size="12" fill="#0b1020">
+    <g fill="#eef1fb" stroke="#cdd5ee">
+      <rect x="60" y="120" width="120" height="46" rx="10"/>
+      <rect x="60" y="190" width="120" height="46" rx="10"/>
+      <rect x="60" y="260" width="120" height="46" rx="10"/>
+      <rect x="60" y="330" width="120" height="46" rx="10"/>
+    </g>
+    <text x="120" y="148" text-anchor="middle">GPU 3</text>
+    <text x="120" y="218" text-anchor="middle">GPU 9</text>
+    <text x="120" y="288" text-anchor="middle">GPU 22</text>
+    <text x="120" y="358" text-anchor="middle">GPU 41</text>
+  </g>
+
+  <!-- switch -->
+  <rect x="430" y="200" width="160" height="96" rx="14" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
+  <text x="510" y="240" text-anchor="middle" font-size="14" font-weight="700" fill="#b45309">Leaf switch</text>
+  <text x="510" y="262" text-anchor="middle" font-size="11.5" fill="#92400e">buffer saturated</text>
+  <text x="510" y="280" text-anchor="middle" font-size="11.5" fill="#ef4444">PFC pause · ECN marks</text>
+
+  <!-- hot expert -->
+  <rect x="800" y="208" width="150" height="80" rx="14" fill="#fde8e8" stroke="#ef4444" stroke-width="2"/>
+  <text x="875" y="244" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">Expert 17</text>
+  <text x="875" y="266" text-anchor="middle" font-size="11.5" fill="#ef4444">6× avg traffic</text>
+
+  <!-- converging arrows -->
+  <g stroke="#ef4444" stroke-width="2.4" fill="none" marker-end="url(#arh)">
+    <path d="M182 143 C300 170 330 220 428 235"/>
+    <path d="M182 213 C300 225 340 235 428 245"/>
+    <path d="M182 283 C300 280 340 258 428 255"/>
+    <path d="M182 353 C300 330 350 280 428 268"/>
+  </g>
+  <path d="M592 248 H798" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arh)"/>
+
+  <!-- consequence -->
+  <rect x="380" y="360" width="560" height="70" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="400" y="388" font-size="13.5" font-weight="700" fill="#0b1020">Consequence</text>
+  <text x="400" y="410" font-size="12.5" fill="#6b7280">One overloaded port stalls its flows; the slowest expert gates the whole step — tail latency, not average, decides throughput.</text>
+</svg>

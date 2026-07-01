@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 500" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="500" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">The router is state-aware, not round-robin</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">Requests vary 100× in cost and replicas aren't interchangeable — each has different KV headroom, queue depth, and hot adapters.</text>
+
+  <!-- routing signal -->
+  <rect x="40" y="96" width="470" height="148" rx="12" fill="#eef1fb" stroke="#cdd5ee"/>
+  <text x="60" y="122" font-size="13.5" font-weight="700" fill="#3730a3">Replica selection signal</text>
+  <text x="60" y="148" font-size="12.5" fill="#0b1020">• most free <tspan font-weight="600">KV-cache headroom</tspan> (the binding resource)</text>
+  <text x="60" y="172" font-size="12.5" fill="#0b1020">• shortest <tspan font-weight="600">queue depth</tspan></text>
+  <text x="60" y="196" font-size="12.5" fill="#0b1020">• <tspan font-weight="600">cache affinity</tspan> — route to where the adapter/prefix is hot</text>
+  <text x="60" y="224" font-size="11.5" fill="#6b7280">global state is impossible at 10K replicas → power-of-two-choices on stale-ish metrics</text>
+
+  <!-- priority -->
+  <rect x="530" y="96" width="470" height="148" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="550" y="122" font-size="13.5" font-weight="700" fill="#0b1020">Priority-aware queues</text>
+  <g font-size="11.5" fill="#0b1020">
+    <rect x="550" y="138" width="200" height="26" rx="6" fill="#fde8e8" stroke="#ef4444"/><text x="650" y="156" text-anchor="middle" fill="#b91c1c" font-weight="600">interactive (user waiting)</text>
+    <rect x="550" y="170" width="200" height="26" rx="6" fill="#eef1fb" stroke="#cdd5ee"/><text x="650" y="188" text-anchor="middle" fill="#3730a3">default</text>
+    <rect x="550" y="202" width="200" height="26" rx="6" fill="#f1f4fb" stroke="#d8dce8"/><text x="650" y="220" text-anchor="middle" fill="#6b7280">batch / background</text>
+  </g>
+  <text x="770" y="160" font-size="12" fill="#6b7280">drain high tiers first,</text>
+  <text x="770" y="180" font-size="12" fill="#6b7280">but <tspan fill="#0b1020" font-weight="600">age</tspan> low-tier requests up</text>
+  <text x="770" y="200" font-size="12" fill="#6b7280">so they never starve.</text>
+
+  <!-- saturation escalation -->
+  <text x="40" y="290" font-size="14" font-weight="700" fill="#0b1020">When the fleet saturates — degrade gracefully, in order</text>
+  <g font-size="12.5" fill="#0b1020">
+    <rect x="40" y="306" width="300" height="130" rx="12" fill="#fff7ed" stroke="#f59e0b"/>
+    <text x="60" y="332" font-weight="700" fill="#b45309">1 · Backpressure</text>
+    <text x="60" y="358" font-size="12" fill="#92400e">Bounded queues push back upstream.</text>
+    <text x="60" y="378" font-size="12" fill="#92400e">An unbounded queue under overload just</text>
+    <text x="60" y="398" font-size="12" fill="#92400e">turns a throughput problem into a latency</text>
+    <text x="60" y="418" font-size="12" fill="#92400e">catastrophe — requests time out in the queue.</text>
+
+    <rect x="356" y="306" width="300" height="130" rx="12" fill="#fde8e8" stroke="#ef4444"/>
+    <text x="376" y="332" font-weight="700" fill="#b91c1c">2 · Load-shed</text>
+    <text x="376" y="358" font-size="12" fill="#ef4444">Shed the lowest priority first — a batch</text>
+    <text x="376" y="378" font-size="12" fill="#ef4444">job gets a fast 429 + Retry-After while</text>
+    <text x="376" y="398" font-size="12" fill="#ef4444">interactive still flows.</text>
+    <text x="376" y="420" font-size="12" fill="#0b1020" font-weight="600">a fast rejection beats a slow success</text>
+
+    <rect x="672" y="306" width="328" height="130" rx="12" fill="#eef9f4" stroke="#bfe6d4"/>
+    <text x="692" y="332" font-weight="700" fill="#047857">3 · Circuit breaker</text>
+    <text x="692" y="358" font-size="12" fill="#047857">If a replica errors, stop sending to it so</text>
+    <text x="692" y="378" font-size="12" fill="#047857">it can recover — preventing a retry storm.</text>
+    <text x="692" y="398" font-size="12" fill="#047857">Bounded, budgeted, jittered backoff so</text>
+    <text x="692" y="418" font-size="12" fill="#047857">retries can't become a self-inflicted DDoS.</text>
+  </g>
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#ar)" fill="none"><path d="M340 371 H354"/><path d="M656 371 H670"/></g>
+
+  <text x="40" y="466" font-size="12" fill="#6b7280">Last-resort safety valve inside the pool: <tspan fill="#0b1020" font-weight="600">preemption</tspan> — evict a request's KV cache under memory pressure and re-run its prefill later.</text>
+</svg>

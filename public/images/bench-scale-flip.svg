@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 480" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <rect width="1040" height="480" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">It looks massive-scale. It isn't.</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">The estimation flips the mental model: this is a modest-throughput, high-cost, high-fidelity batch system.</text>
+
+  <!-- fan-out -->
+  <rect x="40" y="98" width="980" height="64" rx="12" fill="#eef1fb" stroke="#cdd5ee"/>
+  <text x="64" y="126" font-size="14" font-weight="700" fill="#3730a3">300 models × 5 hardware × 4 suites = 6,000 settings/day  ×  N=5 runs  =  30,000 runs/day</text>
+  <text x="64" y="148" font-size="12" fill="#6b7280">one run = one full load-test on one cleanly-allocated GPU (or TP group)</text>
+
+  <!-- four cards -->
+  <g font-size="12.5">
+    <!-- binding constraint -->
+    <rect x="40" y="184" width="475" height="120" rx="12" fill="#fde8e8" stroke="#ef4444"/>
+    <text x="60" y="212" font-size="13.5" font-weight="700" fill="#b91c1c">The binding constraint — GPU-hours</text>
+    <text x="60" y="238" fill="#0b1020">~7,500–11,000 GPU-hours/day</text>
+    <text x="60" y="262" fill="#0b1020">≈ 450–650 GPUs (24h) or ~1,300–1,900 (8h window)</text>
+    <text x="60" y="288" font-weight="700" fill="#b91c1c">≈ $7–10M/year in GPU compute — everything else is rounding error</text>
+
+    <!-- control plane trivial -->
+    <rect x="545" y="184" width="475" height="120" rx="12" fill="#eef9f4" stroke="#bfe6d4"/>
+    <text x="565" y="212" font-size="13.5" font-weight="700" fill="#047857">The non-problem — throughput</text>
+    <text x="565" y="238" fill="#0b1020">30,000 dispatches/day ≈ <tspan font-weight="700">~1 per second</tspan></text>
+    <text x="565" y="262" fill="#6b7280">the scheduler is constraint-bound, not QPS-bound</text>
+    <text x="565" y="288" fill="#047857" font-weight="600">sharding the scheduler for QPS solves the wrong problem</text>
+
+    <!-- storage tiny -->
+    <rect x="40" y="320" width="475" height="120" rx="12" fill="#fff" stroke="#e3e7f0"/>
+    <text x="60" y="348" font-size="13.5" font-weight="700" fill="#0b1020">Storage — the precious data is small</text>
+    <text x="60" y="374" fill="#6b7280">dimensional summary: ~100 MB/day → <tspan fill="#0b1020" font-weight="600">~50 GB/yr</tspan></text>
+    <text x="60" y="398" fill="#6b7280">cold per-request traces: single-digit TB/yr (sampled)</text>
+    <text x="60" y="424" fill="#6b7280">no giant OLTP DB needed — a dimensional store + object storage</text>
+
+    <!-- bandwidth -->
+    <rect x="545" y="320" width="475" height="120" rx="12" fill="#fef3e2" stroke="#f6c98a"/>
+    <text x="565" y="348" font-size="13.5" font-weight="700" fill="#b45309">The real bandwidth problem — checkpoints</text>
+    <text x="565" y="374" fill="#0b1020">naive: 30,000 runs × ~30 GB ≈ <tspan font-weight="700">~900 TB/day</tspan></text>
+    <text x="565" y="398" fill="#92400e">→ regional + on-node caching is mandatory, not an optimization</text>
+    <text x="565" y="424" fill="#92400e">steady-state transfer collapses to near-zero</text>
+  </g>
+</svg>

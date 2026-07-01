@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 470" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="at" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="470" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Hot/cold tiering — the core cost lever</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">Keeping 1.7 PB of vectors in RAM is financially absurd. Per-user units let only active users stay hot.</text>
+
+  <!-- hot tier -->
+  <rect x="60" y="110" width="400" height="200" rx="16" fill="#fef3e2" stroke="#f59e0b"/>
+  <text x="260" y="142" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">HOT · active users</text>
+  <text x="260" y="170" text-anchor="middle" font-size="12.5" fill="#92400e">HNSW graph resident in RAM</text>
+  <text x="260" y="190" text-anchor="middle" font-size="12.5" fill="#92400e">low-latency recall (~few ms)</text>
+  <g fill="#fff" stroke="#f6c98a">
+    <rect x="90" y="210" width="80" height="70" rx="9"/><rect x="180" y="210" width="80" height="70" rx="9"/>
+    <rect x="270" y="210" width="80" height="70" rx="9"/><rect x="360" y="210" width="80" height="70" rx="9"/>
+  </g>
+  <text x="260" y="300" text-anchor="middle" font-size="11.5" fill="#b45309">expensive resource — kept small</text>
+
+  <!-- cold tier -->
+  <rect x="540" y="110" width="400" height="200" rx="16" fill="#eef1fb" stroke="#cdd5ee"/>
+  <text x="740" y="142" text-anchor="middle" font-size="15" font-weight="700" fill="#3730a3">COLD · dormant users</text>
+  <text x="740" y="170" text-anchor="middle" font-size="12.5" fill="#6b7280">DiskANN / IVF on cheap storage</text>
+  <text x="740" y="190" text-anchor="middle" font-size="12.5" fill="#6b7280">~50 ms warmup on first query</text>
+  <g fill="#fff" stroke="#cdd5ee">
+    <rect x="570" y="210" width="50" height="70" rx="8"/><rect x="628" y="210" width="50" height="70" rx="8"/>
+    <rect x="686" y="210" width="50" height="70" rx="8"/><rect x="744" y="210" width="50" height="70" rx="8"/>
+    <rect x="802" y="210" width="50" height="70" rx="8"/><rect x="860" y="210" width="50" height="70" rx="8"/>
+  </g>
+  <text x="740" y="300" text-anchor="middle" font-size="11.5" fill="#6b7280">cheap — most users live here</text>
+
+  <path d="M462 200 H538" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#at)" marker-start="url(#at)"/>
+  <text x="500" y="190" text-anchor="middle" font-size="11" fill="#6b7280">evict / warm</text>
+
+  <!-- quantization + RAM wall -->
+  <rect x="60" y="338" width="430" height="92" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="80" y="366" font-size="13.5" font-weight="700" fill="#0b1020">Quantization is load-bearing</text>
+  <text x="80" y="390" font-size="12.5" fill="#6b7280">int8 (hot) / product quantization (cold)</text>
+  <text x="80" y="412" font-size="12.5" fill="#3730a3" font-weight="600">6.6 PB (fp32) → ~1.7 PB (int8)</text>
+
+  <rect x="510" y="338" width="430" height="92" rx="12" fill="#fde8e8" stroke="#ef4444"/>
+  <text x="530" y="366" font-size="13.5" font-weight="700" fill="#b91c1c">The RAM wall (the scariest limit)</text>
+  <text x="530" y="390" font-size="12.5" fill="#ef4444">everything rests on the active set staying small</text>
+  <text x="530" y="412" font-size="12.5" fill="#ef4444">if it balloons, RAM cost goes superlinear</text>
+</svg>

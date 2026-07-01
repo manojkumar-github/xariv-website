@@ -35,6 +35,30 @@ content/
 
 **Blog post:** add metadata to `src/data/blog.ts`, then create `content/blog/[slug].md`.
 
+## Content migration
+
+Architecture studies are migrated from `manojkumar-github.github.io/_posts/`:
+
+```bash
+npm run migrate:posts   # copies markdown + fixes image paths
+```
+
+Diagrams live in `public/images/`.
+
+## Interactive tools (Atlas & Pulse)
+
+Built from `../xariv-platform/frontend` into `public/atlas/` and `public/pulse/`:
+
+```bash
+npm run build:tools
+```
+
+Included automatically in `npm run build`.
+
+- **Atlas** (GPU intelligence): `/atlas`
+- **Pulse** (inference profiling): `/pulse`
+- Legacy `/lens` redirects to `/atlas`
+
 ## Deploy to Vercel
 
 1. Push this folder to GitHub.

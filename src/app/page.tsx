@@ -42,7 +42,10 @@ export default function HomePage() {
         </div>
         <div className="grid gap-6 md:grid-cols-2">
           {products.map((product) => (
-            <Card key={product.slug} href={`/products/${product.slug}`}>
+            <Card
+              key={product.slug}
+              href={product.appPath ?? `/products/${product.slug}`}
+            >
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-muted">

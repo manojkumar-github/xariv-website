@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 480" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <rect width="1020" height="480" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Keeping aggressive caching safe: relevance-scoped invalidation</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">A pure TTL short enough to honor freshness kills the hit-rate. Events invalidate only the answers a change actually affects.</text>
+
+  <!-- new doc -->
+  <rect x="40" y="110" width="200" height="70" rx="12" fill="#fef3e2" stroke="#f6c98a"/>
+  <text x="140" y="140" text-anchor="middle" font-weight="700" fill="#b45309">New receipt arrives</text>
+  <text x="140" y="162" text-anchor="middle" font-size="11.5" fill="#92400e">type=receipt · 2026-06</text>
+
+  <path d="M240 145 H320" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#ac)"/>
+  <text x="280" y="135" text-anchor="middle" font-size="11" fill="#b45309">invalidation</text>
+
+  <!-- cache entries -->
+  <text x="360" y="104" font-size="13" font-weight="700" fill="#3730a3">Per-user semantic answer cache (ANN over cached queries)</text>
+  <g font-size="12.5">
+    <!-- invalidated -->
+    <rect x="360" y="118" width="620" height="56" rx="11" fill="#fde8e8" stroke="#ef4444"/>
+    <text x="380" y="142" fill="#b91c1c" font-weight="600">"summarize my travel receipts"</text>
+    <text x="380" y="162" font-size="11.5" fill="#ef4444">grounded on type=receipt, month=2026-06 → overlaps → INVALIDATE</text>
+
+    <!-- kept -->
+    <rect x="360" y="186" width="620" height="56" rx="11" fill="#eef9f4" stroke="#bfe6d4"/>
+    <text x="380" y="210" fill="#047857" font-weight="600">"what did my boss say about the Q3 deadline?"</text>
+    <text x="380" y="230" font-size="11.5" fill="#047857">unrelated grounding → KEEP (active users keep their hit-rate)</text>
+
+    <rect x="360" y="254" width="620" height="56" rx="11" fill="#eef9f4" stroke="#bfe6d4"/>
+    <text x="380" y="278" fill="#047857" font-weight="600">"summarize my flight itinerary"</text>
+    <text x="380" y="298" font-size="11.5" fill="#047857">different type/time bucket → KEEP</text>
+  </g>
+
+  <!-- properties -->
+  <rect x="40" y="340" width="940" height="110" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="60" y="368" font-size="13.5" font-weight="700" fill="#0b1020">Why this is safe and cheap</text>
+  <g font-size="12.5" fill="#6b7280">
+    <text x="60" y="392">• <tspan fill="#0b1020" font-weight="600">Cache-aside</tspan>, sharded by user_id (a tiny per-user RAG of its own) — same isolation discipline as everything else.</text>
+    <text x="60" y="414">• <tspan fill="#0b1020" font-weight="600">Similarity threshold = money↔correctness dial</tspan>; biased tight given low hallucination tolerance. Deletes over-invalidate (compliance).</text>
+    <text x="60" y="436">• <tspan fill="#0b1020" font-weight="600">Not a SPOF</tspan>: if the cache dies, every request just misses and falls through — the bill rises, correctness doesn't change.</text>
+  </g>
+</svg>

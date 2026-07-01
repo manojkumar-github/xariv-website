@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
 import { getProduct, products } from "@/data/products";
 
 interface Props {
@@ -60,11 +61,19 @@ export default async function ProductPage({ params }: Props) {
         </ul>
       </div>
 
-      <div className="mt-10 rounded-lg border border-dashed border-line bg-canvas/50 p-12 text-center">
-        <p className="text-sm text-muted">
-          Screenshots and interactive documentation will appear here.
-        </p>
-      </div>
+      {product.appPath && (
+        <div className="mt-10">
+          <Button href={product.appPath}>Launch {product.name.replace("XARIV ", "")}</Button>
+        </div>
+      )}
+
+      {!product.appPath && (
+        <div className="mt-10 rounded-lg border border-dashed border-line bg-canvas/50 p-12 text-center">
+          <p className="text-sm text-muted">
+            Interactive preview coming soon.
+          </p>
+        </div>
+      )}
 
       <p className="mt-8 text-sm text-muted">
         Status: <span className="capitalize text-ink-soft">{product.status}</span>

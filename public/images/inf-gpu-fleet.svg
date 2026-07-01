@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 540" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#06b6d4"/></linearGradient>
+  </defs>
+  <rect width="1100" height="540" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Right model, right phase, right GPU</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">At 10K+ GPUs, matching each workload to the cheapest hardware that meets its SLO is a major cost lever — not one-size-fits-all.</text>
+
+  <!-- GPU cards -->
+  <g font-size="11.5" fill="#0b1020">
+    <!-- H100 -->
+    <rect x="40" y="96" width="200" height="150" rx="12" fill="#fff" stroke="#cdd5ee"/>
+    <rect x="40" y="96" width="200" height="34" rx="12" fill="url(#gg)"/>
+    <text x="140" y="118" text-anchor="middle" fill="#fff" font-weight="700">NVIDIA H100</text>
+    <text x="56" y="150" font-size="11" fill="#6b7280">80 GB HBM3 · ~3.35 TB/s</text>
+    <text x="56" y="170" font-size="11" fill="#6b7280">flagship · NVLink</text>
+    <text x="56" y="196" font-size="11.5" font-weight="600" fill="#3730a3">Role:</text>
+    <text x="56" y="214" font-size="11" fill="#0b1020">big models (TP), large</text>
+    <text x="56" y="230" font-size="11" fill="#0b1020">prefill, high-throughput decode</text>
+
+    <!-- A100 -->
+    <rect x="252" y="96" width="200" height="150" rx="12" fill="#fff" stroke="#cdd5ee"/>
+    <rect x="252" y="96" width="200" height="34" rx="12" fill="#3730a3"/>
+    <text x="352" y="118" text-anchor="middle" fill="#fff" font-weight="700">NVIDIA A100</text>
+    <text x="268" y="150" font-size="11" fill="#6b7280">80 GB HBM2e · ~2.0 TB/s</text>
+    <text x="268" y="170" font-size="11" fill="#6b7280">workhorse · NVLink</text>
+    <text x="268" y="196" font-size="11.5" font-weight="600" fill="#3730a3">Role:</text>
+    <text x="268" y="214" font-size="11" fill="#0b1020">mid–large models, steady</text>
+    <text x="268" y="230" font-size="11" fill="#0b1020">decode at lower $ than H100</text>
+
+    <!-- RTX Pro 6000 -->
+    <rect x="464" y="96" width="200" height="150" rx="12" fill="#fff" stroke="#cdd5ee"/>
+    <rect x="464" y="96" width="200" height="34" rx="12" fill="#06b6d4"/>
+    <text x="564" y="118" text-anchor="middle" fill="#fff" font-weight="700">RTX Pro 6000</text>
+    <text x="480" y="150" font-size="11" fill="#6b7280">96 GB GDDR7 · ~1.8 TB/s</text>
+    <text x="480" y="170" font-size="11" fill="#6b7280">Blackwell · largest memory</text>
+    <text x="480" y="196" font-size="11.5" font-weight="600" fill="#3730a3">Role:</text>
+    <text x="480" y="214" font-size="11" fill="#0b1020">fit bigger models / large</text>
+    <text x="480" y="230" font-size="11" fill="#0b1020">KV on ONE card, cost-effective</text>
+
+    <!-- L40S -->
+    <rect x="676" y="96" width="200" height="150" rx="12" fill="#fff" stroke="#cdd5ee"/>
+    <rect x="676" y="96" width="200" height="34" rx="12" fill="#b45309"/>
+    <text x="776" y="118" text-anchor="middle" fill="#fff" font-weight="700">NVIDIA L40S</text>
+    <text x="692" y="150" font-size="11" fill="#6b7280">48 GB GDDR6 · ~0.86 TB/s</text>
+    <text x="692" y="170" font-size="11" fill="#6b7280">Ada · compute-dense, FP8</text>
+    <text x="692" y="196" font-size="11.5" font-weight="600" fill="#3730a3">Role:</text>
+    <text x="692" y="214" font-size="11" fill="#0b1020">prefill compute, mid-size</text>
+    <text x="692" y="230" font-size="11" fill="#0b1020">model serving</text>
+
+    <!-- L4 -->
+    <rect x="888" y="96" width="200" height="150" rx="12" fill="#fff" stroke="#cdd5ee"/>
+    <rect x="888" y="96" width="200" height="34" rx="12" fill="#047857"/>
+    <text x="988" y="118" text-anchor="middle" fill="#fff" font-weight="700">NVIDIA L4</text>
+    <text x="904" y="150" font-size="11" fill="#6b7280">24 GB GDDR6 · ~0.3 TB/s</text>
+    <text x="904" y="170" font-size="11" fill="#6b7280">72 W · cheap &amp; efficient</text>
+    <text x="904" y="196" font-size="11.5" font-weight="600" fill="#3730a3">Role:</text>
+    <text x="904" y="214" font-size="11" fill="#0b1020">small models, embeddings,</text>
+    <text x="904" y="230" font-size="11" fill="#0b1020">cost-sensitive long tail</text>
+  </g>
+
+  <!-- mapping principles -->
+  <text x="40" y="296" font-size="14" font-weight="700" fill="#0b1020">Three signals decide the placement</text>
+  <g font-size="12.5">
+    <rect x="40" y="312" width="340" height="130" rx="12" fill="#eef1fb" stroke="#cdd5ee"/>
+    <text x="60" y="338" font-weight="700" fill="#3730a3">By model size</text>
+    <text x="60" y="362" font-size="12" fill="#6b7280">7B fits one L4/L40S; 70B needs</text>
+    <text x="60" y="380" font-size="12" fill="#6b7280">tensor parallelism on H100/A100;</text>
+    <text x="60" y="398" font-size="12" fill="#6b7280">a 96 GB RTX Pro 6000 can hold a</text>
+    <text x="60" y="416" font-size="12" fill="#6b7280">bigger model on a single card.</text>
+
+    <rect x="392" y="312" width="340" height="130" rx="12" fill="#fef3e2" stroke="#f6c98a"/>
+    <text x="412" y="338" font-weight="700" fill="#b45309">By phase (disaggregation)</text>
+    <text x="412" y="362" font-size="12" fill="#92400e">Prefill is compute-bound → put it on</text>
+    <text x="412" y="380" font-size="12" fill="#92400e">compute-dense cards (L40S, H100).</text>
+    <text x="412" y="398" font-size="12" fill="#92400e">Decode is bandwidth-bound → put it on</text>
+    <text x="412" y="416" font-size="12" fill="#92400e">high-HBM-bandwidth cards (H100, A100).</text>
+
+    <rect x="744" y="312" width="340" height="130" rx="12" fill="#eef9f4" stroke="#bfe6d4"/>
+    <text x="764" y="338" font-weight="700" fill="#047857">By cost-per-token</text>
+    <text x="764" y="362" font-size="12" fill="#6b7280">The router scores cost-to-serve, not</text>
+    <text x="764" y="380" font-size="12" fill="#6b7280">just latency: an L4 may win cost-per-</text>
+    <text x="764" y="398" font-size="12" fill="#6b7280">token for a small model even though an</text>
+    <text x="764" y="416" font-size="12" fill="#6b7280">H100 wins raw throughput.</text>
+  </g>
+
+  <rect x="40" y="460" width="1044" height="44" rx="10" fill="#0b1020"/>
+  <text x="562" y="487" text-anchor="middle" font-size="13" font-weight="700" fill="#e6e9f5">Heterogeneity is a cost lever: serve each workload on the cheapest hardware that still hits its SLO.</text>
+</svg>

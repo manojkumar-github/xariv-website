@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <rect width="960" height="560" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">The hidden cost: intermediate tensors in HBM</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">Each unfused op writes its result to HBM and the next op reads it back — traffic the compute never needed.</text>
+
+  <!-- pipeline column -->
+  <g font-size="14" fill="#0b1020">
+    <rect x="120" y="100" width="240" height="48" rx="11" fill="#f1f4fb" stroke="#d8dce8"/><text x="240" y="130" text-anchor="middle" font-weight="600">RMSNorm</text>
+    <rect x="120" y="178" width="240" height="48" rx="11" fill="#f1f4fb" stroke="#d8dce8"/><text x="240" y="208" text-anchor="middle" font-weight="600">RoPE</text>
+    <rect x="120" y="256" width="240" height="48" rx="11" fill="#f1f4fb" stroke="#d8dce8"/><text x="240" y="286" text-anchor="middle" font-weight="600">QKV projection</text>
+    <rect x="120" y="334" width="240" height="48" rx="11" fill="#f1f4fb" stroke="#d8dce8"/><text x="240" y="364" text-anchor="middle" font-weight="600">Attention</text>
+    <rect x="120" y="412" width="240" height="48" rx="11" fill="#f1f4fb" stroke="#d8dce8"/><text x="240" y="442" text-anchor="middle" font-weight="600">MLP (SwiGLU)</text>
+  </g>
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#ar2)" fill="none">
+    <path d="M240 148 V176"/><path d="M240 226 V254"/><path d="M240 304 V332"/><path d="M240 382 V410"/>
+  </g>
+
+  <!-- HBM bar -->
+  <rect x="620" y="100" width="220" height="360" rx="14" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="730" y="86" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">HBM (off-chip memory)</text>
+  <text x="730" y="285" text-anchor="middle" font-size="12" fill="#92400e" transform="rotate(0 730 285)">read ↔ write every stage</text>
+
+  <!-- round trip arrows -->
+  <g stroke="#ef4444" stroke-width="1.8" fill="none" marker-end="url(#arr)">
+    <path d="M360 124 H618"/>
+    <path d="M360 202 H618"/>
+    <path d="M360 280 H618"/>
+    <path d="M360 358 H618"/>
+  </g>
+  <g stroke="#ef4444" stroke-width="1.8" fill="none" marker-end="url(#arr)" opacity="0.55" stroke-dasharray="4 3">
+    <path d="M618 160 H362"/>
+    <path d="M618 238 H362"/>
+    <path d="M618 316 H362"/>
+    <path d="M618 394 H362"/>
+  </g>
+
+  <!-- verdict -->
+  <rect x="120" y="492" width="720" height="50" rx="11" fill="#fde8e8" stroke="#ef4444"/>
+  <text x="140" y="522" font-size="13.5" fill="#b91c1c"><tspan font-weight="700">Result:</tspan> compute units idle, HBM bandwidth saturated — the layer is memory-bound, not compute-bound.</text>
+</svg>

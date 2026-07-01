@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 500" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="arf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+  <rect width="820" height="500" fill="#ffffff"/>
+  <text x="60" y="44" font-size="22" font-weight="700" fill="#0b1020">Why decode is memory-bound (roofline)</text>
+
+  <!-- axes -->
+  <g stroke="#d8dce8" stroke-width="1.5">
+    <line x1="100" y1="90" x2="100" y2="410"/>
+    <line x1="100" y1="410" x2="760" y2="410"/>
+  </g>
+  <text x="44" y="250" font-size="13" fill="#6b7280" transform="rotate(-90 44 250)">attainable throughput</text>
+  <text x="430" y="452" font-size="13" fill="#6b7280" text-anchor="middle">arithmetic intensity (FLOPs per byte)  →</text>
+
+  <!-- roofline: slanted memory-bound line then flat compute roof -->
+  <!-- ridge at x=430 -->
+  <polyline points="100,400 430,150 760,150" fill="none" stroke="#0b1020" stroke-width="3"/>
+  <text x="600" y="138" font-size="12.5" fill="#0b1020" font-weight="600">compute roof (peak FLOP/s)</text>
+  <text x="210" y="270" font-size="12.5" fill="#b45309" font-weight="600" transform="rotate(-37 210 270)">memory-bandwidth bound</text>
+  <line x1="430" y1="150" x2="430" y2="410" stroke="#cbd2e0" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="430" y="428" font-size="11.5" fill="#9aa3b5" text-anchor="middle">ridge point</text>
+
+  <!-- decode operating point (low intensity, on the slope) -->
+  <circle cx="165" cy="349" r="7" fill="#ef4444"/>
+  <text x="178" y="345" font-size="13" fill="#b91c1c" font-weight="700">decode (GEMV)</text>
+  <text x="178" y="364" font-size="11.5" fill="#ef4444">reads big weights, little compute</text>
+
+  <!-- prefill point near roof -->
+  <circle cx="470" cy="150" r="7" fill="#10b981"/>
+  <text x="470" y="186" font-size="13" fill="#047857" font-weight="700" text-anchor="middle">prefill (GEMM)</text>
+  <text x="470" y="204" font-size="11.5" fill="#047857" text-anchor="middle">compute-bound</text>
+
+  <!-- optimization arrow moving decode rightward/up -->
+  <path d="M180 345 C260 320 320 300 360 250" fill="none" stroke="#4f46e5" stroke-width="2.4" stroke-dasharray="6 5" marker-end="url(#arf)"/>
+  <text x="300" y="225" font-size="12" fill="#4f46e5" font-weight="600">fusion + batching + FP8</text>
+  <text x="300" y="243" font-size="11.5" fill="#4f46e5">raise intensity, cut bytes moved</text>
+</svg>

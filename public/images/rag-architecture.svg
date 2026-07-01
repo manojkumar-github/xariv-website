@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+    <marker id="ai" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Two systems sharing a storage layer</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">A constant write firehose keeps per-user indexes fresh; a cache-first read path answers without paying for the LLM when it can.</text>
+
+  <!-- READ STRIP -->
+  <text x="40" y="100" font-size="13" font-weight="700" fill="#3730a3">READ · query path</text>
+  <g font-size="12" fill="#0b1020">
+    <!-- 8 boxes -->
+    <g>
+      <rect x="40" y="110" width="140" height="60" rx="11" fill="#f1f4fb" stroke="#d8dce8"/>
+      <text x="110" y="136" text-anchor="middle" font-weight="600">Client query</text>
+      <text x="110" y="154" text-anchor="middle" font-size="11" fill="#6b7280">"summarize receipts"</text>
+
+      <rect x="189" y="110" width="140" height="60" rx="11" fill="#fff" stroke="#d8dce8"/>
+      <text x="259" y="136" text-anchor="middle" font-weight="600">API Gateway</text>
+      <text x="259" y="154" text-anchor="middle" font-size="11" fill="#6b7280">auth · rate-limit</text>
+
+      <rect x="338" y="110" width="140" height="60" rx="11" fill="#fff" stroke="#d8dce8"/>
+      <text x="408" y="136" text-anchor="middle" font-weight="600">Orchestrator</text>
+      <text x="408" y="154" text-anchor="middle" font-size="11" fill="#6b7280">read brain</text>
+
+      <rect x="487" y="110" width="140" height="60" rx="11" fill="#eef9f4" stroke="#bfe6d4"/>
+      <text x="557" y="136" text-anchor="middle" font-weight="600" fill="#047857">Semantic cache</text>
+      <text x="557" y="154" text-anchor="middle" font-size="11" fill="#047857">deflect the LLM</text>
+
+      <rect x="636" y="110" width="140" height="60" rx="11" fill="#fff" stroke="#d8dce8"/>
+      <text x="706" y="136" text-anchor="middle" font-weight="600">Query understand</text>
+      <text x="706" y="154" text-anchor="middle" font-size="11" fill="#6b7280">embed + filters</text>
+
+      <rect x="785" y="110" width="140" height="60" rx="11" fill="#fff" stroke="#d8dce8"/>
+      <text x="855" y="136" text-anchor="middle" font-weight="600">Retrieval</text>
+      <text x="855" y="154" text-anchor="middle" font-size="11" fill="#6b7280">user-scoped ANN</text>
+
+      <rect x="934" y="110" width="140" height="60" rx="11" fill="#fff" stroke="#d8dce8"/>
+      <text x="1004" y="136" text-anchor="middle" font-weight="600">Re-ranker</text>
+      <text x="1004" y="154" text-anchor="middle" font-size="11" fill="#6b7280">cross-encoder</text>
+
+      <rect x="1083" y="110" width="157" height="60" rx="11" fill="#fef3e2" stroke="#f6c98a"/>
+      <text x="1161" y="136" text-anchor="middle" font-weight="600" fill="#b45309">Hosted LLM</text>
+      <text x="1161" y="154" text-anchor="middle" font-size="11" fill="#92400e">answer + citations</text>
+    </g>
+  </g>
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#a)" fill="none">
+    <path d="M180 140 H187"/><path d="M329 140 H336"/><path d="M478 140 H485"/>
+    <path d="M627 140 H634"/><path d="M776 140 H783"/><path d="M925 140 H932"/><path d="M1074 140 H1081"/>
+  </g>
+
+  <!-- STORAGE BAND -->
+  <text x="40" y="318" font-size="13" font-weight="700" fill="#3730a3">SHARED STORAGE · partitioned by user_id</text>
+  <g font-size="12.5" fill="#0b1020">
+    <rect x="40" y="328" width="340" height="64" rx="12" fill="#eef1fb" stroke="#cdd5ee"/>
+    <text x="210" y="354" text-anchor="middle" font-weight="700" fill="#3730a3">Vector DB (ANN)</text>
+    <text x="210" y="374" text-anchor="middle" font-size="11.5" fill="#6b7280">per-user partitions · hot/cold tiered</text>
+
+    <rect x="400" y="328" width="320" height="64" rx="12" fill="#fff" stroke="#d8dce8"/>
+    <text x="560" y="354" text-anchor="middle" font-weight="700">Metadata store</text>
+    <text x="560" y="374" text-anchor="middle" font-size="11.5" fill="#6b7280">NoSQL wide-column · filters, text</text>
+
+    <rect x="740" y="328" width="220" height="64" rx="12" fill="#fff" stroke="#d8dce8"/>
+    <text x="850" y="354" text-anchor="middle" font-weight="700">Object store</text>
+    <text x="850" y="374" text-anchor="middle" font-size="11.5" fill="#6b7280">raw docs (citations)</text>
+
+    <rect x="980" y="328" width="260" height="64" rx="12" fill="#fbe9ff" stroke="#e3b8f0"/>
+    <text x="1110" y="354" text-anchor="middle" font-weight="700" fill="#8b3aa8">Control plane (CP)</text>
+    <text x="1110" y="374" text-anchor="middle" font-size="11.5" fill="#9a52b3">user → shard → region</text>
+  </g>
+
+  <!-- read/write connectors to storage -->
+  <path d="M855 170 V326" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#a)" marker-start="url(#a)"/>
+  <text x="865" y="250" font-size="11" fill="#6b7280">user-scoped read</text>
+  <path d="M560 524 V394" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <text x="570" y="460" font-size="11" fill="#6b7280">idempotent write</text>
+  <!-- invalidation -->
+  <path d="M557 326 V172" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5 4" fill="none" marker-end="url(#ai)"/>
+  <text x="380" y="250" font-size="11" fill="#b45309" text-anchor="end">invalidation event ↑</text>
+
+  <!-- WRITE STRIP -->
+  <text x="40" y="514" font-size="13" font-weight="700" fill="#3730a3">WRITE · ingestion path (~310K embeddings/sec)</text>
+  <g font-size="12" fill="#0b1020">
+    <g>
+      <rect x="40" y="524" width="140" height="60" rx="11" fill="#f1f4fb" stroke="#d8dce8"/>
+      <text x="110" y="550" text-anchor="middle" font-weight="600">Source event</text>
+      <text x="110" y="568" text-anchor="middle" font-size="11" fill="#6b7280">new mail / file</text>
+
+      <rect x="189" y="524" width="140" height="60" rx="11" fill="#fff" stroke="#d8dce8"/>
+      <text x="259" y="550" text-anchor="middle" font-weight="600">Connectors</text>
+      <text x="259" y="568" text-anchor="middle" font-size="11" fill="#6b7280">OAuth pull</text>
+
+      <rect x="338" y="524" width="140" height="60" rx="11" fill="#fef3e2" stroke="#f6c98a"/>
+      <text x="408" y="550" text-anchor="middle" font-weight="600" fill="#b45309">Kafka</text>
+      <text x="408" y="568" text-anchor="middle" font-size="11" fill="#92400e">decouple firehose</text>
+
+      <rect x="487" y="524" width="140" height="60" rx="11" fill="#fff" stroke="#d8dce8"/>
+      <text x="557" y="550" text-anchor="middle" font-weight="600">Parser</text>
+      <text x="557" y="568" text-anchor="middle" font-size="11" fill="#6b7280">OCR · tables · img</text>
+
+      <rect x="636" y="524" width="140" height="60" rx="11" fill="#fff" stroke="#d8dce8"/>
+      <text x="706" y="554" text-anchor="middle" font-weight="600">Chunker</text>
+
+      <rect x="785" y="524" width="140" height="60" rx="11" fill="#fff" stroke="#d8dce8"/>
+      <text x="855" y="550" text-anchor="middle" font-weight="600">Embedding</text>
+      <text x="855" y="568" text-anchor="middle" font-size="11" fill="#6b7280">GPU batch</text>
+
+      <rect x="934" y="524" width="140" height="60" rx="11" fill="#fff" stroke="#d8dce8"/>
+      <text x="1004" y="550" text-anchor="middle" font-weight="600">Index writer</text>
+      <text x="1004" y="568" text-anchor="middle" font-size="11" fill="#6b7280">idempotent upsert</text>
+    </g>
+  </g>
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#a)" fill="none">
+    <path d="M180 554 H187"/><path d="M329 554 H336"/><path d="M478 554 H485"/>
+    <path d="M627 554 H634"/><path d="M776 554 H783"/><path d="M925 554 H932"/>
+  </g>
+  <path d="M1004 524 V470 H600" stroke="#94a0b8" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#a)"/>
+</svg>

@@ -5,6 +5,7 @@ export interface Product {
   description: string;
   status: "available" | "preview" | "planned";
   capabilities: string[];
+  appPath?: string;
 }
 
 export const products: Product[] = [
@@ -15,6 +16,7 @@ export const products: Product[] = [
     description:
       "Predict infrastructure cost, performance, bottlenecks, and capacity before deployment. Roofline-based models over real GPU, model, and fabric catalogs — with explainable recommendations.",
     status: "preview",
+    appPath: "/atlas",
     capabilities: [
       "GPU sizing and replica count",
       "Cost and power estimation",
@@ -29,6 +31,7 @@ export const products: Product[] = [
     description:
       "Benchmark LLM inference workloads and visualize TTFT, ITL, TPOT, end-to-end latency, throughput, and GPU telemetry across public or custom datasets.",
     status: "preview",
+    appPath: "/pulse",
     capabilities: [
       "Dataset replay (ShareGPT, LMSYS, custom)",
       "Latency percentile distributions",

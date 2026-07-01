@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 820" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="820" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Control plane / execution plane split</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">A highly-available human-facing control plane; a batch, fault-tolerant execution plane — joined by a durable queue.</text>
+
+  <!-- CONTROL PLANE band -->
+  <rect x="32" y="92" width="1136" height="96" rx="14" fill="#f7f8fe" stroke="#e3e7f0"/>
+  <text x="48" y="114" font-size="12.5" font-weight="700" fill="#3730a3">CONTROL PLANE · stateless, HA (99.9%)</text>
+  <g font-size="12" fill="#0b1020">
+    <rect x="48" y="124" width="170" height="50" rx="10" fill="#f1f4fb" stroke="#d8dce8"/><text x="133" y="148" text-anchor="middle" font-weight="600">CLI / Web UI</text><text x="133" y="164" text-anchor="middle" font-size="11" fill="#6b7280">CI-triggered sweeps</text>
+    <rect x="248" y="124" width="170" height="50" rx="10" fill="#fff" stroke="#d8dce8"/><text x="333" y="148" text-anchor="middle" font-weight="600">API Gateway</text><text x="333" y="164" text-anchor="middle" font-size="11" fill="#6b7280">auth · quota · rate-limit</text>
+    <rect x="448" y="124" width="220" height="50" rx="10" fill="#fff" stroke="#d8dce8"/><text x="558" y="146" text-anchor="middle" font-weight="600">Sweep / Spec service</text><text x="558" y="164" text-anchor="middle" font-size="11" fill="#6b7280">expand cross-product · setting_hash</text>
+    <rect x="698" y="124" width="200" height="50" rx="10" fill="#fff" stroke="#d8dce8"/><text x="798" y="146" text-anchor="middle" font-weight="600">Postgres (work-state)</text><text x="798" y="164" text-anchor="middle" font-size="11" fill="#6b7280">run state machine · CP</text>
+  </g>
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#a)" fill="none"><path d="M218 149 H246"/><path d="M418 149 H446"/><path d="M668 149 H696"/></g>
+
+  <!-- QUEUE seam -->
+  <rect x="32" y="210" width="1136" height="44" rx="11" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="600" y="237" text-anchor="middle" font-size="13.5" font-weight="700" fill="#b45309">Durable job queue — the seam · partitioned by hardware type · at-least-once</text>
+  <path d="M558 188 V208" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#a)"/>
+
+  <!-- EXECUTION PLANE band -->
+  <rect x="32" y="276" width="1136" height="148" rx="14" fill="#fbfcff" stroke="#dfe4f1"/>
+  <text x="48" y="298" font-size="12.5" font-weight="700" fill="#3730a3">EXECUTION PLANE · batch, fault-tolerant (no lost / corrupted runs)</text>
+  <g font-size="12" fill="#0b1020">
+    <rect x="48" y="312" width="230" height="92" rx="11" fill="#eef1fb" stroke="#cdd5ee"/>
+    <text x="163" y="338" text-anchor="middle" font-weight="700" fill="#3730a3">Scheduler</text>
+    <text x="163" y="358" text-anchor="middle" font-size="11" fill="#6b7280">constraint-satisfaction</text>
+    <text x="163" y="374" text-anchor="middle" font-size="11" fill="#6b7280">placement · ~1 dispatch/s</text>
+
+    <rect x="330" y="312" width="300" height="92" rx="11" fill="#fff" stroke="#d8dce8"/>
+    <text x="480" y="336" text-anchor="middle" font-weight="700">Runner agents · GPU nodes</text>
+    <text x="480" y="356" text-anchor="middle" font-size="11" fill="#6b7280">provision → pre-flight verify →</text>
+    <text x="480" y="372" text-anchor="middle" font-size="11" fill="#6b7280">load-test → emit (fail-closed)</text>
+
+    <rect x="690" y="312" width="210" height="40" rx="9" fill="#fef3e2" stroke="#f6c98a"/>
+    <text x="795" y="337" text-anchor="middle" font-size="11.5" font-weight="600" fill="#b45309">Checkpoint cache (content-hash)</text>
+    <rect x="690" y="362" width="210" height="40" rx="9" fill="#fef3e2" stroke="#f6c98a"/>
+    <text x="795" y="387" text-anchor="middle" font-size="11.5" font-weight="600" fill="#b45309">Image registry (digest-pinned)</text>
+
+    <rect x="930" y="312" width="222" height="92" rx="11" fill="#fff" stroke="#d8dce8"/>
+    <text x="1041" y="336" text-anchor="middle" font-weight="700">Aggregation</text>
+    <text x="1041" y="356" text-anchor="middle" font-size="11" fill="#6b7280">N complete? mean + stddev</text>
+    <text x="1041" y="372" text-anchor="middle" font-size="11" fill="#6b7280">n_valid / n_total · is_final</text>
+  </g>
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#a)" fill="none">
+    <path d="M278 358 H328"/>
+    <path d="M690 332 H632"/><path d="M690 382 H632"/>
+    <path d="M630 358 H928"/>
+  </g>
+  <path d="M558 254 V310" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <text x="566" y="288" font-size="11" fill="#6b7280">dispatch</text>
+
+  <!-- RESULTS stores -->
+  <text x="40" y="470" font-size="12.5" font-weight="700" fill="#3730a3">RESULTS · two systems of record</text>
+  <g font-size="12" fill="#0b1020">
+    <rect x="40" y="482" width="340" height="62" rx="12" fill="#eef9f4" stroke="#bfe6d4"/>
+    <text x="210" y="508" text-anchor="middle" font-weight="700" fill="#047857">Dimensional result store (columnar)</text>
+    <text x="210" y="528" text-anchor="middle" font-size="11" fill="#047857">immutable · star-schema · ~50 GB/yr</text>
+
+    <rect x="400" y="482" width="300" height="62" rx="12" fill="#fff" stroke="#d8dce8"/>
+    <text x="550" y="508" text-anchor="middle" font-weight="700">Cold trace store (object / Parquet)</text>
+    <text x="550" y="528" text-anchor="middle" font-size="11" fill="#6b7280">per-request traces · single-digit TB/yr</text>
+  </g>
+  <path d="M1041 404 V440 H210 V480" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M1041 440 H550 V480" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#a)"/>
+
+  <!-- READ path -->
+  <text x="40" y="592" font-size="12.5" font-weight="700" fill="#3730a3">READ · dashboards &amp; cross-setting comparison</text>
+  <g font-size="12" fill="#0b1020">
+    <rect x="40" y="604" width="200" height="50" rx="10" fill="#f1f4fb" stroke="#d8dce8"/><text x="140" y="634" text-anchor="middle" font-weight="600">Dashboard / Compare</text>
+    <rect x="270" y="604" width="180" height="50" rx="10" fill="#fff" stroke="#d8dce8"/><text x="360" y="634" text-anchor="middle" font-weight="600">Query service</text>
+    <rect x="480" y="604" width="150" height="50" rx="10" fill="#fff" stroke="#d8dce8"/><text x="555" y="634" text-anchor="middle" font-weight="600">Redis cache</text>
+  </g>
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#a)" fill="none"><path d="M240 629 H268"/><path d="M450 629 H478"/><path d="M630 629 H690 V546"/></g>
+  <text x="660" y="600" font-size="11" fill="#6b7280">read</text>
+
+  <rect x="740" y="592" width="412" height="66" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="760" y="618" font-size="12.5" font-weight="700" fill="#0b1020">Why this shape</text>
+  <text x="760" y="640" font-size="11.5" fill="#6b7280">Reliability budget spent asymmetrically: uptime for humans,</text>
+  <text x="760" y="654" font-size="11.5" fill="#6b7280">correctness-under-failure for the GPU runners.</text>
+</svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 500" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="500" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Two phases that fight each other on a shared GPU</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">A long compute-heavy prefill stalls the steady token streaming of every decode sharing the GPU — TTFT and inter-token latency spike.</text>
+
+  <!-- the problem -->
+  <rect x="40" y="96" width="960" height="96" rx="12" fill="#fde8e8" stroke="#ef4444"/>
+  <text x="64" y="122" font-size="13.5" font-weight="700" fill="#b91c1c">The interference</text>
+  <g font-size="12.5" fill="#0b1020">
+    <text x="64" y="148">A 4,000-token <tspan fill="#b45309" font-weight="600">prefill</tspan> lands in the batch; its forward pass is so compute-heavy it monopolizes the step,</text>
+    <text x="64" y="170">stalling every other request's <tspan fill="#047857" font-weight="600">decode</tspan> step → stuttering output, blown p99 inter-token latency.</text>
+  </g>
+
+  <!-- two fixes -->
+  <text x="40" y="226" font-size="13.5" font-weight="700" fill="#0b1020">Two fixes — reach for the lighter one first</text>
+
+  <rect x="40" y="240" width="470" height="220" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="60" y="266" font-weight="700" fill="#3730a3" font-size="13.5">Chunked prefill (unified pool)</text>
+  <text x="60" y="290" font-size="12" fill="#6b7280">Dice the big prefill into chunks and interleave them</text>
+  <text x="60" y="308" font-size="12" fill="#6b7280">with ongoing decode steps in the same batch.</text>
+  <!-- mini timeline -->
+  <g>
+    <rect x="60" y="324" width="40" height="24" rx="4" fill="#f6c98a"/><rect x="104" y="324" width="34" height="24" rx="4" fill="#bfe6d4"/>
+    <rect x="142" y="324" width="40" height="24" rx="4" fill="#f6c98a"/><rect x="186" y="324" width="34" height="24" rx="4" fill="#bfe6d4"/>
+    <rect x="224" y="324" width="40" height="24" rx="4" fill="#f6c98a"/><rect x="268" y="324" width="34" height="24" rx="4" fill="#bfe6d4"/>
+  </g>
+  <text x="60" y="372" font-size="11.5" fill="#6b7280">prefill chunks (amber) woven with decode (green)</text>
+  <text x="60" y="402" font-size="12" fill="#047857">+ operationally simple — one homogeneous pool</text>
+  <text x="60" y="424" font-size="12" fill="#b45309">− still shares hardware; less isolation</text>
+  <text x="60" y="448" font-size="12" fill="#0b1020" font-weight="600">the default starting point</text>
+
+  <rect x="530" y="240" width="470" height="220" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="550" y="266" font-weight="700" fill="#3730a3" font-size="13.5">Disaggregated prefill / decode pools</text>
+  <text x="550" y="290" font-size="12" fill="#6b7280">Separate GPUs: prefill runs on one pool, the computed</text>
+  <text x="550" y="308" font-size="12" fill="#6b7280">KV cache is handed to a decode pool over the interconnect.</text>
+  <g font-size="11" fill="#0b1020">
+    <rect x="550" y="322" width="120" height="44" rx="8" fill="#fef3e2" stroke="#f6c98a"/><text x="610" y="343" text-anchor="middle" font-weight="600" fill="#b45309">Prefill pool</text><text x="610" y="358" text-anchor="middle" font-size="10" fill="#92400e">compute-dense GPUs</text>
+    <rect x="760" y="322" width="120" height="44" rx="8" fill="#eef9f4" stroke="#bfe6d4"/><text x="820" y="343" text-anchor="middle" font-weight="600" fill="#047857">Decode pool</text><text x="820" y="358" text-anchor="middle" font-size="10" fill="#047857">high-bandwidth GPUs</text>
+    <path d="M670 344 H758" stroke="#3730a3" stroke-width="2.4" marker-end="url(#ap)" fill="none"/>
+    <text x="714" y="336" text-anchor="middle" font-size="9.5" fill="#3730a3">KV handoff</text>
+  </g>
+  <text x="550" y="402" font-size="12" fill="#047857">+ no interference; size pools independently (1.7:1); mix GPU types</text>
+  <text x="550" y="424" font-size="12" fill="#b45309">− KV-transfer bandwidth + double the ops surface</text>
+  <text x="550" y="448" font-size="12" fill="#0b1020" font-weight="600">graduate to this at 10K+ GPUs</text>
+</svg>

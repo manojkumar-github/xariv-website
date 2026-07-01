@@ -49,7 +49,7 @@ export const architectureStudies: Study[] = [
     excerpt:
       "A single H100, a 32B model, billions of short answers a day — and GPUs that looked busy but weren't fast. The bottleneck wasn't compute. It was memory bandwidth.",
     date: "2026-06-16",
-    category: "GPU Optimization",
+    category: "AI Infrastructure",
     readingTime: "18 min",
     author: "Xariv Infrastructure",
   },
@@ -60,7 +60,7 @@ export const architectureStudies: Study[] = [
     excerpt:
       "Why adding GPUs stopped improving throughput in a 235B-parameter MoE platform — and how the bottleneck turned out to live in the network, not the GPU.",
     date: "2026-06-14",
-    category: "MoE",
+    category: "AI Infrastructure",
     readingTime: "22 min",
     author: "Manoj Kumar",
   },

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 470" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="ad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="470" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">The data model: a fully-pinned experiment, identified by a hash</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">Three nested entities. The setting_hash is the identity that ties a number back to the exact environment forever.</text>
+
+  <!-- Sweep -->
+  <rect x="40" y="100" width="180" height="70" rx="12" fill="#f1f4fb" stroke="#d8dce8"/>
+  <text x="130" y="130" text-anchor="middle" font-weight="700" fill="#0b1020">Sweep</text>
+  <text x="130" y="152" text-anchor="middle" font-size="11.5" fill="#6b7280">the matrix a user submits</text>
+
+  <path d="M220 135 H290" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#ad)"/>
+  <text x="255" y="125" text-anchor="middle" font-size="11" fill="#6b7280">expand</text>
+
+  <!-- Setting -->
+  <rect x="300" y="96" width="430" height="150" rx="12" fill="#eef1fb" stroke="#cdd5ee"/>
+  <text x="515" y="122" text-anchor="middle" font-weight="700" fill="#3730a3">Setting · the immutable spec</text>
+  <text x="320" y="148" font-size="11.5" fill="#6b7280">setting_hash = fingerprint over ALL pinned axes:</text>
+  <text x="320" y="170" font-size="11.5" fill="#0b1020">hardware · CUDA · NCCL · framework (vLLM) ver ·</text>
+  <text x="320" y="188" font-size="11.5" fill="#0b1020">server flags · input/output tokens · arrival dist +</text>
+  <text x="320" y="206" font-size="11.5" fill="#0b1020">stddev · payload args (max_tokens …)</text>
+  <text x="320" y="230" font-size="11.5" fill="#3730a3" font-weight="600">two settings differing in any axis → distinct hashes</text>
+
+  <path d="M515 246 V286" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#ad)"/>
+  <text x="525" y="270" font-size="11" fill="#6b7280">fan out to N=5</text>
+
+  <!-- Runs -->
+  <g font-size="11.5" fill="#0b1020">
+    <rect x="300" y="290" width="80" height="50" rx="9" fill="#fff" stroke="#d8dce8"/><text x="340" y="320" text-anchor="middle">run 1</text>
+    <rect x="388" y="290" width="80" height="50" rx="9" fill="#fff" stroke="#d8dce8"/><text x="428" y="320" text-anchor="middle">run 2</text>
+    <rect x="476" y="290" width="80" height="50" rx="9" fill="#fff" stroke="#d8dce8"/><text x="516" y="320" text-anchor="middle">run 3</text>
+    <rect x="564" y="290" width="80" height="50" rx="9" fill="#fff" stroke="#d8dce8"/><text x="604" y="320" text-anchor="middle">run 4</text>
+    <rect x="652" y="290" width="80" height="50" rx="9" fill="#fff" stroke="#d8dce8"/><text x="692" y="320" text-anchor="middle">run 5</text>
+  </g>
+  <text x="300" y="362" font-size="11.5" fill="#6b7280">each run = one job on one allocated GPU → raw per-run metrics (TTFT, tok/s, p50/p90/p99 …)</text>
+
+  <!-- Result aggregate -->
+  <rect x="770" y="96" width="230" height="244" rx="12" fill="#eef9f4" stroke="#bfe6d4"/>
+  <text x="885" y="124" text-anchor="middle" font-weight="700" fill="#047857">Result</text>
+  <text x="885" y="150" text-anchor="middle" font-size="11.5" fill="#047857">per-run raw metrics</text>
+  <text x="885" y="170" text-anchor="middle" font-size="11.5" fill="#047857">+ per-setting aggregate</text>
+  <text x="885" y="196" text-anchor="middle" font-size="12" fill="#0b1020" font-weight="600">mean + stddev + pXX</text>
+  <text x="885" y="222" text-anchor="middle" font-size="11.5" fill="#047857">across the N runs</text>
+  <text x="885" y="252" text-anchor="middle" font-size="11.5" fill="#6b7280">keyed by setting_hash</text>
+  <text x="885" y="272" text-anchor="middle" font-size="11.5" fill="#6b7280">append-only · immutable</text>
+  <text x="885" y="298" text-anchor="middle" font-size="11.5" fill="#047857" font-weight="600">n_valid / n_total · is_final</text>
+  <path d="M732 315 C760 315 760 250 768 230" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#ad)"/>
+
+  <text x="40" y="420" font-size="12.5" fill="#6b7280">Reproducibility is a button: given a setting_hash, re-run later and get a bit-for-bit-equivalent environment.</text>
+  <text x="40" y="444" font-size="12.5" fill="#6b7280">"reproducible distribution," not "identical value" — GPU timing has irreducible jitter, so we report mean ± stddev over N.</text>
+</svg>

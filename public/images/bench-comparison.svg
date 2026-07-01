@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 470" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <rect width="1040" height="470" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">Why comparison is a clean query, not a YAML diff</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">Denormalize every axis onto every result row — a flat star schema. In a columnar store this is exactly right.</text>
+
+  <!-- flattened row -->
+  <text x="40" y="104" font-size="13" font-weight="700" fill="#3730a3">setting_aggregates — one row per setting, every axis a typed column</text>
+  <g font-size="11" fill="#0b1020">
+    <g fill="#eef1fb" stroke="#cdd5ee">
+      <rect x="40" y="116" width="92" height="34" rx="7"/><rect x="138" y="116" width="92" height="34" rx="7"/>
+      <rect x="236" y="116" width="92" height="34" rx="7"/><rect x="334" y="116" width="92" height="34" rx="7"/>
+      <rect x="432" y="116" width="92" height="34" rx="7"/><rect x="530" y="116" width="92" height="34" rx="7"/>
+      <rect x="628" y="116" width="92" height="34" rx="7"/>
+    </g>
+    <text x="86" y="137" text-anchor="middle">model_id</text><text x="184" y="137" text-anchor="middle">hardware</text>
+    <text x="282" y="137" text-anchor="middle">framework_v</text><text x="380" y="137" text-anchor="middle">in/out tok</text>
+    <text x="478" y="137" text-anchor="middle">concurrency</text><text x="576" y="137" text-anchor="middle">arrival_dist</text>
+    <text x="674" y="137" text-anchor="middle">region</text>
+    <g fill="#eef9f4" stroke="#bfe6d4">
+      <rect x="730" y="116" width="130" height="34" rx="7"/><rect x="866" y="116" width="134" height="34" rx="7"/>
+    </g>
+    <text x="795" y="137" text-anchor="middle" fill="#047857" font-weight="600">ttft_p99_mean</text>
+    <text x="933" y="137" text-anchor="middle" fill="#047857" font-weight="600">tps_mean ± σ</text>
+  </g>
+  <text x="40" y="174" font-size="11.5" fill="#6b7280">+ canonical_spec JSON (for hashing &amp; re-run) — promote the axes you compare on; keep the long tail in JSON.</text>
+
+  <!-- the query -->
+  <text x="40" y="208" font-size="13" font-weight="700" fill="#0b1020">The payoff: pin every axis except one, group by the free axis</text>
+  <rect x="40" y="220" width="960" height="150" rx="12" fill="#0b1020"/>
+  <g font-family="ui-monospace,SFMono-Regular,Menlo,Consolas,monospace" font-size="12.5" fill="#e6e9f5">
+    <text x="60" y="248"><tspan fill="#7dd3fc">SELECT</tspan> hardware_type, ttft_p99_mean, ttft_p99_stddev, n_valid_runs</text>
+    <text x="60" y="272"><tspan fill="#7dd3fc">FROM</tspan> setting_aggregates</text>
+    <text x="60" y="296"><tspan fill="#7dd3fc">WHERE</tspan> model_id=<tspan fill="#86efac">'qwen-7b'</tspan> <tspan fill="#7dd3fc">AND</tspan> model_version=<tspan fill="#86efac">'abc123'</tspan></text>
+    <text x="60" y="318">  <tspan fill="#7dd3fc">AND</tspan> input_tokens=512 <tspan fill="#7dd3fc">AND</tspan> output_tokens=128</text>
+    <text x="60" y="340">  <tspan fill="#7dd3fc">AND</tspan> framework_version=<tspan fill="#86efac">'0.6.3'</tspan> <tspan fill="#7dd3fc">AND</tspan> concurrency=64</text>
+    <text x="60" y="362"><tspan fill="#7dd3fc">ORDER BY</tspan> hardware_type;   <tspan fill="#9aa3b5">-- no joins, no JSON parsing, no YAML diffing</tspan></text>
+  </g>
+
+  <text x="40" y="400" font-size="12" fill="#6b7280">Columnar wins: joins are the expensive OLAP op and we eliminate them; low-cardinality columns (hardware ≈ 5 values) compress to nearly nothing.</text>
+  <text x="40" y="424" font-size="12" fill="#6b7280">Guard: a valid comparison differs in <tspan fill="#0b1020" font-weight="600">exactly one</tspan> axis — the service diffs the dimension columns and warns if more than one varies.</text>
+  <text x="40" y="448" font-size="12" fill="#6b7280">No sharding: ~50 GB/yr fits on one cluster. Immutability dissolves CAP — append-only results are safe to read eventually-consistent.</text>
+</svg>

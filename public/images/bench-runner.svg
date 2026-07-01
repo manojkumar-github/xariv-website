@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 500" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="500" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">The runner: a fail-closed pipeline that refuses to lie</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">The worst outcome isn't a failed run — it's a run that succeeds in a subtly-wrong environment and emits a believable, false number.</text>
+
+  <!-- pipeline -->
+  <g font-size="12" fill="#0b1020">
+    <rect x="40" y="100" width="150" height="58" rx="11" fill="#f1f4fb" stroke="#d8dce8"/><text x="115" y="126" text-anchor="middle" font-weight="600">Provision</text><text x="115" y="145" text-anchor="middle" font-size="11" fill="#6b7280">pinned image + ckpt</text>
+
+    <rect x="210" y="100" width="170" height="58" rx="11" fill="#fef3e2" stroke="#f59e0b" stroke-width="2"/><text x="295" y="124" text-anchor="middle" font-weight="700" fill="#b45309">Pre-flight verify</text><text x="295" y="143" text-anchor="middle" font-size="11" fill="#92400e">realized vs expected</text>
+
+    <rect x="400" y="100" width="150" height="58" rx="11" fill="#f1f4fb" stroke="#d8dce8"/><text x="475" y="126" text-anchor="middle" font-weight="600">Launch + warmup</text><text x="475" y="145" text-anchor="middle" font-size="11" fill="#6b7280">discard warmup</text>
+
+    <rect x="570" y="100" width="170" height="58" rx="11" fill="#f1f4fb" stroke="#d8dce8"/><text x="655" y="124" text-anchor="middle" font-weight="600">Load generator</text><text x="655" y="143" text-anchor="middle" font-size="11" fill="#6b7280">open-loop</text>
+
+    <rect x="760" y="100" width="160" height="58" rx="11" fill="#eef9f4" stroke="#bfe6d4"/><text x="840" y="124" text-anchor="middle" font-weight="600" fill="#047857">Emit + teardown</text><text x="840" y="143" text-anchor="middle" font-size="11" fill="#047857">env_verified=true</text>
+  </g>
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#ar)" fill="none">
+    <path d="M190 129 H208"/><path d="M380 129 H398"/><path d="M550 129 H568"/><path d="M740 129 H758"/>
+  </g>
+
+  <!-- fail-closed branch -->
+  <path d="M295 158 V200" stroke="#ef4444" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <rect x="210" y="202" width="280" height="48" rx="10" fill="#fde8e8" stroke="#ef4444"/>
+  <text x="350" y="224" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b91c1c">mismatch → FAILED, not a bad number</text>
+  <text x="350" y="242" text-anchor="middle" font-size="11" fill="#ef4444">"ENV_DRIFT: nccl 2.20 expected, 2.18 realized"</text>
+
+  <!-- what pre-flight checks -->
+  <rect x="40" y="288" width="460" height="172" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="60" y="314" font-size="13.5" font-weight="700" fill="#0b1020">Pre-flight builds a fingerprint of what's REALLY there</text>
+  <g font-size="12" fill="#6b7280">
+    <text x="60" y="340">• GPU model &amp; count (is this really an H100, not an A100?)</text>
+    <text x="60" y="362">• driver / CUDA runtime / NCCL version actually loaded</text>
+    <text x="60" y="384">• framework build importable in the container</text>
+    <text x="60" y="406">• MIG off · ECC state · hash of resolved server flags</text>
+    <text x="60" y="430">• <tspan fill="#b45309" font-weight="600">GPU clocks locked</tspan> (suppress thermal variance) — recorded in the fingerprint</text>
+    <text x="60" y="452">refuse to proceed on any mismatch → fills env_fingerprint_actual</text>
+  </g>
+
+  <!-- load-gen fidelity trap -->
+  <rect x="520" y="288" width="480" height="172" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="540" y="314" font-size="13.5" font-weight="700" fill="#0b1020">The load-generator fidelity traps</text>
+  <g font-size="12" fill="#6b7280">
+    <text x="540" y="340">• <tspan fill="#0b1020" font-weight="600">Don't benchmark the client</tspan>: provision the load-gen with</text>
+    <text x="555" y="358">headroom, on a separate CPU node — never on the GPU box.</text>
+    <text x="540" y="384">• <tspan fill="#0b1020" font-weight="600">Open-loop generation</tspan> avoids coordinated omission — a</text>
+    <text x="555" y="402">closed-loop client makes a stalling server look healthy.</text>
+    <text x="540" y="428">• Capture <tspan fill="#0b1020" font-weight="600">both</tspan> client metrics (TTFT, tok/s, latencies) and</text>
+    <text x="555" y="446">server GPU telemetry (util, VRAM, power) — the why behind the what.</text>
+  </g>
+</svg>

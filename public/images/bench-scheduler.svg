@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 490" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="as" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="490" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">The scheduler: placement, not throughput</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">At ~1 dispatch/sec there is no QPS problem. The hard job is placing each run on the exact, clean hardware it needs.</text>
+
+  <!-- funnel: hard constraints -->
+  <text x="40" y="104" font-size="13.5" font-weight="700" fill="#b91c1c">Hard constraints (must hold — correctness)</text>
+  <g font-size="12" fill="#0b1020">
+    <rect x="40" y="116" width="300" height="52" rx="11" fill="#fde8e8" stroke="#ef4444"/>
+    <text x="190" y="138" text-anchor="middle" font-weight="600" fill="#b91c1c">Exact hardware match</text>
+    <text x="190" y="156" text-anchor="middle" font-size="11" fill="#ef4444">an L4 result for an H100 setting is meaningless</text>
+
+    <rect x="360" y="116" width="320" height="52" rx="11" fill="#fde8e8" stroke="#ef4444"/>
+    <text x="520" y="138" text-anchor="middle" font-weight="600" fill="#b91c1c">Whole-device, uncontended</text>
+    <text x="520" y="156" text-anchor="middle" font-size="11" fill="#ef4444">no co-location — noisy neighbors corrupt the tail</text>
+
+    <rect x="700" y="116" width="300" height="52" rx="11" fill="#fde8e8" stroke="#ef4444"/>
+    <text x="850" y="138" text-anchor="middle" font-weight="600" fill="#b91c1c">Gang-schedule for TP groups</text>
+    <text x="850" y="156" text-anchor="middle" font-size="11" fill="#ef4444">N topologically-adjacent (NVLink) GPUs together</text>
+  </g>
+
+  <path d="M520 168 V196" stroke="#94a0b8" stroke-width="2" fill="none" marker-end="url(#as)"/>
+  <text x="600" y="188" font-size="11" fill="#6b7280">then optimize among valid placements</text>
+
+  <!-- soft objectives -->
+  <text x="40" y="222" font-size="13.5" font-weight="700" fill="#047857">Soft objectives (optimize)</text>
+  <g font-size="12" fill="#0b1020">
+    <rect x="40" y="234" width="470" height="120" rx="12" fill="#eef9f4" stroke="#bfe6d4"/>
+    <text x="60" y="260" font-weight="700" fill="#047857">Locality — the main utilization lever</text>
+    <text x="60" y="284" font-size="11.5" fill="#6b7280">we can't pack GPUs (fidelity forbids it), so we cut</text>
+    <text x="60" y="302" font-size="11.5" fill="#6b7280">setup overhead instead: prefer the node/region that</text>
+    <text x="60" y="320" font-size="11.5" fill="#6b7280">already holds this checkpoint warm. Same-model runs</text>
+    <text x="60" y="338" font-size="11.5" fill="#6b7280">stay sticky → most runs pay near-zero staging.</text>
+
+    <rect x="530" y="234" width="470" height="120" rx="12" fill="#eef1fb" stroke="#cdd5ee"/>
+    <text x="550" y="260" font-weight="700" fill="#3730a3">Fairness — throughput vs starvation</text>
+    <text x="550" y="284" font-size="11.5" fill="#6b7280">weighted fair queuing across tenants so a 5,000-run</text>
+    <text x="550" y="302" font-size="11.5" fill="#6b7280">sweep can't FIFO-starve small jobs; priority tiers let</text>
+    <text x="550" y="320" font-size="11.5" fill="#6b7280">an urgent CI check jump ahead; backfill fills idle gaps</text>
+    <text x="550" y="338" font-size="11.5" fill="#6b7280">to claw back the efficiency fairness would cost.</text>
+  </g>
+
+  <!-- defense in depth -->
+  <rect x="40" y="378" width="960" height="86" rx="12" fill="#fff" stroke="#e3e7f0"/>
+  <text x="60" y="404" font-size="13.5" font-weight="700" fill="#0b1020">Scheduler + runner = defense in depth for fidelity</text>
+  <text x="60" y="428" font-size="12" fill="#6b7280">The scheduler does its best to place on correct, clean hardware — but it <tspan fill="#0b1020" font-weight="600">cannot</tspan> guarantee the environment is right.</text>
+  <text x="60" y="448" font-size="12" fill="#6b7280">The runner's fail-closed pre-flight catches whatever slipped through. Neither alone is sufficient; together they hold the line.</text>
+</svg>

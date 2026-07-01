@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 480" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="ap" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4f46e5"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="480" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">The reframing: 2.2 trillion vectors we never search</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">Retrieval is always scoped to one user — so there is no global ANN problem, only a tiny per-user one.</text>
+
+  <!-- global blob, crossed -->
+  <rect x="60" y="110" width="360" height="150" rx="16" fill="#fde8e8" stroke="#ef4444"/>
+  <text x="240" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#b91c1c">Global index over 2.2T vectors</text>
+  <text x="240" y="178" text-anchor="middle" font-size="12.5" fill="#ef4444">filter-by-user_id at query time</text>
+  <text x="240" y="200" text-anchor="middle" font-size="12.5" fill="#ef4444">→ filtered-ANN trap (slow, wasteful)</text>
+  <text x="240" y="222" text-anchor="middle" font-size="12.5" fill="#ef4444">→ isolation by convention (fragile)</text>
+  <line x1="80" y1="240" x2="400" y2="130" stroke="#ef4444" stroke-width="2.5"/>
+
+  <path d="M430 185 H500" stroke="#4f46e5" stroke-width="2.4" fill="none" marker-end="url(#ap)"/>
+  <text x="465" y="175" text-anchor="middle" font-size="11" fill="#4f46e5">partition</text>
+
+  <!-- per-user -->
+  <rect x="520" y="110" width="460" height="150" rx="16" fill="#eef9f4" stroke="#10b981"/>
+  <text x="750" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#047857">Shard by user_id · co-locate per user</text>
+  <text x="750" y="180" text-anchor="middle" font-size="12.5" fill="#047857">search ONE user's ~10K vectors</text>
+  <text x="750" y="202" text-anchor="middle" font-size="12.5" fill="#047857">a few ms · 70,000×/sec for different users</text>
+  <text x="750" y="230" text-anchor="middle" font-size="12.5" fill="#6b7280">the wrong-user data isn't present to leak</text>
+
+  <!-- four wins -->
+  <text x="60" y="312" font-size="14" font-weight="700" fill="#0b1020">One decision → four wins</text>
+  <g font-size="13">
+    <rect x="60" y="328" width="220" height="110" rx="12" fill="#fff" stroke="#e3e7f0"/>
+    <text x="170" y="362" text-anchor="middle" font-weight="700" fill="#3730a3">Performance</text>
+    <text x="170" y="390" text-anchor="middle" font-size="12" fill="#6b7280">bounded per-query</text>
+    <text x="170" y="408" text-anchor="middle" font-size="12" fill="#6b7280">work (~10K vectors)</text>
+
+    <rect x="300" y="328" width="220" height="110" rx="12" fill="#fff" stroke="#e3e7f0"/>
+    <text x="410" y="362" text-anchor="middle" font-weight="700" fill="#3730a3">Isolation</text>
+    <text x="410" y="390" text-anchor="middle" font-size="12" fill="#6b7280">structural, not a</text>
+    <text x="410" y="408" text-anchor="middle" font-size="12" fill="#6b7280">filter you can fumble</text>
+
+    <rect x="540" y="328" width="220" height="110" rx="12" fill="#fff" stroke="#e3e7f0"/>
+    <text x="650" y="362" text-anchor="middle" font-weight="700" fill="#3730a3">Cost</text>
+    <text x="650" y="390" text-anchor="middle" font-size="12" fill="#6b7280">hot/cold tiering of</text>
+    <text x="650" y="408" text-anchor="middle" font-size="12" fill="#6b7280">self-contained units</text>
+
+    <rect x="780" y="328" width="200" height="110" rx="12" fill="#fff" stroke="#e3e7f0"/>
+    <text x="880" y="362" text-anchor="middle" font-weight="700" fill="#3730a3">Compliance</text>
+    <text x="880" y="390" text-anchor="middle" font-size="12" fill="#6b7280">cheap per-user</text>
+    <text x="880" y="408" text-anchor="middle" font-size="12" fill="#6b7280">delete / rebuild</text>
+  </g>
+</svg>

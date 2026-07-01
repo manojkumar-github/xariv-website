@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 560" font-family="system-ui,Segoe UI,Roboto,Arial,sans-serif">
+  <defs>
+    <marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#94a0b8"/>
+    </marker>
+  </defs>
+  <rect width="980" height="560" fill="#ffffff"/>
+  <text x="40" y="44" font-size="22" font-weight="700" fill="#0b1020">What one decode step actually costs</text>
+  <text x="40" y="70" font-size="14" fill="#6b7280">Compute is local; the two all-to-all collectives cross the network every single token.</text>
+
+  <!-- center spine of stages -->
+  <g font-size="14.5" fill="#0b1020">
+    <rect x="340" y="96"  width="300" height="56" rx="12" fill="#f1f4fb" stroke="#d8dce8"/>
+    <text x="490" y="130" text-anchor="middle" font-weight="600">Attention + top-k gating (local)</text>
+
+    <rect x="300" y="190" width="380" height="60" rx="12" fill="#fef3e2" stroke="#f6c98a"/>
+    <text x="490" y="216" text-anchor="middle" font-weight="700" fill="#b45309">① All-to-All dispatch</text>
+    <text x="490" y="237" text-anchor="middle" font-size="12" fill="#92400e">tokens → owning expert · cross-node</text>
+
+    <rect x="340" y="288" width="300" height="56" rx="12" fill="#f1f4fb" stroke="#d8dce8"/>
+    <text x="490" y="322" text-anchor="middle" font-weight="600">Expert FFN compute (local)</text>
+
+    <rect x="300" y="382" width="380" height="60" rx="12" fill="#fef3e2" stroke="#f6c98a"/>
+    <text x="490" y="408" text-anchor="middle" font-weight="700" fill="#b45309">② All-to-All combine</text>
+    <text x="490" y="429" text-anchor="middle" font-size="12" fill="#92400e">results → originating GPU · cross-node</text>
+
+    <rect x="360" y="480" width="260" height="52" rx="12" fill="#eef9f4" stroke="#bfe6d4"/>
+    <text x="490" y="512" text-anchor="middle" font-weight="600">Next token</text>
+  </g>
+
+  <g stroke="#94a0b8" stroke-width="2" marker-end="url(#ar2)" fill="none">
+    <path d="M490 152 V188"/>
+    <path d="M490 250 V286"/>
+    <path d="M490 344 V380"/>
+    <path d="M490 442 V478"/>
+  </g>
+
+  <!-- loop arrow -->
+  <path d="M620 506 H700 V124 H642" fill="none" stroke="#cbd2e0" stroke-width="2" stroke-dasharray="5 5" marker-end="url(#ar2)"/>
+  <text x="712" y="320" font-size="12" fill="#9aa3b5" transform="rotate(90 712 320)">repeated for every output token</text>
+
+  <!-- annotations -->
+  <g font-size="12.5">
+    <rect x="40" y="190" width="230" height="60" rx="10" fill="#fff" stroke="#e3e7f0"/>
+    <text x="56" y="214" fill="#b45309" font-weight="700">NCCL all-to-all-v</text>
+    <text x="56" y="234" fill="#6b7280">NVLink intra-node · IB inter-node</text>
+
+    <rect x="40" y="382" width="230" height="60" rx="10" fill="#fff" stroke="#e3e7f0"/>
+    <text x="56" y="406" fill="#ef4444" font-weight="700">Small, latency-bound</text>
+    <text x="56" y="426" fill="#6b7280">message-rate &gt; bandwidth limited</text>
+  </g>
+</svg>
