@@ -10,13 +10,13 @@ export interface Product {
 
 export const products: Product[] = [
   {
-    slug: "atlas",
-    name: "XARIV Atlas",
+    slug: "lens",
+    name: "XARIV Lens",
     tagline: "AI Infrastructure Intelligence",
     description:
       "Predict infrastructure cost, performance, bottlenecks, and capacity before deployment. Roofline-based models over real GPU, model, and fabric catalogs — with explainable recommendations.",
     status: "preview",
-    appPath: "/atlas",
+    appPath: "/lens",
     capabilities: [
       "GPU sizing and replica count",
       "Cost and power estimation",
@@ -37,6 +37,19 @@ export const products: Product[] = [
       "Latency percentile distributions",
       "GPU utilization and power modeling",
       "Throughput under concurrency",
+    ],
+  },
+  {
+    slug: "atlas",
+    name: "XARIV Atlas",
+    tagline: "Infrastructure Knowledge Graph",
+    description:
+      "Continuously calibrated infrastructure intelligence from telemetry, benchmarks, and production deployments. Coming soon.",
+    status: "planned",
+    capabilities: [
+      "Telemetry-driven model calibration",
+      "Cross-deployment learning",
+      "Hardware efficiency factors",
     ],
   },
   {

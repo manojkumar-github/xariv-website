@@ -45,16 +45,14 @@ npm run migrate:posts   # copies markdown + fixes image paths
 
 Diagrams live in `public/images/`.
 
-## Interactive tools (Atlas & Pulse)
+## Lens & Pulse (interactive tools)
 
-Static builds live in `public/atlas/` and `public/pulse/` and are committed to this repo.
+Native Next.js routes with in-browser computation engines in `src/tools/`:
 
-To rebuild after changing `xariv-platform/frontend` (local monorepo only):
+- **Lens** — `/lens` — GPU infrastructure prediction
+- **Pulse** — `/pulse` — inference latency profiling
 
-```bash
-npm run build:tools
-git add public/atlas public/pulse && git commit -m "Update Atlas and Pulse builds"
-```
+No external backend or static bundle required.
 
 ## Deploy to Vercel
 

@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:tools": "cd ../xariv-platform/frontend && npm run deploy:atlas && npm run deploy:pulse",
     "start": "next start",
     "lint": "eslint",
     "migrate:posts": "node scripts/migrate-posts.mjs"

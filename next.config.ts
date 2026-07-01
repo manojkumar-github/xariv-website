@@ -3,8 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      { source: "/lens", destination: "/atlas", permanent: true },
-      { source: "/lens/:path*", destination: "/atlas/:path*", permanent: true },
+      { source: "/atlas", destination: "/products/atlas", permanent: false },
+      { source: "/atlas/:path*", destination: "/products/atlas", permanent: false },
     ];
   },
 };
