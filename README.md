@@ -47,17 +47,14 @@ Diagrams live in `public/images/`.
 
 ## Interactive tools (Atlas & Pulse)
 
-Built from `../xariv-platform/frontend` into `public/atlas/` and `public/pulse/`:
+Static builds live in `public/atlas/` and `public/pulse/` and are committed to this repo.
+
+To rebuild after changing `xariv-platform/frontend` (local monorepo only):
 
 ```bash
 npm run build:tools
+git add public/atlas public/pulse && git commit -m "Update Atlas and Pulse builds"
 ```
-
-Included automatically in `npm run build`.
-
-- **Atlas** (GPU intelligence): `/atlas`
-- **Pulse** (inference profiling): `/pulse`
-- Legacy `/lens` redirects to `/atlas`
 
 ## Deploy to Vercel
 
