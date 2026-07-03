@@ -4,7 +4,7 @@ export const site = {
   description:
     "Software for understanding, optimizing, and planning AI infrastructure — before you provision a single GPU.",
   url: "https://xariv-website.vercel.app",
-  github: "https://github.com/manojkumar-github",
+  github: "https://github.com/xariv-labs",
   linkedin: "https://www.linkedin.com/company/xariv",
   email: "hello@xariv.com",
 } as const;
