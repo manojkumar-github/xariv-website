@@ -24,6 +24,9 @@ export default function HomePage() {
         </p>
         <div className="mt-10 flex flex-wrap gap-4">
           <Button href="/products">Explore Products</Button>
+          <Button href="/tools" variant="secondary">
+            Infrastructure Calculators
+          </Button>
           <Button href="/architecture-studies" variant="secondary">
             Read Architecture Studies
           </Button>
