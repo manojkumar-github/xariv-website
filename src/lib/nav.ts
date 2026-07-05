@@ -9,6 +9,7 @@ export const nav: NavItem[] = [
   { label: "Lens", href: "/lens", live: true },
   { label: "Pulse", href: "/pulse", live: true },
   { label: "Tools", href: "/tools" },
+  { label: "Docs", href: "/docs" },
   { label: "Studies", href: "/architecture-studies" },
   { label: "Contact", href: "/contact" },
 ];
@@ -19,6 +20,7 @@ export const footerNav: NavItem[] = [
   { label: "Lens", href: "/lens" },
   { label: "Pulse", href: "/pulse" },
   { label: "Tools", href: "/tools" },
+  { label: "Docs", href: "/docs" },
   { label: "Architecture Studies", href: "/architecture-studies" },
   { label: "Blog", href: "/blog" },
   { label: "Open Source", href: "/open-source" },

@@ -446,7 +446,7 @@ export function ContinuousBatchingCalc({ meta }: { meta: CalculatorMeta }) {
         <CalcSelect label="GPU" value={gpuId} onChange={setGpuId} options={gpuOptions()} />
         <CalcSelect label="Precision" value={dtype} onChange={(v) => setDtype(v as Dtype)} options={dtypeOptions} />
       </CalcForm>
-      <div className="rounded-lg border border-line bg-white p-6">
+      <div className="rounded-lg border border-line bg-surface p-6">
         <p className="text-xs font-medium uppercase tracking-wider text-muted">Batch sweep</p>
         <table className="mt-4 w-full text-sm">
           <thead>
@@ -488,7 +488,7 @@ export function QuantizationCalc({ meta }: { meta: CalculatorMeta }) {
         <CalcSelect label="Model" value={modelId} onChange={setModelId} options={modelOptions()} />
         <CalcNumber label="Batch size" value={batch} onChange={setBatch} />
       </CalcForm>
-      <div className="rounded-lg border border-line bg-white p-6">
+      <div className="rounded-lg border border-line bg-surface p-6">
         <p className="text-xs font-medium uppercase tracking-wider text-muted">Precision comparison (H100)</p>
         <table className="mt-4 w-full text-sm">
           <thead>

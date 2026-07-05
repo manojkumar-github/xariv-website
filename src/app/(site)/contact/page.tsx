@@ -71,7 +71,7 @@ export default function ContactPage() {
             key={ch.title}
             className={
               ch.highlight
-                ? "rounded-lg border border-line bg-white p-6"
+                ? "rounded-lg border border-line bg-surface p-6"
                 : "border-b border-line pb-8 last:border-0"
             }
           >

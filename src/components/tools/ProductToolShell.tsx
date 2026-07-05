@@ -37,7 +37,7 @@ export function ProductToolShell({
         <nav className="mt-6 flex flex-wrap gap-2" aria-label="Workflow stages">
           {stages.map((stage, i) => (
             <span key={stage} className="flex items-center gap-2 text-xs text-muted">
-              <span className="rounded-md border border-line bg-white px-2.5 py-1 text-ink-soft">
+              <span className="rounded-md border border-line bg-surface px-2.5 py-1 text-ink-soft">
                 {stage}
               </span>
               {i < stages.length - 1 && <span aria-hidden>→</span>}

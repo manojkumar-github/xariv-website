@@ -47,7 +47,7 @@ export default async function ProductPage({ params }: Props) {
         {product.description}
       </p>
 
-      <div className="mt-10 rounded-lg border border-line bg-white p-8">
+      <div className="mt-10 rounded-lg border border-line bg-surface p-8">
         <p className="text-xs font-medium uppercase tracking-wider text-muted">
           Capabilities
         </p>

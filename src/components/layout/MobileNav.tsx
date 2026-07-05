@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { nav } from "@/lib/constants";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -45,6 +46,9 @@ export function MobileNav() {
                 </li>
               );
             })}
+            <li>
+              <ThemeToggle />
+            </li>
             <li>
               <Link
                 href="/lens"

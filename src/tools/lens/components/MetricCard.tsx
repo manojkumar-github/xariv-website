@@ -20,7 +20,7 @@ export default function MetricCard({ label, value, sub, tone = "default" }: Prop
         : "text-ink";
 
   return (
-    <div className={`min-w-0 rounded-lg border bg-white p-4 sm:p-5 ${border}`}>
+    <div className={`min-w-0 rounded-lg border bg-surface p-4 sm:p-5 ${border}`}>
       <div className="text-xs font-medium uppercase tracking-wide text-muted">{label}</div>
       <div
         className={`mt-1.5 break-words font-display text-xl font-medium leading-tight tabular-nums sm:text-2xl ${accent}`}

@@ -47,20 +47,20 @@ export default function HomePage() {
               </Button>
             </div>
           </div>
-          <div className="rounded-lg border border-line bg-white p-3 shadow-sm">
+          <div className="rounded-lg border border-line bg-surface p-3 shadow-sm">
             <HeroDiagram className="h-auto w-full" />
           </div>
         </div>
       </Section>
 
       {/* Outcomes + logos */}
-      <Section className="border-t border-line bg-white/50">
+      <Section className="border-t border-line bg-surface/50">
         <p className="text-xs font-medium uppercase tracking-wider text-muted">
           Trusted by infrastructure teams
         </p>
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
           {outcomes.map((o) => (
-            <div key={o.label} className="rounded-lg border border-line bg-white p-5">
+            <div key={o.label} className="rounded-lg border border-line bg-surface p-5">
               <div className="font-display text-3xl font-medium text-accent">{o.value}</div>
               <div className="mt-1 text-sm font-medium text-ink">{o.label}</div>
               <div className="mt-1 text-xs text-muted">{o.detail}</div>
@@ -104,7 +104,7 @@ export default function HomePage() {
       </Section>
 
       {/* Case study */}
-      <Section className="border-t border-line bg-white/50">
+      <Section className="border-t border-line bg-surface/50">
         <p className="text-xs font-medium uppercase tracking-wider text-muted">
           Customer story
         </p>
@@ -112,18 +112,18 @@ export default function HomePage() {
           Problem → Solution → Result
         </h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
-          <div className="rounded-lg border border-line bg-white p-6">
+          <div className="rounded-lg border border-line bg-surface p-6">
             <p className="text-xs font-medium uppercase tracking-wider text-muted">Problem</p>
             <p className="mt-3 text-sm leading-relaxed text-ink-soft">
               <span className="font-medium text-ink">{caseStudy.customer}.</span>{" "}
               {caseStudy.problem}
             </p>
           </div>
-          <div className="rounded-lg border border-line bg-white p-6">
+          <div className="rounded-lg border border-line bg-surface p-6">
             <p className="text-xs font-medium uppercase tracking-wider text-muted">Solution</p>
             <p className="mt-3 text-sm leading-relaxed text-ink-soft">{caseStudy.solution}</p>
           </div>
-          <div className="rounded-lg border border-line border-accent/30 bg-white p-6">
+          <div className="rounded-lg border border-line border-accent/30 bg-surface p-6">
             <p className="text-xs font-medium uppercase tracking-wider text-accent">Result</p>
             <p className="mt-3 text-sm leading-relaxed text-ink-soft">{caseStudy.result}</p>
           </div>
@@ -224,7 +224,7 @@ export default function HomePage() {
       </Section>
 
       {/* Final CTA */}
-      <Section className="border-t border-line bg-white/50">
+      <Section className="border-t border-line bg-surface/50">
         <div className="max-w-2xl">
           <h2 className="font-display text-2xl font-medium text-ink">
             Start with a free prediction

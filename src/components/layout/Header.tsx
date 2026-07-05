@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site, nav } from "@/lib/constants";
 import { Logo } from "@/components/brand/Logo";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { MobileNav } from "./MobileNav";
 
 export function Header() {
@@ -37,7 +38,8 @@ export function Header() {
             );
           })}
         </nav>
-        <div className="flex shrink-0 items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <ThemeToggle />
           <Link
             href="/lens"
             prefetch

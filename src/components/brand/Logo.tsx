@@ -15,10 +15,10 @@ export function XarivMark({ size = 28, className = "" }: { size?: number; classN
       className={className}
       aria-hidden
     >
-      <rect x="1" y="1" width="30" height="30" rx="6" fill="#1e3a5f" />
+      <rect x="1" y="1" width="30" height="30" rx="6" className="fill-accent" />
       <path
         d="M9 9 L16 23 L23 9"
-        stroke="#f7f5f2"
+        className="stroke-canvas"
         strokeWidth="2.25"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -26,7 +26,7 @@ export function XarivMark({ size = 28, className = "" }: { size?: number; classN
       />
       <path
         d="M11 16 H21"
-        stroke="#f7f5f2"
+        className="stroke-canvas"
         strokeWidth="2.25"
         strokeLinecap="round"
         opacity="0.55"

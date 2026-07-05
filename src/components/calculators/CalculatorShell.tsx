@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 import type { CalculatorMeta } from "@/data/calculators";
 
 const field =
-  "w-full rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent";
+  "w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent";
 const label = "block text-xs font-medium uppercase tracking-wide text-muted mb-1";
 
 export function CalcField({
@@ -73,7 +73,7 @@ export function CalcNumber({
 
 export function CalcResults({ rows }: { rows: { label: string; value: string }[] }) {
   return (
-    <div className="rounded-lg border border-line bg-white p-6">
+    <div className="rounded-lg border border-line bg-surface p-6">
       <p className="text-xs font-medium uppercase tracking-wider text-muted">Results</p>
       <dl className="mt-4 space-y-3">
         {rows.map((r) => (
@@ -135,6 +135,6 @@ export function CalculatorShell({
 
 export function CalcForm({ children }: { children: ReactNode }) {
   return (
-    <div className="space-y-4 rounded-lg border border-line bg-white p-6">{children}</div>
+    <div className="space-y-4 rounded-lg border border-line bg-surface p-6">{children}</div>
   );
 }
