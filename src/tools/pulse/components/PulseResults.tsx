@@ -1,4 +1,5 @@
 import MetricCard from "@/tools/lens/components/MetricCard";
+import { toolBadge, toolCard } from "@/components/tools/styles";
 import type { MetricSummary, PulseReport } from "@/tools/types";
 
 const ms = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(2)} s` : `${n} ms`);
@@ -8,16 +9,13 @@ function TelemetryBar({ label, pct, value }: { label: string; pct: number; value
   return (
     <div>
       <div className="flex justify-between text-sm">
-        <span className="text-slate-600">{label}</span>
-        <span className={hot ? "font-semibold text-brand" : "text-slate-500"}>{value}</span>
+        <span className="text-ink-soft">{label}</span>
+        <span className={hot ? "font-medium text-accent" : "text-muted"}>{value}</span>
       </div>
-      <div className="mt-1 h-2 rounded-full bg-slate-100">
+      <div className="mt-1 h-2 rounded-full bg-line">
         <div
-          className="h-2 rounded-full"
-          style={{
-            width: `${Math.min(pct, 100)}%`,
-            background: hot ? "linear-gradient(90deg,#4f46e5,#06b6d4)" : "#cbd5e1",
-          }}
+          className={`h-2 rounded-full ${hot ? "bg-accent" : "bg-muted/40"}`}
+          style={{ width: `${Math.min(pct, 100)}%` }}
         />
       </div>
     </div>
@@ -27,12 +25,12 @@ function TelemetryBar({ label, pct, value }: { label: string; pct: number; value
 function PercentileRow({ name, m, unit }: { name: string; m: MetricSummary; unit?: string }) {
   const u = unit ?? " ms";
   return (
-    <tr className="border-t border-slate-100">
-      <td className="py-2 pr-4 font-medium text-slate-700">{name}</td>
-      <td className="py-2 pr-4 text-right tabular-nums text-slate-600">{m.p50}{u}</td>
-      <td className="py-2 pr-4 text-right tabular-nums text-slate-600">{m.p90}{u}</td>
-      <td className="py-2 pr-4 text-right tabular-nums text-slate-600">{m.p99}{u}</td>
-      <td className="py-2 text-right tabular-nums text-slate-400">{m.mean}{u}</td>
+    <tr className="border-t border-line">
+      <td className="py-2 pr-4 font-medium text-ink-soft">{name}</td>
+      <td className="py-2 pr-4 text-right tabular-nums text-ink-soft">{m.p50}{u}</td>
+      <td className="py-2 pr-4 text-right tabular-nums text-ink-soft">{m.p90}{u}</td>
+      <td className="py-2 pr-4 text-right tabular-nums text-ink-soft">{m.p99}{u}</td>
+      <td className="py-2 text-right tabular-nums text-muted">{m.mean}{u}</td>
     </tr>
   );
 }
@@ -58,7 +56,7 @@ export default function PulseResults({ r }: { r: PulseReport }) {
           value={`${r.throughput_tps.toLocaleString()} t/s`}
           sub="aggregate decode"
         />
-        <MetricCard label="Requests / sec" value={`${r.throughput_rps}`} sub={`at concurrency`} />
+        <MetricCard label="Requests / sec" value={`${r.throughput_rps}`} sub="at concurrency" />
         <MetricCard
           label="Dataset"
           value={r.dataset_name}
@@ -72,16 +70,18 @@ export default function PulseResults({ r }: { r: PulseReport }) {
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm">
+        <div className={toolCard}>
           <div className="flex items-center justify-between">
-            <h3 className="font-display text-lg font-semibold">GPU telemetry</h3>
-            <span className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-brand">
-              {t.regime}
-            </span>
+            <h3 className="font-display text-lg font-medium text-ink">GPU telemetry</h3>
+            <span className={toolBadge}>{t.regime}</span>
           </div>
           <div className="mt-4 space-y-3">
             <TelemetryBar label="SM / compute util" pct={t.sm_util_pct} value={`${t.sm_util_pct}%`} />
-            <TelemetryBar label="Memory bandwidth util" pct={t.mem_bw_util_pct} value={`${t.mem_bw_util_pct}%`} />
+            <TelemetryBar
+              label="Memory bandwidth util"
+              pct={t.mem_bw_util_pct}
+              value={`${t.mem_bw_util_pct}%`}
+            />
             <TelemetryBar
               label="HBM used"
               pct={t.mem_util_pct}
@@ -94,26 +94,32 @@ export default function PulseResults({ r }: { r: PulseReport }) {
             />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-3 text-center">
-            <div className="rounded-xl bg-slate-50 p-3">
-              <div className="text-xs uppercase tracking-wide text-slate-400">GPUs</div>
-              <div className="font-display text-xl font-bold text-ink">{t.gpus_needed}</div>
+            <div className="rounded-lg border border-line bg-canvas p-3">
+              <div className="text-xs uppercase tracking-wide text-muted">GPUs</div>
+              <div className="font-display text-xl font-medium tabular-nums text-ink">
+                {t.gpus_needed}
+              </div>
             </div>
-            <div className="rounded-xl bg-slate-50 p-3">
-              <div className="text-xs uppercase tracking-wide text-slate-400">Temp</div>
-              <div className="font-display text-xl font-bold text-ink">{t.temp_c}°C</div>
+            <div className="rounded-lg border border-line bg-canvas p-3">
+              <div className="text-xs uppercase tracking-wide text-muted">Temp</div>
+              <div className="font-display text-xl font-medium tabular-nums text-ink">
+                {t.temp_c}°C
+              </div>
             </div>
-            <div className="rounded-xl bg-slate-50 p-3">
-              <div className="text-xs uppercase tracking-wide text-slate-400">Power</div>
-              <div className="font-display text-xl font-bold text-ink">{t.power_w} W</div>
+            <div className="rounded-lg border border-line bg-canvas p-3">
+              <div className="text-xs uppercase tracking-wide text-muted">Power</div>
+              <div className="font-display text-xl font-medium tabular-nums text-ink">
+                {t.power_w} W
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm">
-          <h3 className="font-display text-lg font-semibold">Latency distribution</h3>
+        <div className={toolCard}>
+          <h3 className="font-display text-lg font-medium text-ink">Latency distribution</h3>
           <table className="mt-3 w-full text-sm">
             <thead>
-              <tr className="text-xs uppercase tracking-wide text-slate-400">
+              <tr className="text-xs uppercase tracking-wide text-muted">
                 <th className="py-1 text-left font-medium">Metric</th>
                 <th className="py-1 text-right font-medium">p50</th>
                 <th className="py-1 text-right font-medium">p90</th>
@@ -128,18 +134,18 @@ export default function PulseResults({ r }: { r: PulseReport }) {
               <PercentileRow name="End-to-end" m={r.e2e_ms} />
             </tbody>
           </table>
-          <p className="mt-3 text-xs text-slate-400">
+          <p className="mt-3 text-xs text-muted">
             TTFT = time to first token · ITL = inter-token latency · TPOT = time per output
             token · E2E = full request latency.
           </p>
         </div>
       </div>
 
-      <details className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-        <summary className="cursor-pointer text-sm font-medium text-slate-600">
+      <details className={`${toolCard} cursor-pointer`}>
+        <summary className="text-sm font-medium text-ink-soft">
           Simulation notes & assumptions
         </summary>
-        <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-slate-500">
+        <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted">
           {r.notes.map((n, i) => (
             <li key={i}>{n}</li>
           ))}

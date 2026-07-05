@@ -1,11 +1,8 @@
 import { useState } from "react";
+import { toolButton, toolCard, toolField, toolLabel } from "@/components/tools/styles";
 import { GPUS, MODELS } from "@/tools/engine/catalog";
 import { datasetList, DATASETS } from "@/tools/pulse/engine/datasets";
 import type { PulseSpec } from "@/tools/types";
-
-const field =
-  "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-brand focus:ring-1 focus:ring-brand";
-const label = "block text-xs font-medium uppercase tracking-wide text-slate-500 mb-1";
 
 interface Props {
   loading: boolean;
@@ -26,8 +23,9 @@ export default function DatasetForm({ loading, onSubmit }: Props) {
 
   const set = (k: keyof PulseSpec, v: string | number) =>
     setSpec((s) => ({ ...s, [k]: v }));
-  const num = (k: keyof PulseSpec) => (e: React.ChangeEvent<HTMLInputElement>) =>
-    set(k, Number(e.target.value));
+  const num =
+    (k: keyof PulseSpec) => (e: React.ChangeEvent<HTMLInputElement>) =>
+      set(k, Number(e.target.value));
 
   const isCustom = spec.dataset === "custom";
   const preset = DATASETS[spec.dataset];
@@ -38,19 +36,19 @@ export default function DatasetForm({ loading, onSubmit }: Props) {
         e.preventDefault();
         onSubmit(spec);
       }}
-      className="rounded-2xl bg-white p-6 ring-1 ring-slate-200 shadow-sm"
+      className={toolCard}
     >
-      <h2 className="font-display text-lg font-semibold">Profile a workload</h2>
-      <p className="mt-1 text-sm text-slate-500">
+      <h2 className="font-display text-lg font-medium text-ink">Profile a workload</h2>
+      <p className="mt-1 text-sm text-muted">
         Pick a dataset and target hardware — Pulse replays the request mix and reports the
         latency profile and GPU telemetry.
       </p>
 
       <div className="mt-5 space-y-4">
         <div>
-          <label className={label}>Dataset</label>
+          <label className={toolLabel}>Dataset</label>
           <select
-            className={field}
+            className={toolField}
             value={spec.dataset}
             onChange={(e) => set("dataset", e.target.value)}
           >
@@ -60,19 +58,21 @@ export default function DatasetForm({ loading, onSubmit }: Props) {
               </option>
             ))}
           </select>
-          {preset && <p className="mt-1 text-xs text-slate-400">{preset.blurb}</p>}
+          {preset && <p className="mt-1 text-xs text-muted">{preset.blurb}</p>}
         </div>
 
         {isCustom && (
           <div>
-            <label className={label}>Your prompts (one per line)</label>
+            <label className={toolLabel}>Your prompts (one per line)</label>
             <textarea
-              className={`${field} h-28 font-mono text-xs`}
-              placeholder={"Summarize my travel receipts from last month\nDraft a reply to the recruiter email\n..."}
+              className={`${toolField} h-28 font-mono text-xs`}
+              placeholder={
+                "Summarize my travel receipts from last month\nDraft a reply to the recruiter email\n..."
+              }
               value={spec.custom_text}
               onChange={(e) => set("custom_text", e.target.value)}
             />
-            <p className="mt-1 text-xs text-slate-400">
+            <p className="mt-1 text-xs text-muted">
               Tokens estimated at ~4 chars/token. Leave empty to synthesize from the chosen
               size below.
             </p>
@@ -81,9 +81,9 @@ export default function DatasetForm({ loading, onSubmit }: Props) {
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className={label}>Model</label>
+            <label className={toolLabel}>Model</label>
             <select
-              className={field}
+              className={toolField}
               value={spec.model_id}
               onChange={(e) => set("model_id", e.target.value)}
             >
@@ -96,9 +96,9 @@ export default function DatasetForm({ loading, onSubmit }: Props) {
             </select>
           </div>
           <div>
-            <label className={label}>GPU</label>
+            <label className={toolLabel}>GPU</label>
             <select
-              className={field}
+              className={toolField}
               value={spec.gpu_id}
               onChange={(e) => set("gpu_id", e.target.value)}
             >
@@ -110,9 +110,9 @@ export default function DatasetForm({ loading, onSubmit }: Props) {
             </select>
           </div>
           <div>
-            <label className={label}>Precision</label>
+            <label className={toolLabel}>Precision</label>
             <select
-              className={field}
+              className={toolField}
               value={spec.dtype}
               onChange={(e) => set("dtype", e.target.value as PulseSpec["dtype"])}
             >
@@ -124,33 +124,33 @@ export default function DatasetForm({ loading, onSubmit }: Props) {
             </select>
           </div>
           <div>
-            <label className={label}>Concurrency</label>
+            <label className={toolLabel}>Concurrency</label>
             <input
               type="number"
               min={1}
-              className={field}
+              className={toolField}
               value={spec.concurrency}
               onChange={num("concurrency")}
             />
           </div>
           {isCustom ? (
             <div>
-              <label className={label}>Output tokens</label>
+              <label className={toolLabel}>Output tokens</label>
               <input
                 type="number"
                 min={1}
-                className={field}
+                className={toolField}
                 value={spec.custom_output_tokens}
                 onChange={num("custom_output_tokens")}
               />
             </div>
           ) : (
             <div>
-              <label className={label}>Requests</label>
+              <label className={toolLabel}>Requests</label>
               <input
                 type="number"
                 min={1}
-                className={field}
+                className={toolField}
                 value={spec.num_requests}
                 onChange={num("num_requests")}
               />
@@ -158,11 +158,11 @@ export default function DatasetForm({ loading, onSubmit }: Props) {
           )}
           {isCustom && (
             <div>
-              <label className={label}>Requests</label>
+              <label className={toolLabel}>Requests</label>
               <input
                 type="number"
                 min={1}
-                className={field}
+                className={toolField}
                 value={spec.num_requests}
                 onChange={num("num_requests")}
               />
@@ -171,11 +171,7 @@ export default function DatasetForm({ loading, onSubmit }: Props) {
         </div>
       </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="mt-6 w-full rounded-lg bg-ink py-2.5 font-medium text-white transition hover:bg-brand disabled:opacity-60"
-      >
+      <button type="submit" disabled={loading} className={`mt-6 ${toolButton}`}>
         {loading ? "Profiling…" : "Run Pulse profile"}
       </button>
     </form>
