@@ -48,7 +48,7 @@ export default function LensApp() {
         </div>
       )}
 
-      <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
+      <div className="grid gap-8 xl:grid-cols-[minmax(280px,360px)_minmax(0,1fr)]">
         {catalog ? (
           <WorkloadForm catalog={catalog} loading={loading} onSubmit={onSubmit} />
         ) : (

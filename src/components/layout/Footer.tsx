@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { site, nav } from "@/lib/constants";
+import { site, footerNav } from "@/lib/constants";
+import { Logo } from "@/components/brand/Logo";
 import { Container } from "./Container";
 
 export function Footer() {
@@ -8,18 +9,17 @@ export function Footer() {
       <Container className="py-16">
         <div className="grid gap-12 md:grid-cols-3">
           <div>
-            <p className="font-display text-lg font-medium text-ink">{site.name}</p>
-            <p className="mt-2 text-sm text-muted">{site.description}</p>
+            <Logo />
+            <p className="mt-3 text-sm text-muted">{site.description}</p>
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-muted">
-              Navigation
-            </p>
+            <p className="text-xs font-medium uppercase tracking-wider text-muted">Navigation</p>
             <ul className="mt-4 space-y-2">
-              {nav.map((item) => (
+              {footerNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
+                    prefetch
                     className="text-sm text-ink-soft transition-colors hover:text-ink"
                   >
                     {item.label}
@@ -29,17 +29,25 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-muted">
-              Connect
-            </p>
+            <p className="text-xs font-medium uppercase tracking-wider text-muted">Connect</p>
             <ul className="mt-4 space-y-2 text-sm text-ink-soft">
               <li>
-                <a href={site.github} target="_blank" rel="noopener noreferrer" className="hover:text-ink">
+                <a
+                  href={site.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-ink"
+                >
                   GitHub
                 </a>
               </li>
               <li>
-                <a href={site.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-ink">
+                <a
+                  href={site.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-ink"
+                >
                   LinkedIn
                 </a>
               </li>

@@ -39,7 +39,7 @@ export default function PulseResults({ r }: { r: PulseReport }) {
   const t = r.telemetry;
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <MetricCard label="TTFT (p50)" value={ms(r.ttft_ms.p50)} sub={`p99 ${ms(r.ttft_ms.p99)}`} />
         <MetricCard label="TPOT" value={`${r.tpot_ms.p50} ms`} sub="per output token" />
         <MetricCard label="ITL (p50)" value={`${r.itl_ms.p50} ms`} sub={`p99 ${r.itl_ms.p99} ms`} />
@@ -50,7 +50,7 @@ export default function PulseResults({ r }: { r: PulseReport }) {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <MetricCard
           label="Output throughput"
           value={`${r.throughput_tps.toLocaleString()} t/s`}

@@ -20,12 +20,16 @@ export default function MetricCard({ label, value, sub, tone = "default" }: Prop
         : "text-ink";
 
   return (
-    <div className={`rounded-lg border bg-white p-5 ${border}`}>
+    <div className={`min-w-0 rounded-lg border bg-white p-4 sm:p-5 ${border}`}>
       <div className="text-xs font-medium uppercase tracking-wide text-muted">{label}</div>
-      <div className={`mt-1 font-display text-2xl font-medium tabular-nums ${accent}`}>
+      <div
+        className={`mt-1.5 break-words font-display text-xl font-medium leading-tight tabular-nums sm:text-2xl ${accent}`}
+      >
         {value}
       </div>
-      {sub && <div className="mt-1 text-sm text-muted">{sub}</div>}
+      {sub && (
+        <div className="mt-1.5 break-words text-xs leading-snug text-muted sm:text-sm">{sub}</div>
+      )}
     </div>
   );
 }

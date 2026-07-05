@@ -62,16 +62,25 @@ export default async function ProductPage({ params }: Props) {
       </div>
 
       {product.appPath && (
-        <div className="mt-10">
-          <Button href={product.appPath}>Launch {product.name.replace("XARIV ", "")}</Button>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Button href={product.appPath}>
+            {product.status === "preview" ? "Try" : "Launch"}{" "}
+            {product.name.replace("XARIV ", "")}
+          </Button>
+          <Button href="/contact?intent=demo" variant="secondary">
+            Book demo
+          </Button>
         </div>
       )}
 
       {!product.appPath && (
         <div className="mt-10 rounded-lg border border-dashed border-line bg-canvas/50 p-12 text-center">
-          <p className="text-sm text-muted">
-            Interactive preview coming soon.
-          </p>
+          <p className="text-sm text-muted">Interactive preview coming soon.</p>
+          <div className="mt-6">
+            <Button href={`/contact?intent=waitlist&product=${product.slug}`}>
+              Join waitlist
+            </Button>
+          </div>
         </div>
       )}
 

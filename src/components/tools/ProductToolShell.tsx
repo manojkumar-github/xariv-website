@@ -23,7 +23,7 @@ export function ProductToolShell({
   const tagline = product?.tagline ?? "Product";
 
   return (
-    <Section narrow className="pt-12 pb-20 md:pt-16 md:pb-28">
+    <Section className="pt-12 pb-20 md:pt-16 md:pb-28">
       <Link href="/products" className="text-sm text-muted transition-colors hover:text-ink">
         ← Products
       </Link>

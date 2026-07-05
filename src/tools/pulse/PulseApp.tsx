@@ -42,7 +42,7 @@ export default function PulseApp() {
         </div>
       )}
 
-      <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
+      <div className="grid gap-8 xl:grid-cols-[minmax(280px,360px)_minmax(0,1fr)]">
         <DatasetForm loading={loading} onSubmit={onSubmit} />
         <div>
           {report ? (
