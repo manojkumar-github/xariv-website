@@ -26,7 +26,8 @@ export const calculators: CalculatorMeta[] = [
   { slug: "ttft", name: "TTFT Estimator", description: "Time to first token from prefill roofline.", tier: 3, relatedProduct: "/pulse" },
   { slug: "continuous-batching", name: "Continuous Batching Simulator", description: "How batch size trades latency for throughput.", tier: 3 },
   { slug: "quantization", name: "Quantization Savings", description: "Compare memory and throughput across precisions.", tier: 3 },
-  { slug: "energy", name: "Energy & Power Calculator", description: "kWh, power cost, and rough CO₂ from GPU utilization.", tier: 3 },
+  { slug: "energy", name: "Energy & Power Calculator", description: "power, power_streaming, energy, co2, carbon, and temperature from GPU utilization.", tier: 3 },
+  { slug: "eco-impact", name: "Eco Impact Rating", description: "Grade your inference deployment on carbon intensity per 1M output tokens.", tier: 3, relatedProduct: "/lens" },
   { slug: "cost-per-user", name: "Inference Cost per User", description: "Infrastructure cost amortized across daily active users.", tier: 3 },
   // Tier 4
   { slug: "readiness", name: "Infrastructure Readiness Score", description: "Quick scorecard for deployment configuration gaps.", tier: 4 },

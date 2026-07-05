@@ -15,6 +15,9 @@ import {
   gpuOptions,
   dtypeOptions,
   peakFlops,
+  computeEcoMetrics,
+  ecoImpactRating,
+  ecoMetricRows,
 } from "@/tools/calculators/math";
 import { DTYPE_BYTES, MBU, MFU } from "@/tools/engine/constants";
 import {
@@ -120,6 +123,14 @@ export function GpuCountCalc({ meta }: { meta: CalculatorMeta }) {
   const perReplica = gpu ? gpusNeededForMemory(w + kv, gpu.memory_gb) : 1;
   const totalGpus = replicas * perReplica;
   const util = tps > 0 ? Math.min(100, (required / (replicas * tps)) * 100) : 0;
+  const eco = gpu
+    ? computeEcoMetrics({
+        gpu,
+        gpuCount: totalGpus,
+        utilPct: util,
+        outputTokensPerDay: qps * output * 86400,
+      })
+    : null;
 
   return (
     <CalculatorShell meta={meta}>
@@ -140,6 +151,13 @@ export function GpuCountCalc({ meta }: { meta: CalculatorMeta }) {
           { label: "GPUs / replica", value: `${perReplica}` },
           { label: "Total GPUs", value: `${totalGpus}` },
           { label: "Est. utilization", value: `${util.toFixed(0)}%` },
+          ...(eco
+            ? [
+                { label: "power", value: `${eco.power} kW` },
+                { label: "co2", value: `${eco.co2} kg CO₂/day` },
+                { label: "carbon", value: `${eco.carbon} kg / 1M tokens` },
+              ]
+            : []),
         ]}
       />
     </CalculatorShell>
@@ -150,8 +168,20 @@ export function CostCalc({ meta }: { meta: CalculatorMeta }) {
   const [gpuId, setGpuId] = useState("h100-sxm");
   const [count, setCount] = useState(64);
   const [hours, setHours] = useState(24);
+  const [util, setUtil] = useState(70);
+  const [outputTps, setOutputTps] = useState(500_000);
 
   const cost = monthlyGpuCost(gpuId, count, hours);
+  const gpu = GPUS[gpuId];
+  const eco = gpu
+    ? computeEcoMetrics({
+        gpu,
+        gpuCount: count,
+        utilPct: util,
+        outputTokensPerDay: outputTps * 86400,
+        hoursPerDay: hours,
+      })
+    : null;
 
   return (
     <CalculatorShell meta={meta}>
@@ -159,6 +189,8 @@ export function CostCalc({ meta }: { meta: CalculatorMeta }) {
         <CalcSelect label="GPU" value={gpuId} onChange={setGpuId} options={gpuOptions()} />
         <CalcNumber label="GPU count" value={count} onChange={setCount} />
         <CalcNumber label="Hours / day" value={hours} onChange={setHours} min={1} />
+        <CalcNumber label="Utilization %" value={util} onChange={setUtil} min={1} />
+        <CalcNumber label="Output t/s (fleet)" value={outputTps} onChange={setOutputTps} min={1} />
       </CalcForm>
       <CalcResults
         rows={[
@@ -166,6 +198,13 @@ export function CostCalc({ meta }: { meta: CalculatorMeta }) {
           { label: "Monthly", value: `$${cost.monthly.toLocaleString()}` },
           { label: "Annual", value: `$${cost.annual.toLocaleString()}` },
           { label: "Rate", value: `$${GPUS[gpuId]?.hourly_usd}/GPU-hr` },
+          ...(eco
+            ? [
+                { label: "power", value: `${eco.power} kW` },
+                { label: "energy", value: `${eco.energy} kWh/day` },
+                { label: "co2", value: `${eco.co2} kg CO₂/day` },
+              ]
+            : []),
         ]}
       />
     </CalculatorShell>
@@ -480,12 +519,19 @@ export function EnergyCalc({ meta }: { meta: CalculatorMeta }) {
   const [util, setUtil] = useState(70);
   const [hours, setHours] = useState(24);
   const [kwhPrice, setKwhPrice] = useState(0.12);
+  const [outputTps, setOutputTps] = useState(500_000);
 
   const gpu = GPUS[gpuId];
-  const kw = gpu ? (count * gpu.tdp_watts * (util / 100)) / 1000 : 0;
-  const kwh = kw * hours;
-  const cost = kwh * kwhPrice;
-  const co2 = kwh * 0.4; // rough kg CO2/kWh grid avg
+  const eco = gpu
+    ? computeEcoMetrics({
+        gpu,
+        gpuCount: count,
+        utilPct: util,
+        outputTokensPerDay: outputTps * 86400,
+        hoursPerDay: hours,
+      })
+    : null;
+  const cost = eco ? eco.energy * kwhPrice : 0;
 
   return (
     <CalculatorShell meta={meta}>
@@ -494,15 +540,61 @@ export function EnergyCalc({ meta }: { meta: CalculatorMeta }) {
         <CalcNumber label="GPU count" value={count} onChange={setCount} />
         <CalcNumber label="Utilization %" value={util} onChange={setUtil} min={1} />
         <CalcNumber label="Hours / day" value={hours} onChange={setHours} />
+        <CalcNumber label="Output t/s (fleet)" value={outputTps} onChange={setOutputTps} min={1} />
         <CalcNumber label="$/kWh" value={kwhPrice} onChange={setKwhPrice} min={0} />
       </CalcForm>
       <CalcResults
-        rows={[
-          { label: "Power draw", value: `${kw.toFixed(1)} kW` },
-          { label: "Daily kWh", value: `${kwh.toFixed(0)}` },
-          { label: "Daily power cost", value: `$${cost.toFixed(0)}` },
-          { label: "CO₂ (est.)", value: `${co2.toFixed(0)} kg/day` },
-        ]}
+        rows={
+          eco
+            ? [
+                ...ecoMetricRows(eco, { rating: true }),
+                { label: "Daily power cost", value: `$${cost.toFixed(0)}` },
+              ]
+            : []
+        }
+      />
+    </CalculatorShell>
+  );
+}
+
+export function EcoImpactCalc({ meta }: { meta: CalculatorMeta }) {
+  const { modelId, setModelId, gpuId, setGpuId, dtype, setDtype } = useModelGpu();
+  const [gpuCount, setGpuCount] = useState(32);
+  const [util, setUtil] = useState(75);
+  const [qps, setQps] = useState(500);
+  const [outputTokens, setOutputTokens] = useState(128);
+
+  const gpu = GPUS[gpuId];
+  const eco = gpu
+    ? computeEcoMetrics({
+        gpu,
+        gpuCount,
+        utilPct: util,
+        outputTokensPerDay: qps * outputTokens * 86400,
+      })
+    : null;
+  const tps = estimateAggregateTps(modelId, gpuId, dtype, 32);
+
+  return (
+    <CalculatorShell meta={meta}>
+      <CalcForm>
+        <CalcSelect label="Model" value={modelId} onChange={setModelId} options={modelOptions()} />
+        <CalcSelect label="GPU" value={gpuId} onChange={setGpuId} options={gpuOptions()} />
+        <CalcSelect label="Precision" value={dtype} onChange={(v) => setDtype(v as Dtype)} options={dtypeOptions} />
+        <CalcNumber label="GPU count" value={gpuCount} onChange={setGpuCount} />
+        <CalcNumber label="Utilization %" value={util} onChange={setUtil} min={1} />
+        <CalcNumber label="Peak QPS" value={qps} onChange={setQps} />
+        <CalcNumber label="Output tokens / request" value={outputTokens} onChange={setOutputTokens} />
+      </CalcForm>
+      <CalcResults
+        rows={
+          eco
+            ? [
+                ...ecoMetricRows(eco, { rating: true }),
+                { label: "Theoretical t/s", value: `${Math.round(tps).toLocaleString()}` },
+              ]
+            : []
+        }
       />
     </CalculatorShell>
   );

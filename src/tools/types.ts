@@ -1,5 +1,14 @@
 // Shared types for Lens and Pulse engines
 
+export interface EcoMetrics {
+  power: number;
+  power_streaming: number;
+  energy: number;
+  co2: number;
+  carbon: number;
+  temperature: number;
+}
+
 export interface GPU {
   id: string;
   name: string;
@@ -63,6 +72,7 @@ export interface DecisionReport {
   monthly_cost_usd: number;
   cost_per_million_requests_usd: number;
   power_kw: number;
+  eco: EcoMetrics;
   bottleneck: { kind: string; detail: string; headroom_pct: number };
   utilization: {
     mem_capacity_pct: number;
@@ -118,6 +128,7 @@ export interface PulseReport {
   throughput_tps: number;
   throughput_rps: number;
   telemetry: PulseTelemetry;
+  eco: EcoMetrics;
   notes: string[];
 }
 

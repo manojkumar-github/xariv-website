@@ -1,4 +1,5 @@
 import MetricCard from "@/tools/lens/components/MetricCard";
+import { EcoMetricsPanel } from "@/components/tools/EcoMetricsPanel";
 import { toolBadge, toolCard } from "@/components/tools/styles";
 import type { MetricSummary, PulseReport } from "@/tools/types";
 
@@ -88,9 +89,9 @@ export default function PulseResults({ r }: { r: PulseReport }) {
               value={`${t.mem_used_gb} / ${t.mem_capacity_gb} GB`}
             />
             <TelemetryBar
-              label="Power draw"
+              label="power_streaming"
               pct={(t.power_w / t.tdp_w) * 100}
-              value={`${t.power_w} / ${t.tdp_w} W`}
+              value={`${(t.power_w / 1000).toFixed(1)} kW`}
             />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-3 text-center">
@@ -101,15 +102,15 @@ export default function PulseResults({ r }: { r: PulseReport }) {
               </div>
             </div>
             <div className="rounded-lg border border-line bg-canvas p-3">
-              <div className="text-xs uppercase tracking-wide text-muted">Temp</div>
+              <div className="text-xs uppercase tracking-wide text-muted">temperature</div>
               <div className="font-display text-xl font-medium tabular-nums text-ink">
-                {t.temp_c}°C
+                {r.eco.temperature}°C
               </div>
             </div>
             <div className="rounded-lg border border-line bg-canvas p-3">
-              <div className="text-xs uppercase tracking-wide text-muted">Power</div>
+              <div className="text-xs uppercase tracking-wide text-muted">power</div>
               <div className="font-display text-xl font-medium tabular-nums text-ink">
-                {t.power_w} W
+                {r.eco.power} kW
               </div>
             </div>
           </div>
@@ -140,6 +141,8 @@ export default function PulseResults({ r }: { r: PulseReport }) {
           </p>
         </div>
       </div>
+
+      <EcoMetricsPanel eco={r.eco} />
 
       <details className={`${toolCard} cursor-pointer`}>
         <summary className="text-sm font-medium text-ink-soft">

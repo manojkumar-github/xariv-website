@@ -5,6 +5,7 @@ import { capacity } from "./capacity";
 import { networkModel } from "./network";
 import { cost, classify } from "./cost";
 import { recommend } from "./recommend";
+import { computeEcoMetrics } from "./eco";
 
 export function runSimulation(spec: WorkloadSpec): DecisionReport {
   const gpu = GPUS[spec.gpu_id];
@@ -41,10 +42,25 @@ export function runSimulation(spec: WorkloadSpec): DecisionReport {
 
   const recs = recommend(bn.kind, meetsSlo, dtype, cap.gpus_per_replica, model.is_moe, costm.monthly_usd);
 
+  const utilPct = Math.max(
+    bn.util_mem_bandwidth,
+    bn.util_compute,
+    bn.util_network,
+    bn.util_mem_capacity * 0.6,
+  );
+  const outputTokensPerDay = spec.qps * spec.output_tokens * 86400;
+  const eco = computeEcoMetrics({
+    gpu,
+    gpuCount: cap.gpus_needed,
+    utilPct,
+    outputTokensPerDay,
+  });
+
   const assumptions = [
     `Memory-bandwidth utilization (MBU) ${Math.round(0.7 * 100)}%, model-FLOPs utilization (MFU) ${Math.round(0.4 * 100)}%.`,
     `All ${model.total_params_b}B weights resident; KV cache approximated with GQA factor 0.25.`,
     `GPU price ${gpu.hourly_usd.toFixed(2)} USD/hr on-demand (configurable); 730 hrs/month.`,
+    `Eco: ${eco.co2} kg CO₂/day at ${eco.power} kW average (${eco.carbon} kg CO₂ / 1M output tokens).`,
     "Estimates are first-order roofline approximations, not a substitute for a live benchmark.",
   ];
 
@@ -59,6 +75,7 @@ export function runSimulation(spec: WorkloadSpec): DecisionReport {
     monthly_cost_usd: costm.monthly_usd,
     cost_per_million_requests_usd: costm.cost_per_million_requests_usd,
     power_kw: costm.power_kw,
+    eco,
     bottleneck: { kind: bn.kind, detail: bn.detail, headroom_pct: bn.headroom_pct },
     utilization: {
       mem_capacity_pct: bn.util_mem_capacity,

@@ -9,6 +9,7 @@ import {
   FIXED_TTFT_MS,
 } from "@/tools/engine/constants";
 import { DATASETS } from "./datasets";
+import { computeEcoMetrics, loadFactor, temperatureC } from "@/tools/engine/eco";
 import type {
   MetricSummary,
   PulseReport,
@@ -157,14 +158,23 @@ export function runPulse(spec: PulseSpec): PulseReport {
     ? Math.min(100, MBU * 100 + 8)
     : Math.min(100, (tStepMem / tStepCompute) * 100);
 
-  const loadFactor = Math.max(smUtil, memBwUtil) / 100;
-  const powerW = gpu.tdp_watts * (0.32 + 0.68 * loadFactor);
-  const tempC = 34 + 46 * (powerW / gpu.tdp_watts);
+  const lf = loadFactor(Math.max(smUtil, memBwUtil));
+  const powerW = gpu.tdp_watts * lf;
+  const tempC = temperatureC(powerW * gpusNeeded, gpu.tdp_watts * gpusNeeded);
+
+  const outputTokensPerDay = aggregateTps * 86400;
+  const eco = computeEcoMetrics({
+    gpu,
+    gpuCount: gpusNeeded,
+    utilPct: Math.max(smUtil, memBwUtil),
+    outputTokensPerDay,
+  });
 
   const notes: string[] = [
     `Simulated ${samples.toLocaleString()} requests at concurrency ${batch} on ${gpu.name} (${dtype.toUpperCase()}).`,
     `Decode is ${memoryBound ? "memory-bandwidth" : "compute"}-bound at this batch — TPOT ≈ ${(tpotBaseMs).toFixed(2)} ms/token.`,
     `KV cache ≈ ${kvGb.toFixed(1)} GB; weights ≈ ${weightsGb.toFixed(1)} GB; fits in ${gpusNeeded} × ${gpu.name}.`,
+    `Eco: power_streaming ${eco.power_streaming} kW · ${eco.co2} kg CO₂/day · carbon ${eco.carbon} kg/1M tokens.`,
     "First-order roofline estimates (MBU 70% / MFU 40%), not a live benchmark — deterministic per input.",
   ];
 
@@ -189,9 +199,10 @@ export function runPulse(spec: PulseSpec): PulseReport {
       mem_bw_util_pct: Math.round(memBwUtil * 10) / 10,
       power_w: Math.round(powerW * gpusNeeded),
       tdp_w: Math.round(gpu.tdp_watts * gpusNeeded),
-      temp_c: Math.round(tempC),
+      temp_c: eco.temperature,
       gpus_needed: gpusNeeded,
     },
+    eco,
     notes,
   };
 }

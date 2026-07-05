@@ -1,4 +1,5 @@
 import type { DecisionReport } from "@/tools/types";
+import { EcoMetricsPanel } from "@/components/tools/EcoMetricsPanel";
 import { toolBadge, toolCard } from "@/components/tools/styles";
 import MetricCard from "./MetricCard";
 
@@ -45,7 +46,7 @@ export default function ReportView({ r }: { r: DecisionReport }) {
         <MetricCard
           label="Monthly cost"
           value={usd(r.monthly_cost_usd)}
-          sub={`$${r.cost_per_million_requests_usd}/1M req · ${r.power_kw} kW`}
+          sub={`$${r.cost_per_million_requests_usd}/1M req · ${r.eco.power} kW`}
         />
         <MetricCard
           label="TTFT"
@@ -87,6 +88,8 @@ export default function ReportView({ r }: { r: DecisionReport }) {
           </ul>
         </div>
       </div>
+
+      <EcoMetricsPanel eco={r.eco} />
 
       <details className={`${toolCard} cursor-pointer`}>
         <summary className="text-sm font-medium text-ink-soft">Modeling assumptions</summary>

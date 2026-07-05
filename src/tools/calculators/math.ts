@@ -99,3 +99,10 @@ export const dtypeOptions: { id: Dtype; label: string }[] = [
   { id: "int8", label: "INT8" },
   { id: "int4", label: "INT4" },
 ];
+
+export {
+  computeEcoMetrics,
+  ecoImpactRating,
+  ecoMetricRows,
+  GRID_CO2_KG_PER_KWH,
+} from "@/tools/engine/eco";
