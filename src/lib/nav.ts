@@ -5,6 +5,7 @@ export type NavItem = {
 };
 
 export const nav: NavItem[] = [
+  { label: "Workflow", href: "/workflow" },
   { label: "Products", href: "/products" },
   { label: "Lens", href: "/lens", live: true },
   { label: "Pulse", href: "/pulse", live: true },
@@ -16,6 +17,7 @@ export const nav: NavItem[] = [
 
 export const footerNav: NavItem[] = [
   { label: "Home", href: "/" },
+  { label: "Workflow", href: "/workflow" },
   { label: "Products", href: "/products" },
   { label: "Lens", href: "/lens" },
   { label: "Pulse", href: "/pulse" },

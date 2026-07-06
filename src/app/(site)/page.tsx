@@ -4,9 +4,11 @@ import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
 import { ArticleCard } from "@/components/ui/ArticleCard";
 import { HeroDiagram } from "@/components/brand/HeroDiagram";
+import { WorkflowPills } from "@/components/workflow/WorkflowSteps";
 import { XarivMark } from "@/components/brand/Logo";
 import { products } from "@/data/products";
 import { architectureStudies } from "@/data/architecture-studies";
+import { workflowSteps, workflowTagline } from "@/data/workflow";
 import {
   audiences,
   caseStudy,
@@ -18,7 +20,6 @@ import { site } from "@/lib/constants";
 
 export default function HomePage() {
   const featuredStudies = architectureStudies.slice(0, 3);
-  const liveProducts = products.filter((p) => p.appPath);
   const plannedProducts = products.filter((p) => !p.appPath && p.status === "planned");
 
   return (
@@ -31,16 +32,19 @@ export default function HomePage() {
               AI Infrastructure Intelligence
             </p>
             <h1 className="mt-6 font-display text-4xl font-medium leading-[1.1] tracking-tight text-ink md:text-5xl">
-              Infrastructure Intelligence for the Age of AI
+              Plan inference infrastructure before you provision a GPU
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-ink-soft">
-              {site.description} Built for researchers, data scientists, ML engineers,
-              startups, and enterprise teams planning GPU infrastructure.
+              {workflowTagline} Estimate with calculators, plan with Lens, validate with
+              Pulse, and justify the decision to engineering and FinOps.
             </p>
+            <div className="mt-6">
+              <WorkflowPills steps={workflowSteps} />
+            </div>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/lens">Try Lens — free</Button>
-              <Button href="/pulse" variant="secondary">
-                Run Pulse
+              <Button href="/workflow">Start the workflow</Button>
+              <Button href="/tools" variant="secondary">
+                Step 0 — Estimate
               </Button>
               <Button href="/contact?intent=demo" variant="secondary">
                 Book demo
@@ -53,7 +57,81 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* Outcomes + logos */}
+      {/* Workflow — core narrative */}
+      <Section className="border-t border-line bg-surface/50">
+        <div className="mb-10 max-w-2xl">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted">
+            Enterprise workflow
+          </p>
+          <h2 className="mt-3 font-display text-2xl font-medium text-ink md:text-3xl">
+            Estimate → Plan → Validate → Justify
+          </h2>
+          <p className="mt-3 text-ink-soft">
+            One continuous path from a 30-second calculator check to a procurement-ready
+            infrastructure decision. Each step builds on the last.
+          </p>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {workflowSteps.map((s) => (
+            <Card key={s.id} href={s.href} className="flex flex-col">
+              <p className="text-xs font-medium uppercase tracking-wider text-muted">
+                Step {s.step} · {s.phase}
+              </p>
+              <h3 className="mt-2 font-display text-lg font-medium text-ink">{s.title}</h3>
+              <p className="mt-2 flex-1 text-sm text-muted">{s.question}</p>
+              <p className="mt-3 text-xs text-muted">{s.duration}</p>
+              <span className="mt-4 text-sm font-medium text-accent">{s.tool} →</span>
+            </Card>
+          ))}
+        </div>
+        <Link
+          href="/workflow"
+          className="mt-8 inline-block text-sm font-medium text-accent hover:underline"
+        >
+          View guided workflow →
+        </Link>
+      </Section>
+
+      {/* Case study — workflow in action */}
+      <Section>
+        <p className="text-xs font-medium uppercase tracking-wider text-muted">
+          Workflow in action
+        </p>
+        <h2 className="mt-3 font-display text-2xl font-medium text-ink">
+          48 GPUs → 31 GPUs
+        </h2>
+        <div className="mt-8 grid gap-6 md:grid-cols-4">
+          <div className="rounded-lg border border-line bg-surface p-5">
+            <p className="text-xs font-medium uppercase text-muted">0 · Estimate</p>
+            <p className="mt-2 text-sm text-ink-soft">
+              Calculators confirmed memory ballpark for 32B + 2K context.
+            </p>
+          </div>
+          <div className="rounded-lg border border-line bg-surface p-5">
+            <p className="text-xs font-medium uppercase text-muted">1 · Plan</p>
+            <p className="mt-2 text-sm text-ink-soft">
+              <span className="font-medium text-ink">{caseStudy.customer}.</span>{" "}
+              {caseStudy.problem}
+            </p>
+          </div>
+          <div className="rounded-lg border border-line bg-surface p-5">
+            <p className="text-xs font-medium uppercase text-muted">2 · Validate</p>
+            <p className="mt-2 text-sm text-ink-soft">{caseStudy.solution}</p>
+          </div>
+          <div className="rounded-lg border border-accent/30 bg-surface p-5">
+            <p className="text-xs font-medium uppercase text-accent">3 · Justify</p>
+            <p className="mt-2 text-sm text-ink-soft">{caseStudy.result}</p>
+          </div>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Button href="/workflow">Walk through this example</Button>
+          <Button href="/lens" variant="secondary">
+            Try Lens
+          </Button>
+        </div>
+      </Section>
+
+      {/* Outcomes + social proof */}
       <Section className="border-t border-line bg-surface/50">
         <p className="text-xs font-medium uppercase tracking-wider text-muted">
           Trusted by infrastructure teams
@@ -83,14 +161,14 @@ export default function HomePage() {
         </blockquote>
       </Section>
 
-      {/* Who it's for */}
+      {/* Who it's for — mapped to workflow steps */}
       <Section>
         <h2 className="font-display text-2xl font-medium text-ink md:text-3xl">
-          Built for every stage of AI infrastructure
+          Enter at the step that matches your role
         </h2>
         <p className="mt-3 max-w-xl text-ink-soft">
-          Whether you are prototyping in a lab or operating a multi-region GPU fleet, XARIV
-          answers the same question first: will this workload actually work on this hardware?
+          Researchers, ML engineers, platform leads, and FinOps all use the same workflow —
+          they just start at different steps.
         </p>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {audiences.map((a) => (
@@ -103,67 +181,15 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* Case study */}
-      <Section className="border-t border-line bg-surface/50">
-        <p className="text-xs font-medium uppercase tracking-wider text-muted">
-          Customer story
-        </p>
-        <h2 className="mt-3 font-display text-2xl font-medium text-ink">
-          Problem → Solution → Result
-        </h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-3">
-          <div className="rounded-lg border border-line bg-surface p-6">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted">Problem</p>
-            <p className="mt-3 text-sm leading-relaxed text-ink-soft">
-              <span className="font-medium text-ink">{caseStudy.customer}.</span>{" "}
-              {caseStudy.problem}
-            </p>
-          </div>
-          <div className="rounded-lg border border-line bg-surface p-6">
-            <p className="text-xs font-medium uppercase tracking-wider text-muted">Solution</p>
-            <p className="mt-3 text-sm leading-relaxed text-ink-soft">{caseStudy.solution}</p>
-          </div>
-          <div className="rounded-lg border border-line border-accent/30 bg-surface p-6">
-            <p className="text-xs font-medium uppercase tracking-wider text-accent">Result</p>
-            <p className="mt-3 text-sm leading-relaxed text-ink-soft">{caseStudy.result}</p>
-          </div>
-        </div>
-        <div className="mt-8">
-          <Button href="/lens">Reproduce this analysis in Lens</Button>
-        </div>
-      </Section>
-
-      {/* Products */}
-      <Section>
-        <div className="mb-10">
-          <h2 className="font-display text-2xl font-medium text-ink md:text-3xl">Products</h2>
-          <p className="mt-3 max-w-lg text-ink-soft">
-            Live tools for prediction and profiling. Roadmap products for knowledge graphs,
-            capacity planning, and simulation.
+      {/* Roadmap products — de-emphasized */}
+      {plannedProducts.length > 0 && (
+        <Section className="border-t border-line bg-surface/50">
+          <h2 className="font-display text-xl font-medium text-ink">Coming next</h2>
+          <p className="mt-2 max-w-lg text-sm text-muted">
+            Atlas, Oracle, and Forge extend the workflow with production calibration,
+            capacity planning, and infrastructure simulation.
           </p>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2">
-          {liveProducts.map((product) => (
-            <Card key={product.slug} href={product.appPath!}>
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted">
-                    {product.tagline}
-                  </p>
-                  <h3 className="mt-2 font-display text-xl font-medium text-ink">
-                    {product.name}
-                  </h3>
-                </div>
-                <span className="shrink-0 rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
-                  Live
-                </span>
-              </div>
-              <p className="mt-4 text-sm leading-relaxed text-muted">{product.description}</p>
-            </Card>
-          ))}
-        </div>
-        {plannedProducts.length > 0 && (
-          <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {plannedProducts.map((product) => (
               <div
                 key={product.slug}
@@ -177,19 +203,13 @@ export default function HomePage() {
                   href={`/contact?intent=waitlist&product=${product.slug}`}
                   className="shrink-0 text-sm font-medium text-accent hover:underline"
                 >
-                  Join waitlist
+                  Waitlist
                 </Link>
               </div>
             ))}
           </div>
-        )}
-        <Link
-          href="/products"
-          className="mt-8 inline-block text-sm font-medium text-accent hover:underline"
-        >
-          View all products →
-        </Link>
-      </Section>
+        </Section>
+      )}
 
       {/* Architecture Studies */}
       <Section className="border-t border-line">
@@ -198,8 +218,7 @@ export default function HomePage() {
             Architecture Studies
           </h2>
           <p className="mt-3 max-w-lg text-ink-soft">
-            Long-form engineering analysis — reasoning from first principles about the
-            systems that run large-scale AI.
+            Deep engineering analysis that informs the Plan and Validate steps.
           </p>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
@@ -227,16 +246,17 @@ export default function HomePage() {
       <Section className="border-t border-line bg-surface/50">
         <div className="max-w-2xl">
           <h2 className="font-display text-2xl font-medium text-ink">
-            Start with a free prediction
+            Start at Step 0 — Estimate
           </h2>
           <p className="mt-4 text-ink-soft leading-relaxed">
-            No account required. Describe your workload in Lens, profile real traffic in
-            Pulse, or run quick estimates in our infrastructure calculators.
+            Free calculators take under 30 seconds. When you are ready, continue through
+            Plan, Validate, and Justify — no account required until you need a decision
+            report.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="/lens">Try Lens</Button>
-            <Button href="/contact?intent=demo" variant="secondary">
-              Book demo
+            <Button href="/tools">Run calculators</Button>
+            <Button href="/workflow" variant="secondary">
+              Guided workflow
             </Button>
           </div>
         </div>
