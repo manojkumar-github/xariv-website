@@ -3,136 +3,166 @@ import Link from "next/link";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { PlatformDiagram } from "@/components/brand/PlatformDiagram";
+import { CapabilityGrid } from "@/components/platform/CapabilityGrid";
+import { PersonaPipeline } from "@/components/platform/PersonaPipeline";
+import { FragmentedComparison } from "@/components/platform/FragmentedComparison";
+import { V1ExperienceFlow } from "@/components/platform/V1ExperienceFlow";
 import { WorkflowSteps } from "@/components/workflow/WorkflowSteps";
 import {
-  workflowSteps,
-  workflowTagline,
-  workflowRoles,
-} from "@/data/workflow";
+  platformPositioning,
+  platformCapabilities,
+  enterpriseLifecycle,
+  v1Experience,
+} from "@/data/platform";
+import { workflowSteps, workflowRoles } from "@/data/workflow";
 import { caseStudy } from "@/data/social-proof";
 
 export const metadata: Metadata = {
   title: "Workflow",
   description:
-    "XARIV enterprise workflow — Estimate, Plan, Validate, and Justify AI infrastructure before GPU procurement.",
+    "XARIV platform workflow — define, benchmark, analyze, and decide on AI infrastructure in under 10 minutes.",
 };
 
 export default function WorkflowPage() {
   return (
     <Section className="pt-16">
-      <Link href="/docs" className="text-sm text-muted hover:text-ink">
-        ← Docs
-      </Link>
-
-      <p className="mt-8 text-sm font-medium uppercase tracking-widest text-muted">
-        Enterprise workflow
+      <p className="text-sm font-medium uppercase tracking-widest text-muted">
+        {platformPositioning.category}
       </p>
       <h1 className="mt-4 font-display text-3xl font-medium text-ink md:text-4xl">
-        Estimate → Plan → Validate → Justify
+        Platform workflow
       </h1>
-      <p className="mt-4 max-w-2xl text-lg text-ink-soft">{workflowTagline}</p>
-      <p className="mt-3 max-w-2xl text-sm text-muted">
-        One continuous decision chain from quick calculator checks to a procurement-ready
-        infrastructure report. No account required for steps 0–2.
-      </p>
+      <p className="mt-4 max-w-2xl text-lg text-ink-soft">{platformPositioning.subhead}</p>
 
       <div className="mt-8 flex flex-wrap gap-3">
-        <Button href="/tools">Start — Estimate</Button>
-        <Button href="/lens" variant="secondary">
-          Skip to Plan
+        <Button href="/lens">Define workload</Button>
+        <Button href="/tools" variant="secondary">
+          Quick calculators
         </Button>
       </div>
 
-      {/* Guided steps */}
-      <div className="mt-16 rounded-lg border border-line bg-surface p-6 md:p-10">
-        <h2 className="font-display text-xl font-medium text-ink">Guided path</h2>
+      <div className="mt-12 rounded-lg border border-line bg-surface p-3">
+        <PlatformDiagram className="h-auto w-full" />
+      </div>
+
+      {/* 10-min experience */}
+      <div className="mt-16">
+        <h2 className="font-display text-xl font-medium text-ink">
+          Complete in under 10 minutes
+        </h2>
         <p className="mt-2 text-sm text-muted">
-          Follow each step in order, or enter at the stage that matches your role.
+          The v1 experience every engineer can finish today — no account required.
+        </p>
+        <div className="mt-8 grid gap-8 lg:grid-cols-2">
+          <V1ExperienceFlow />
+          <div className="space-y-3">
+            {v1Experience.map((s) => (
+              <div
+                key={s.step}
+                className="flex items-center justify-between rounded-lg border border-line bg-canvas px-4 py-3 text-sm"
+              >
+                <span className="text-ink-soft">
+                  <span className="font-medium text-ink">{s.step}.</span> {s.title}
+                </span>
+                <span className="text-xs text-muted">{s.duration}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Full guided path */}
+      <div className="mt-16 rounded-lg border border-line bg-surface p-6 md:p-10">
+        <h2 className="font-display text-xl font-medium text-ink">Detailed guided path</h2>
+        <p className="mt-2 text-sm text-muted">
+          Includes optional calculators (step 0) before the core platform workflow.
         </p>
         <div className="mt-10">
           <WorkflowSteps steps={workflowSteps} />
         </div>
       </div>
 
-      {/* Example walkthrough */}
-      <div className="mt-16">
-        <p className="text-xs font-medium uppercase tracking-wider text-muted">
-          Example walkthrough
+      {/* Unified report anchor */}
+      <div id="report" className="mt-16 rounded-lg border border-accent/30 bg-surface p-6 md:p-8">
+        <p className="text-xs font-medium uppercase tracking-wider text-accent">
+          Step 3 · Analyze
         </p>
-        <h2 className="mt-3 font-display text-2xl font-medium text-ink">
-          48 GPUs → 31 GPUs
+        <h2 className="mt-2 font-display text-xl font-medium text-ink">
+          Unified performance report
         </h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-4">
-          <Card className="flex flex-col">
-            <p className="text-xs font-medium uppercase text-muted">0 · Estimate</p>
-            <p className="mt-2 flex-1 text-sm text-ink-soft">
-              GPU memory calculator showed 32B model + 2K context needs ~24 GB/GPU at FP8.
-            </p>
-            <Link href="/tools/gpu-memory" className="mt-4 text-sm text-accent hover:underline">
-              GPU memory calc →
-            </Link>
-          </Card>
-          <Card className="flex flex-col">
-            <p className="text-xs font-medium uppercase text-muted">1 · Plan</p>
-            <p className="mt-2 flex-1 text-sm text-ink-soft">
-              Lens predicted memory-bandwidth bottleneck — 28 GPUs minimum for 1K QPS.
-            </p>
-            <Link href="/lens" className="mt-4 text-sm text-accent hover:underline">
-              Try Lens →
-            </Link>
-          </Card>
-          <Card className="flex flex-col">
-            <p className="text-xs font-medium uppercase text-muted">2 · Validate</p>
-            <p className="mt-2 flex-1 text-sm text-ink-soft">
-              Pulse replayed ShareGPT — p99 412ms at 31 GPUs with tensor parallelism.
-            </p>
-            <Link href="/pulse" className="mt-4 text-sm text-accent hover:underline">
-              Run Pulse →
-            </Link>
-          </Card>
-          <div id="justify">
-            <Card className="flex h-full flex-col border-accent/30">
-              <p className="text-xs font-medium uppercase text-accent">3 · Justify</p>
-              <p className="mt-2 flex-1 text-sm text-ink-soft">{caseStudy.result}</p>
-              <Link
-                href="/contact?intent=report"
-                className="mt-4 text-sm text-accent hover:underline"
-              >
-                Get decision report →
-              </Link>
-            </Card>
-          </div>
+        <p className="mt-3 max-w-2xl text-sm text-ink-soft">
+          Lens provides sizing, cost, bottleneck classification, and ranked recommendations.
+          Pulse adds latency percentiles and GPU telemetry. Together they form the evidence
+          layer for your architecture decision — the report your team approves before
+          procurement.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button href="/lens">Open Lens report</Button>
+          <Button href="/pulse" variant="secondary">
+            Open Pulse profile
+          </Button>
         </div>
       </div>
 
-      {/* Roles */}
-      <div className="mt-16 border-t border-line pt-16">
-        <h2 className="font-display text-xl font-medium text-ink">Enter by role</h2>
-        <p className="mt-2 text-sm text-muted">
-          Different stakeholders join the same workflow at different steps.
-        </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          {workflowRoles.map((r) => (
-            <Card key={r.role} href={r.href}>
-              <p className="text-xs font-medium uppercase tracking-wider text-muted">
-                Start at {r.entry}
+      {/* Example */}
+      <div className="mt-16">
+        <h2 className="font-display text-xl font-medium text-ink">Example: 48 → 31 GPUs</h2>
+        <p className="mt-2 text-sm text-ink-soft">{caseStudy.result}</p>
+        <div className="mt-8 grid gap-4 md:grid-cols-5">
+          {workflowSteps.map((s) => (
+            <Card key={s.id} href={s.href} className="flex flex-col">
+              <p className="text-xs font-medium uppercase text-muted">
+                {s.step} · {s.phase}
               </p>
-              <h3 className="mt-2 font-medium text-ink">{r.role}</h3>
-              <p className="mt-1 text-sm text-muted">{r.focus}</p>
+              <p className="mt-2 flex-1 text-sm text-ink-soft">{s.question}</p>
             </Card>
           ))}
         </div>
       </div>
 
-      <div className="mt-16 rounded-lg border border-line bg-canvas p-8">
-        <h2 className="font-display text-lg font-medium text-ink">What comes next</h2>
-        <p className="mt-2 text-sm text-ink-soft">
-          Atlas (knowledge graph), Oracle (capacity planning), and Forge (infrastructure
-          simulation) extend this workflow with production calibration and growth scenarios.
-        </p>
-        <Link href="/products" className="mt-4 inline-block text-sm text-accent hover:underline">
-          View product roadmap →
-        </Link>
+      {/* Personas */}
+      <div className="mt-16 border-t border-line pt-16">
+        <h2 className="font-display text-xl font-medium text-ink">Cross-functional entry points</h2>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {workflowRoles.map((r) => (
+            <Card key={r.role} href={r.href}>
+              <p className="text-xs font-medium uppercase text-muted">Start at {r.entry}</p>
+              <h3 className="mt-2 font-medium text-ink">{r.role}</h3>
+              <p className="mt-1 text-sm text-muted">{r.focus}</p>
+            </Card>
+          ))}
+        </div>
+        <div className="mt-10">
+          <PersonaPipeline />
+        </div>
+      </div>
+
+      {/* Lifecycle + capabilities */}
+      <div className="mt-16 grid gap-8 lg:grid-cols-2">
+        <div>
+          <h2 className="font-display text-lg font-medium text-ink">Enterprise lifecycle</h2>
+          <ul className="mt-4 space-y-3">
+            {enterpriseLifecycle.map((p) => (
+              <li key={p.phase} className="flex items-center justify-between text-sm">
+                <span className="text-ink-soft">{p.phase}</span>
+                <Link href={p.href} className="text-accent hover:underline">
+                  {p.module}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h2 className="font-display text-lg font-medium text-ink">Platform capabilities</h2>
+          <div className="mt-4">
+            <CapabilityGrid capabilities={platformCapabilities} />
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-16">
+        <FragmentedComparison />
       </div>
     </Section>
   );

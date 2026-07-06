@@ -13,8 +13,8 @@ interface ProductToolShellProps {
 }
 
 const stepByProduct = {
-  lens: workflowSteps[1],
-  pulse: workflowSteps[2],
+  lens: workflowSteps.find((s) => s.id === "define") ?? workflowSteps[1],
+  pulse: workflowSteps.find((s) => s.id === "benchmark") ?? workflowSteps[2],
 } as const;
 
 export function ProductToolShell({
@@ -63,19 +63,19 @@ export function ProductToolShell({
         {productSlug === "lens" ? (
           <>
             <Link href="/tools" className="text-accent hover:underline">
-              ← Step 0 · Calculators
+              ← Optional · Calculators
             </Link>
             <Link href="/pulse" className="text-accent hover:underline">
-              Continue to Validate (Pulse) →
+              Continue to Benchmark (Pulse) →
             </Link>
           </>
         ) : (
           <>
             <Link href="/lens" className="text-accent hover:underline">
-              ← Step 1 · Plan (Lens)
+              ← Define workload (Lens)
             </Link>
             <Link href="/contact?intent=report" className="text-accent hover:underline">
-              Continue to Justify →
+              Export decision report →
             </Link>
           </>
         )}

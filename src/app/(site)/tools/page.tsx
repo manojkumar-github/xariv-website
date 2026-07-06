@@ -9,7 +9,7 @@ import { workflowSteps } from "@/data/workflow";
 export const metadata: Metadata = {
   title: "Tools",
   description:
-    "Step 0 — XARIV infrastructure calculators. Quick estimates for KV cache, GPU memory, cost, throughput, and eco impact.",
+    "Optional step 0 — quick infrastructure calculators before the XARIV platform workflow.",
 };
 
 const tiers = [1, 2, 3, 4] as CalculatorTier[];
@@ -19,14 +19,14 @@ export default function ToolsPage() {
   return (
     <Section className="pt-16">
       <Link href="/workflow" className="text-sm text-muted hover:text-ink">
-        ← Workflow
+        ← Platform workflow
       </Link>
 
-      <p className="mt-8 text-xs font-medium uppercase tracking-wider text-accent">
-        Step {estimateStep.step} · {estimateStep.phase}
+      <p className="mt-8 text-xs font-medium uppercase tracking-wider text-muted">
+        Optional · Step {estimateStep.step} · {estimateStep.phase}
       </p>
       <h1 className="mt-2 font-display text-3xl font-medium text-ink md:text-4xl">
-        Infrastructure calculators
+        Quick calculators
       </h1>
       <p className="mt-4 max-w-2xl text-ink-soft">{estimateStep.description}</p>
 
@@ -41,26 +41,26 @@ export default function ToolsPage() {
         ))}
       </div>
 
+      <div className="mt-8 rounded-lg border border-line bg-surface p-5">
+        <p className="text-sm text-ink-soft">
+          <span className="font-medium text-ink">These are optional.</span> The platform
+          workflow starts when you{" "}
+          <Link href="/lens" className="text-accent hover:underline">
+            define a workload in Lens
+          </Link>
+          , benchmark in{" "}
+          <Link href="/pulse" className="text-accent hover:underline">
+            Pulse
+          </Link>
+          , and export a decision report. Calculators are for 30-second ballpark checks.
+        </p>
+      </div>
+
       <div className="mt-8 flex flex-wrap gap-3">
-        <Button href="/lens">Continue to Plan (Lens) →</Button>
+        <Button href="/lens">Start platform workflow →</Button>
         <Button href="/workflow" variant="secondary">
           View full workflow
         </Button>
-      </div>
-
-      <div className="mt-12 rounded-lg border border-line bg-surface p-5">
-        <p className="text-sm text-ink-soft">
-          <span className="font-medium text-ink">What&apos;s next?</span> After a quick
-          estimate, continue to{" "}
-          <Link href="/lens" className="text-accent hover:underline">
-            Lens
-          </Link>{" "}
-          to predict GPU sizing and bottlenecks, then{" "}
-          <Link href="/pulse" className="text-accent hover:underline">
-            Pulse
-          </Link>{" "}
-          to validate latency on real traffic.
-        </p>
       </div>
 
       {tiers.map((tier) => {

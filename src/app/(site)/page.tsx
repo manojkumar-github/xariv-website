@@ -3,14 +3,21 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
 import { ArticleCard } from "@/components/ui/ArticleCard";
-import { HeroDiagram } from "@/components/brand/HeroDiagram";
-import { WorkflowPills } from "@/components/workflow/WorkflowSteps";
+import { PlatformDiagram } from "@/components/brand/PlatformDiagram";
+import { CapabilityGrid } from "@/components/platform/CapabilityGrid";
+import { PersonaPipeline } from "@/components/platform/PersonaPipeline";
+import { FragmentedComparison } from "@/components/platform/FragmentedComparison";
+import { V1ExperienceFlow } from "@/components/platform/V1ExperienceFlow";
 import { XarivMark } from "@/components/brand/Logo";
-import { products } from "@/data/products";
 import { architectureStudies } from "@/data/architecture-studies";
-import { workflowSteps, workflowTagline } from "@/data/workflow";
 import {
-  audiences,
+  platformPositioning,
+  customerProblems,
+  platformCapabilities,
+  enterpriseLifecycle,
+} from "@/data/platform";
+import { workflowSteps } from "@/data/workflow";
+import {
   caseStudy,
   customerLogos,
   outcomes,
@@ -20,109 +27,170 @@ import { site } from "@/lib/constants";
 
 export default function HomePage() {
   const featuredStudies = architectureStudies.slice(0, 3);
-  const plannedProducts = products.filter((p) => !p.appPath && p.status === "planned");
 
   return (
     <>
-      {/* Hero */}
+      {/* Hero — problem-first, platform positioning */}
       <Section className="animate-fade-in pt-20 md:pt-28">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
             <p className="text-sm font-medium uppercase tracking-widest text-muted">
-              AI Infrastructure Intelligence
+              {platformPositioning.category}
             </p>
             <h1 className="mt-6 font-display text-4xl font-medium leading-[1.1] tracking-tight text-ink md:text-5xl">
-              Plan inference infrastructure before you provision a GPU
+              {platformPositioning.headline}
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-ink-soft">
-              {workflowTagline} Estimate with calculators, plan with Lens, validate with
-              Pulse, and justify the decision to engineering and FinOps.
+              {platformPositioning.subhead}
             </p>
-            <div className="mt-6">
-              <WorkflowPills steps={workflowSteps} />
-            </div>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/workflow">Start the workflow</Button>
-              <Button href="/tools" variant="secondary">
-                Step 0 — Estimate
-              </Button>
-              <Button href="/contact?intent=demo" variant="secondary">
-                Book demo
+              <Button href="/workflow">Start 10-minute workflow</Button>
+              <Button href="/lens" variant="secondary">
+                Define a workload
               </Button>
             </div>
+            <p className="mt-4 text-xs text-muted">No account required · Free to start</p>
           </div>
           <div className="rounded-lg border border-line bg-surface p-3 shadow-sm">
-            <HeroDiagram className="h-auto w-full" />
+            <PlatformDiagram className="h-auto w-full" />
           </div>
         </div>
       </Section>
 
-      {/* Workflow — core narrative */}
+      {/* Customer problems */}
       <Section className="border-t border-line bg-surface/50">
+        <p className="text-xs font-medium uppercase tracking-wider text-muted">
+          Sound familiar?
+        </p>
+        <h2 className="mt-3 font-display text-2xl font-medium text-ink md:text-3xl">
+          Engineers don&apos;t wake up needing a KV cache calculator
+        </h2>
+        <div className="mt-10 grid gap-4 md:grid-cols-3">
+          {customerProblems.map((p) => (
+            <div key={p.quote} className="rounded-lg border border-line bg-surface p-6">
+              <p className="font-display text-lg font-medium leading-snug text-ink">
+                &ldquo;{p.quote}&rdquo;
+              </p>
+              <p className="mt-3 text-sm text-muted">{p.detail}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Platform capabilities */}
+      <Section>
         <div className="mb-10 max-w-2xl">
           <p className="text-xs font-medium uppercase tracking-wider text-muted">
-            Enterprise workflow
+            One platform · Five capabilities
           </p>
           <h2 className="mt-3 font-display text-2xl font-medium text-ink md:text-3xl">
-            Estimate → Plan → Validate → Justify
+            {platformPositioning.oneLiner}
           </h2>
           <p className="mt-3 text-ink-soft">
-            One continuous path from a 30-second calculator check to a procurement-ready
-            infrastructure decision. Each step builds on the last.
+            Lens, Pulse, Atlas, Oracle, and Forge are modules inside one engineering
+            control plane — not five unrelated products.
           </p>
         </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {workflowSteps.map((s) => (
-            <Card key={s.id} href={s.href} className="flex flex-col">
-              <p className="text-xs font-medium uppercase tracking-wider text-muted">
-                Step {s.step} · {s.phase}
-              </p>
-              <h3 className="mt-2 font-display text-lg font-medium text-ink">{s.title}</h3>
-              <p className="mt-2 flex-1 text-sm text-muted">{s.question}</p>
-              <p className="mt-3 text-xs text-muted">{s.duration}</p>
-              <span className="mt-4 text-sm font-medium text-accent">{s.tool} →</span>
+        <CapabilityGrid capabilities={platformCapabilities} />
+      </Section>
+
+      {/* 10-minute v1 workflow */}
+      <Section className="border-t border-line bg-surface/50">
+        <div className="grid gap-12 lg:grid-cols-2">
+          <div>
+            <p className="text-xs font-medium uppercase tracking-wider text-muted">
+              Complete in under 10 minutes
+            </p>
+            <h2 className="mt-3 font-display text-2xl font-medium text-ink md:text-3xl">
+              One experience, end to end
+            </h2>
+            <p className="mt-3 text-ink-soft">
+              Define a workload, benchmark real traffic, see a unified report, get
+              recommendations, and export for your team. Calculators are optional step
+              zero for quick ballpark checks.
+            </p>
+            <div className="mt-8">
+              <Button href="/workflow">Open guided workflow</Button>
+            </div>
+          </div>
+          <div className="rounded-lg border border-line bg-surface p-6 md:p-8">
+            <V1ExperienceFlow />
+          </div>
+        </div>
+      </Section>
+
+      {/* Fragmented vs XARIV */}
+      <Section>
+        <div className="mb-10 max-w-2xl">
+          <h2 className="font-display text-2xl font-medium text-ink md:text-3xl">
+            Replace the fragmented stack
+          </h2>
+          <p className="mt-3 text-ink-soft">
+            Today, every step of the AI infrastructure lifecycle uses a different tool.
+            XARIV owns the decision workflow between them.
+          </p>
+        </div>
+        <FragmentedComparison />
+      </Section>
+
+      {/* Enterprise lifecycle */}
+      <Section className="border-t border-line bg-surface/50">
+        <p className="text-xs font-medium uppercase tracking-wider text-muted">
+          Enterprise lifecycle
+        </p>
+        <h2 className="mt-3 font-display text-2xl font-medium text-ink">
+          Every phase of AI infrastructure, one platform
+        </h2>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          {enterpriseLifecycle.map((phase) => (
+            <Card key={phase.phase} href={phase.href} className="flex flex-col">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-medium uppercase tracking-wider text-muted">
+                  {phase.phase}
+                </p>
+                <span
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-medium uppercase ${
+                    phase.status === "live"
+                      ? "bg-accent/10 text-accent"
+                      : "border border-dashed border-line text-muted"
+                  }`}
+                >
+                  {phase.status}
+                </span>
+              </div>
+              <p className="mt-3 flex-1 text-sm text-ink-soft">{phase.question}</p>
+              <p className="mt-4 text-xs font-medium text-accent">{phase.module}</p>
             </Card>
           ))}
         </div>
-        <Link
-          href="/workflow"
-          className="mt-8 inline-block text-sm font-medium text-accent hover:underline"
-        >
-          View guided workflow →
-        </Link>
       </Section>
 
-      {/* Case study — workflow in action */}
+      {/* Cross-functional personas */}
       <Section>
+        <h2 className="font-display text-2xl font-medium text-ink md:text-3xl">
+          Built for cross-functional teams
+        </h2>
+        <p className="mt-3 max-w-xl text-ink-soft">
+          Product, ML, platform, SRE, finance, and leadership — one platform, multiple
+          personas, same source of truth.
+        </p>
+        <div className="mt-10">
+          <PersonaPipeline />
+        </div>
+      </Section>
+
+      {/* Case study */}
+      <Section className="border-t border-line bg-surface/50">
         <p className="text-xs font-medium uppercase tracking-wider text-muted">
-          Workflow in action
+          Platform in action
         </p>
         <h2 className="mt-3 font-display text-2xl font-medium text-ink">
           48 GPUs → 31 GPUs
         </h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-4">
-          <div className="rounded-lg border border-line bg-surface p-5">
-            <p className="text-xs font-medium uppercase text-muted">0 · Estimate</p>
-            <p className="mt-2 text-sm text-ink-soft">
-              Calculators confirmed memory ballpark for 32B + 2K context.
-            </p>
-          </div>
-          <div className="rounded-lg border border-line bg-surface p-5">
-            <p className="text-xs font-medium uppercase text-muted">1 · Plan</p>
-            <p className="mt-2 text-sm text-ink-soft">
-              <span className="font-medium text-ink">{caseStudy.customer}.</span>{" "}
-              {caseStudy.problem}
-            </p>
-          </div>
-          <div className="rounded-lg border border-line bg-surface p-5">
-            <p className="text-xs font-medium uppercase text-muted">2 · Validate</p>
-            <p className="mt-2 text-sm text-ink-soft">{caseStudy.solution}</p>
-          </div>
-          <div className="rounded-lg border border-accent/30 bg-surface p-5">
-            <p className="text-xs font-medium uppercase text-accent">3 · Justify</p>
-            <p className="mt-2 text-sm text-ink-soft">{caseStudy.result}</p>
-          </div>
-        </div>
+        <p className="mt-3 max-w-2xl text-ink-soft">
+          <span className="font-medium text-ink">{caseStudy.customer}.</span>{" "}
+          {caseStudy.problem} {caseStudy.solution} {caseStudy.result}
+        </p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Button href="/workflow">Walk through this example</Button>
           <Button href="/lens" variant="secondary">
@@ -131,12 +199,9 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* Outcomes + social proof */}
-      <Section className="border-t border-line bg-surface/50">
-        <p className="text-xs font-medium uppercase tracking-wider text-muted">
-          Trusted by infrastructure teams
-        </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-3">
+      {/* Social proof */}
+      <Section>
+        <div className="grid gap-4 sm:grid-cols-3">
           {outcomes.map((o) => (
             <div key={o.label} className="rounded-lg border border-line bg-surface p-5">
               <div className="font-display text-3xl font-medium text-accent">{o.value}</div>
@@ -161,56 +226,6 @@ export default function HomePage() {
         </blockquote>
       </Section>
 
-      {/* Who it's for — mapped to workflow steps */}
-      <Section>
-        <h2 className="font-display text-2xl font-medium text-ink md:text-3xl">
-          Enter at the step that matches your role
-        </h2>
-        <p className="mt-3 max-w-xl text-ink-soft">
-          Researchers, ML engineers, platform leads, and FinOps all use the same workflow —
-          they just start at different steps.
-        </p>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {audiences.map((a) => (
-            <Card key={a.title} href={a.href} className="flex flex-col">
-              <h3 className="font-display text-lg font-medium text-ink">{a.title}</h3>
-              <p className="mt-2 flex-1 text-sm text-muted">{a.problem}</p>
-              <span className="mt-4 text-sm font-medium text-accent">{a.cta} →</span>
-            </Card>
-          ))}
-        </div>
-      </Section>
-
-      {/* Roadmap products — de-emphasized */}
-      {plannedProducts.length > 0 && (
-        <Section className="border-t border-line bg-surface/50">
-          <h2 className="font-display text-xl font-medium text-ink">Coming next</h2>
-          <p className="mt-2 max-w-lg text-sm text-muted">
-            Atlas, Oracle, and Forge extend the workflow with production calibration,
-            capacity planning, and infrastructure simulation.
-          </p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {plannedProducts.map((product) => (
-              <div
-                key={product.slug}
-                className="flex items-center justify-between rounded-lg border border-dashed border-line bg-canvas/50 px-5 py-4"
-              >
-                <div>
-                  <p className="font-medium text-ink">{product.name}</p>
-                  <p className="text-xs text-muted">{product.tagline}</p>
-                </div>
-                <Link
-                  href={`/contact?intent=waitlist&product=${product.slug}`}
-                  className="shrink-0 text-sm font-medium text-accent hover:underline"
-                >
-                  Waitlist
-                </Link>
-              </div>
-            ))}
-          </div>
-        </Section>
-      )}
-
       {/* Architecture Studies */}
       <Section className="border-t border-line">
         <div className="mb-10">
@@ -218,7 +233,7 @@ export default function HomePage() {
             Architecture Studies
           </h2>
           <p className="mt-3 max-w-lg text-ink-soft">
-            Deep engineering analysis that informs the Plan and Validate steps.
+            First-principles engineering analysis behind the platform models.
           </p>
         </div>
         <div className="grid gap-6 md:grid-cols-3">
@@ -244,19 +259,21 @@ export default function HomePage() {
 
       {/* Final CTA */}
       <Section className="border-t border-line bg-surface/50">
-        <div className="max-w-2xl">
+        <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-display text-2xl font-medium text-ink">
-            Start at Step 0 — Estimate
+            {site.tagline}
           </h2>
-          <p className="mt-4 text-ink-soft leading-relaxed">
-            Free calculators take under 30 seconds. When you are ready, continue through
-            Plan, Validate, and Justify — no account required until you need a decision
-            report.
+          <p className="mt-4 text-ink-soft">
+            Start with a workload definition. Complete the workflow in under 10 minutes.
+            Export when your team is ready to decide.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="/tools">Run calculators</Button>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Button href="/lens">Define a workload</Button>
             <Button href="/workflow" variant="secondary">
               Guided workflow
+            </Button>
+            <Button href="/contact?intent=demo" variant="secondary">
+              Book demo
             </Button>
           </div>
         </div>

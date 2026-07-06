@@ -1,8 +1,8 @@
 export const site = {
   name: "XARIV",
-  tagline: "Infrastructure Intelligence for the Age of AI",
+  tagline: "Engineering Control Plane for AI Infrastructure",
   description:
-    "Software for understanding, optimizing, and planning AI infrastructure — before you provision a single GPU.",
+    "XARIV helps engineering teams make better AI infrastructure decisions — planning, benchmarking, explainability, optimization, and forecasting in one platform.",
   url: "https://xariv-website.vercel.app",
   github: "https://github.com/xariv-labs",
   linkedin: "https://www.linkedin.com/company/xariv",

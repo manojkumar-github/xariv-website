@@ -84,11 +84,11 @@ export function CalcResults({ rows }: { rows: { label: string; value: string }[]
         ))}
       </dl>
       <p className="mt-4 text-xs text-muted">
-        Step 0 · Estimate — continue to{" "}
+        Optional step 0 — continue to{" "}
         <Link href="/lens" className="text-accent hover:underline">
-          Plan (Lens)
+          Define workload (Lens)
         </Link>{" "}
-        when ready.
+        for the full platform workflow.
       </p>
     </div>
   );
@@ -106,8 +106,8 @@ export function CalculatorShell({
       <Link href="/workflow" className="text-sm text-muted hover:text-ink">
         ← Workflow
       </Link>
-      <p className="mt-6 text-xs font-medium uppercase tracking-wider text-accent">
-        Step 0 · Estimate
+      <p className="mt-6 text-xs font-medium uppercase tracking-wider text-muted">
+        Optional · Step 0 · Quick check
       </p>
       <h1 className="mt-2 font-display text-3xl font-medium text-ink">{meta.name}</h1>
       <p className="mt-3 max-w-xl text-ink-soft">{meta.description}</p>
