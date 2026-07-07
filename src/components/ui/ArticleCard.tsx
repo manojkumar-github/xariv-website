@@ -23,7 +23,7 @@ export function ArticleCard({
       <span className="text-xs font-medium uppercase tracking-wider text-accent">
         {category}
       </span>
-      <h3 className="mt-3 font-display text-xl font-medium leading-snug text-ink transition-colors group-hover:text-accent">
+      <h3 className="mt-3 text-xl font-semibold leading-snug text-ink transition-colors group-hover:text-accent">
         {title}
       </h3>
       <p className="mt-3 text-sm leading-relaxed text-muted">{excerpt}</p>

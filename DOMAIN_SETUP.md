@@ -28,27 +28,46 @@ Push the latest code (with `site.url = https://xarivlabs.com`) and redeploy, or 
 
 ---
 
-## Part 2 — DNS at your registrar
+## Part 2 — DNS (Cloudflare — xarivlabs.com purchased here)
 
-Where you bought **xarivlabs.com** (GoDaddy, Namecheap, Google Domains, Cloudflare, etc.), open **DNS settings**.
+Because the domain is on **Cloudflare**, DNS is already in your Cloudflare account. You do **not** need to change nameservers.
 
-### Option A — Recommended: keep registrar DNS, add records
+### 2.1 Open DNS records
+
+1. Log in at [dash.cloudflare.com](https://dash.cloudflare.com).
+2. Click **xarivlabs.com**.
+3. Go to **DNS → Records**.
+
+### 2.2 Remove conflicting records
+
+Delete or edit any existing records on the root (`xarivlabs.com`) or `www` that point to parking pages, old hosts, or other IPs — especially old **A**, **AAAA**, or **CNAME** rows.
+
+### 2.3 Add Vercel records
+
+Click **Add record** for each row below.
+
+| Type | Name | Content / Target | Proxy status | TTL |
+|------|------|------------------|--------------|-----|
+| **A** | `@` | `76.76.21.21` | **DNS only** (grey cloud ☁️) | Auto |
+| **CNAME** | `www` | `cname.vercel-dns.com` | **DNS only** (grey cloud ☁️) | Auto |
+
+**Cloudflare-specific notes:**
+
+- **Proxy must be OFF (grey cloud)** for both records. Orange cloud (proxied) can break Vercel SSL or cause redirect loops. Vercel issues the certificate; traffic should go directly to Vercel.
+- In Cloudflare, **Name** `@` means the apex `xarivlabs.com`. You can also type `xarivlabs.com` — same effect.
+- Do **not** add A and CNAME on the same hostname.
+- Confirm the exact A/CNAME values in **Vercel → Settings → Domains** if Vercel shows different targets.
+
+### 2.4 SSL in Cloudflare (leave default)
+
+With **DNS only**, Cloudflare is not terminating SSL — Vercel handles HTTPS. No change needed under **SSL/TLS** unless you later enable the orange cloud (not recommended for this setup).
+
+### 2.5 Other registrars (reference)
 
 | Type | Name / Host | Value | TTL |
 |------|-------------|-------|-----|
 | **A** | `@` (or blank) | `76.76.21.21` | 3600 (or Auto) |
 | **CNAME** | `www` | `cname.vercel-dns.com` | 3600 |
-
-**Notes:**
-
-- `@` means the apex domain `xarivlabs.com`.
-- Some registrars use blank instead of `@` for the root.
-- Do **not** add both A and CNAME on the same host name.
-- Remove any old A/CNAME records pointing elsewhere (parking pages, old hosts).
-
-### Option B — Use Vercel nameservers (optional)
-
-In Vercel → Domains → xarivlabs.com → **Nameservers**, Vercel may offer to manage DNS. If you switch NS to Vercel, update nameservers at your registrar to the values Vercel provides. Then Vercel creates records automatically.
 
 ### Verify DNS
 
@@ -83,11 +102,12 @@ Vercel dashboard should show **Valid Configuration** with a green check.
 
    **DNS TXT (recommended)**  
    - Search Console gives a TXT record like `google-site-verification=xxxxx`  
-   - Add at your registrar:  
+   - In **Cloudflare → DNS → Records → Add record**:  
      - Type: **TXT**  
-     - Host: `@`  
-     - Value: (paste from Google)  
-   - Click **Verify** in Search Console  
+     - Name: `@`  
+     - Content: (paste full string from Google)  
+     - Proxy: DNS only (TXT is never proxied)  
+   - Click **Verify** in Search Console (may take 1–5 minutes on Cloudflare)
 
    **HTML meta tag (alternative)**  
    - Copy the verification code (content value only).  
@@ -125,11 +145,24 @@ URL Inspection → enter `https://xarivlabs.com` → **Request indexing** for ho
 
 | Goal | Typical setup |
 |------|----------------|
-| Forward to Gmail | Registrar email forwarding, or Cloudflare Email Routing |
+| Forward to Gmail | **Cloudflare Email Routing** (free, same dashboard) |
 | Full inbox | Google Workspace / Microsoft 365 → add MX records they provide |
 | Transactional only | Resend, SendGrid, etc. |
 
 Website A record does **not** enable email — you need MX records for that.
+
+---
+
+## Part 4b — Email on Cloudflare (optional, free forwarding)
+
+To receive mail at `hello@xarivlabs.com`:
+
+1. Cloudflare → **xarivlabs.com** → **Email → Email Routing**.
+2. Click **Get started** and add your personal Gmail (or other inbox) as a destination; verify it.
+3. **Routing rules** → Create address `hello` → forward to your inbox.
+4. Cloudflare adds the required **MX** records automatically — do not delete them.
+
+This does not affect the website A/CNAME records above.
 
 ---
 
@@ -166,5 +199,8 @@ Old `manojkumar-github.github.io` redirect pages should point to `https://xarivl
 | www works but apex doesn't | Missing A record on `@` |
 | Old vercel.app still in Google | Submit new sitemap; set canonical domain in Search Console |
 | Redirect loop | Ensure only one primary domain in Vercel |
+| Cloudflare orange cloud on A/CNAME | Set both Vercel records to **DNS only** (grey cloud) |
+| SSL certificate error | Grey-cloud DNS records; wait up to 24h after DNS is correct |
+| Google TXT verify fails | Name must be `@`; content is the full `google-site-verification=...` string |
 
 For Vercel-specific values, always prefer the **exact DNS instructions** shown in your project’s Domains tab — they can differ slightly by region.

@@ -5,22 +5,24 @@ import { Container } from "./Container";
 
 export function Footer() {
   return (
-    <footer className="mt-auto border-t border-line bg-canvas">
+    <footer className="mt-auto bg-footer-bg text-footer-ink">
       <Container className="py-16">
-        <div className="grid gap-12 md:grid-cols-3">
-          <div>
-            <Logo />
-            <p className="mt-3 text-sm text-muted">{site.description}</p>
+        <div className="grid gap-12 md:grid-cols-4">
+          <div className="md:col-span-2">
+            <Logo variant="light" />
+            <p className="mt-4 max-w-sm text-sm leading-relaxed text-footer-muted">
+              {site.description}
+            </p>
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-muted">Navigation</p>
-            <ul className="mt-4 space-y-2">
+            <p className="eyebrow text-footer-muted">Product</p>
+            <ul className="mt-4 space-y-2.5">
               {footerNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
                     prefetch
-                    className="text-sm text-ink-soft transition-colors hover:text-ink"
+                    className="text-sm text-footer-muted transition-colors hover:text-footer-ink"
                   >
                     {item.label}
                   </Link>
@@ -29,14 +31,14 @@ export function Footer() {
             </ul>
           </div>
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-muted">Connect</p>
-            <ul className="mt-4 space-y-2 text-sm text-ink-soft">
+            <p className="eyebrow text-footer-muted">Connect</p>
+            <ul className="mt-4 space-y-2.5 text-sm text-footer-muted">
               <li>
                 <a
                   href={site.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-ink"
+                  className="hover:text-footer-ink"
                 >
                   GitHub
                 </a>
@@ -46,20 +48,20 @@ export function Footer() {
                   href={site.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-ink"
+                  className="hover:text-footer-ink"
                 >
                   LinkedIn
                 </a>
               </li>
               <li>
-                <a href={`mailto:${site.email}`} className="hover:text-ink">
+                <a href={`mailto:${site.email}`} className="hover:text-footer-ink">
                   {site.email}
                 </a>
               </li>
             </ul>
           </div>
         </div>
-        <p className="mt-12 border-t border-line pt-8 text-sm text-muted">
+        <p className="mt-12 border-t border-white/10 pt-8 text-sm text-footer-muted">
           © {new Date().getFullYear()} {site.name}. All rights reserved.
         </p>
       </Container>

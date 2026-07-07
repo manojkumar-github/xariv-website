@@ -7,8 +7,8 @@ interface ContainerProps {
 }
 
 export function Container({ children, className = "", narrow }: ContainerProps) {
-  const width = narrow ? "max-w-3xl" : "max-w-5xl";
+  const width = narrow ? "max-w-3xl" : "max-w-6xl";
   return (
-    <div className={`mx-auto w-full px-6 ${width} ${className}`}>{children}</div>
+    <div className={`mx-auto w-full px-6 lg:px-8 ${width} ${className}`}>{children}</div>
   );
 }

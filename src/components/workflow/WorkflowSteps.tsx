@@ -22,9 +22,9 @@ export function WorkflowSteps({ steps, activeId, compact }: Props) {
               />
             )}
             <div
-              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-xs font-medium ${
+              className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-xs font-semibold ${
                 active
-                  ? "border-accent bg-accent text-canvas"
+                  ? "border-accent bg-accent text-white"
                   : "border-line bg-surface text-muted"
               }`}
             >
@@ -34,7 +34,7 @@ export function WorkflowSteps({ steps, activeId, compact }: Props) {
               <p className="text-xs font-medium uppercase tracking-wider text-muted">
                 {s.phase}
               </p>
-              <h3 className="mt-1 font-display text-lg font-medium text-ink">{s.title}</h3>
+              <h3 className="mt-1 text-lg font-semibold text-ink">{s.title}</h3>
               {!compact && (
                 <>
                   <p className="mt-1 text-sm font-medium text-accent">{s.question}</p>

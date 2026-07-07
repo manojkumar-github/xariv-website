@@ -1,48 +1,50 @@
 @import "tailwindcss";
 
-/* Semantic tokens — light */
+/* ZenML-inspired light design system */
 :root {
-  --canvas: #f7f5f2;
+  --canvas: #ffffff;
+  --canvas-subtle: #f8f7fc;
+  --canvas-muted: #f3f2f8;
   --surface: #ffffff;
-  --ink: #1c1c1c;
-  --ink-soft: #4a4540;
-  --muted: #7a746c;
-  --line: #e8e4df;
-  --accent: #1e3a5f;
-  --accent-soft: #2d4f7c;
-  --selection: #e0dcd6;
-  --code-bg: #edeae5;
-  --code-block-bg: #1c1c1c;
-  --code-block-fg: #e8e4df;
-}
-
-/* Semantic tokens — dark (default) */
-.dark {
-  --canvas: #0d0f14;
-  --surface: #161921;
-  --ink: #eae8e4;
-  --ink-soft: #b5b0a8;
-  --muted: #7d786f;
-  --line: #2a2e38;
-  --accent: #7eb3e8;
-  --accent-soft: #9dc8f5;
-  --selection: #2a3140;
-  --code-bg: #1e222c;
-  --code-block-bg: #0a0c10;
-  --code-block-fg: #d8d4ce;
+  --ink: #0f0f12;
+  --ink-soft: #3f3f46;
+  --muted: #71717a;
+  --line: #e4e4e7;
+  --line-soft: #ececf0;
+  --accent: #5b4bf0;
+  --accent-hover: #4a3ad8;
+  --accent-soft: #7c6ff7;
+  --accent-muted: #ede9fe;
+  --gradient-start: #7c3aed;
+  --gradient-end: #5b4bf0;
+  --selection: #ddd6fe;
+  --code-bg: #f4f4f5;
+  --code-block-bg: #18181b;
+  --code-block-fg: #e4e4e7;
+  --footer-bg: #0f0f12;
+  --footer-ink: #fafafa;
+  --footer-muted: #a1a1aa;
 }
 
 @theme inline {
   --color-canvas: var(--canvas);
+  --color-canvas-subtle: var(--canvas-subtle);
+  --color-canvas-muted: var(--canvas-muted);
   --color-surface: var(--surface);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-muted: var(--muted);
   --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-soft: var(--accent-soft);
+  --color-accent-muted: var(--accent-muted);
+  --color-footer-bg: var(--footer-bg);
+  --color-footer-ink: var(--footer-ink);
+  --color-footer-muted: var(--footer-muted);
   --font-sans: var(--font-inter);
-  --font-display: var(--font-newsreader);
+  --font-display: var(--font-inter);
 }
 
 html {
@@ -53,12 +55,41 @@ body {
   background: var(--canvas);
   color: var(--ink);
   font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 ::selection {
   background: var(--selection);
+}
+
+/* Gradient utilities */
+.text-gradient {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.bg-hero-gradient {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(124, 58, 237, 0.12), transparent),
+    radial-gradient(ellipse 50% 40% at 90% 10%, rgba(91, 75, 240, 0.08), transparent),
+    var(--canvas);
+}
+
+.bg-cta-gradient {
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+}
+
+/* Eyebrow label */
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 /* Prose for markdown articles */
@@ -70,9 +101,8 @@ body {
 }
 
 .prose h2 {
-  font-family: var(--font-display), Georgia, serif;
   font-size: 1.625rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--ink);
   margin: 2.5rem 0 1rem;
   letter-spacing: -0.02em;
@@ -125,7 +155,7 @@ body {
   background: var(--code-block-bg);
   color: var(--code-block-fg);
   padding: 1.25rem;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow-x: auto;
   margin: 1.5rem 0;
   font-size: 0.875rem;
@@ -153,7 +183,7 @@ body {
 }
 
 .prose img {
-  border-radius: 8px;
+  border-radius: 12px;
   margin: 1.5rem 0;
   border: 1px solid var(--line);
   max-width: 100%;
