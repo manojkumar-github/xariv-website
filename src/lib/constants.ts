@@ -3,10 +3,10 @@ export const site = {
   tagline: "Engineering Control Plane for AI Infrastructure",
   description:
     "XARIV helps engineering teams make better AI infrastructure decisions — planning, benchmarking, explainability, optimization, and forecasting in one platform.",
-  url: "https://xariv-website.vercel.app",
+  url: "https://xarivlabs.com",
   github: "https://github.com/xariv-labs",
   linkedin: "https://www.linkedin.com/company/xariv",
-  email: "hello@xariv.com",
+  email: "hello@xarivlabs.com",
 } as const;
 
 export { nav, footerNav } from "./nav";

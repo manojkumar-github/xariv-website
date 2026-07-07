@@ -1,6 +1,6 @@
 # XARIV Website
 
-Enterprise marketing site for [XARIV](https://xariv.com) — AI Infrastructure Intelligence.
+Enterprise marketing site for [XARIV Labs](https://xarivlabs.com) — AI Infrastructure Intelligence.
 
 Built with **Next.js**, **React**, **TypeScript**, and **Tailwind CSS**. Designed for Vercel deployment.
 
@@ -53,6 +53,10 @@ Native Next.js routes with in-browser computation engines in `src/tools/`:
 - **Pulse** — `/pulse` — inference latency profiling
 
 No external backend or static bundle required.
+
+## Custom domain (xarivlabs.com)
+
+See **[DOMAIN_SETUP.md](./DOMAIN_SETUP.md)** for DNS records, Vercel configuration, and Google Search Console steps.
 
 ## Deploy to Vercel
 

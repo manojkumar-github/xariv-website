@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const SITE = "https://xariv-website.vercel.app";
+const SITE = "https://xarivlabs.com";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "../../manojkumar-github.github.io");
 
