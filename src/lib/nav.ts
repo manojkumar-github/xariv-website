@@ -9,6 +9,7 @@ export const nav: NavItem[] = [
   { label: "Platform", href: "/products" },
   { label: "Lens", href: "/lens", live: true },
   { label: "Pulse", href: "/pulse", live: true },
+  { label: "Workspace", href: "/app" },
   { label: "Tools", href: "/tools" },
   { label: "Docs", href: "/docs" },
   { label: "Studies", href: "/architecture-studies" },

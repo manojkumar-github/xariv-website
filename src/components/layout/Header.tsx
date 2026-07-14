@@ -1,16 +1,18 @@
 "use client";
 
-"use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { nav } from "@/lib/constants";
 import { Logo } from "@/components/brand/Logo";
+import { AuthControls } from "@/components/auth/AuthProviders";
 import { MobileNav } from "./MobileNav";
 import { Container } from "./Container";
 
 export function Header() {
   const pathname = usePathname();
+
+  // App shell has its own chrome
+  if (pathname?.startsWith("/app")) return null;
 
   return (
     <header className="sticky top-0 z-50 border-b border-line/80 bg-canvas/80 backdrop-blur-md">
@@ -46,12 +48,13 @@ export function Header() {
         </nav>
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
-            href="/docs"
+            href="/app"
             prefetch
-            className="hidden text-sm text-ink-soft transition-colors hover:text-ink md:inline-block"
+            className="hidden text-sm font-medium text-accent transition-colors hover:underline md:inline-block"
           >
-            Docs
+            Workspace
           </Link>
+          <AuthControls />
           <Link
             href="/lens"
             prefetch

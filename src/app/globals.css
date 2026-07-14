@@ -43,6 +43,9 @@
   --color-footer-bg: var(--footer-bg);
   --color-footer-ink: var(--footer-ink);
   --color-footer-muted: var(--footer-muted);
+  --color-code-bg: var(--code-bg);
+  --color-code-block-bg: var(--code-block-bg);
+  --color-code-block-fg: var(--code-block-fg);
   --font-sans: var(--font-inter);
   --font-display: var(--font-inter);
 }

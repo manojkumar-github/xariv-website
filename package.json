@@ -10,6 +10,7 @@
     "migrate:posts": "node scripts/migrate-posts.mjs"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.5.17",
     "gray-matter": "^4.0.3",
     "next": "16.2.9",
     "react": "19.2.4",
