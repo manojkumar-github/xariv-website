@@ -61,6 +61,12 @@ export const platformCapabilities: PlatformCapability[] = [
     modules: [{ name: "Lens", status: "live", href: "/lens" }],
   },
   {
+    id: "serving",
+    name: "Local serving",
+    description: "Run open-weight models on your machine and compare candidates live.",
+    modules: [{ name: "Relay", status: "live", href: "/relay" }],
+  },
+  {
     id: "forecasting",
     name: "Forecasting",
     description: "Traffic doubles. What happens to latency, cost, and headroom?",

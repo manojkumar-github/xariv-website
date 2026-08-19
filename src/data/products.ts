@@ -40,6 +40,21 @@ export const products: Product[] = [
     ],
   },
   {
+    slug: "relay",
+    name: "XARIV Relay",
+    tagline: "Self-hosted open-weight serving",
+    description:
+      "Download open-weight models, serve them on your own Mac with llama.cpp (or vLLM on Linux NVIDIA), and compare two local endpoints side by side — TTFT, stream speed, and output.",
+    status: "preview",
+    appPath: "/relay",
+    capabilities: [
+      "Hugging Face GGUF download or local import",
+      "Deploy to localhost (llama.cpp Metal on Mac)",
+      "OpenAI-compatible /v1 endpoints",
+      "Split-pane live compare of two candidates",
+    ],
+  },
+  {
     slug: "atlas",
     name: "XARIV Atlas",
     tagline: "Infrastructure Knowledge Graph",

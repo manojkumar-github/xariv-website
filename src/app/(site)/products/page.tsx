@@ -10,7 +10,7 @@ import { products } from "@/data/products";
 export const metadata: Metadata = {
   title: "Platform",
   description:
-    "XARIV platform modules — Lens, Pulse, Atlas, Oracle, and Forge as capabilities inside one engineering control plane.",
+    "XARIV platform modules — Lens, Pulse, Relay, Atlas, Oracle, and Forge as capabilities inside one engineering control plane.",
 };
 
 export default function ProductsPage() {
@@ -26,7 +26,7 @@ export default function ProductsPage() {
         Platform modules
       </h1>
       <p className="mt-4 max-w-2xl text-ink-soft">
-        Lens, Pulse, Atlas, Oracle, and Forge are capabilities inside one platform — not
+        Lens, Pulse, Relay, Atlas, Oracle, and Forge are capabilities inside one platform — not
         separate tools you stitch together. Each module serves a phase of the infrastructure
         decision workflow.
       </p>

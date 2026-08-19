@@ -84,6 +84,58 @@ async function pulseFetch<T>(
   return res.json() as Promise<T>;
 }
 
+export type RelayArtifact = {
+  model_id: string;
+  source: string;
+  path: string;
+  filename: string;
+  bytes: number;
+  status: string;
+  progress_pct: number;
+  error: string | null;
+};
+
+export type RelayModel = {
+  id: string;
+  name: string;
+  variant: string;
+  family: string;
+  params: string;
+  quant: string;
+  quantized: boolean;
+  hf_repo: string | null;
+  hf_file: string;
+  approx_size_gb: number;
+  demo_role: string | null;
+  recommended_port: number;
+  notes: string;
+  artifact: RelayArtifact | null;
+  local: boolean;
+};
+
+export type RelayDeployment = {
+  id: string;
+  model_id: string;
+  name: string;
+  variant: string;
+  framework: string;
+  port: number;
+  status: string;
+  pid: number | null;
+  openai_url: string;
+  error: string | null;
+  started_at: string | null;
+  quantized: boolean;
+};
+
+export type RelayCatalog = {
+  frameworks: { id: string; name: string; status: string; best_for: string; requires: string }[];
+  models: RelayModel[];
+  deployments: RelayDeployment[];
+  llama_server: string | null;
+  platform: string;
+};
+
 export const pulseApi = {
   me: (token: string) => pulseFetch<MeResponse>("/api/v1/me", token),
   listExperiments: (token: string) =>
@@ -115,4 +167,24 @@ export const pulseApi = {
     if (!res.ok) throw new Error(`Failed to load workloads: ${res.status}`);
     return res.json() as Promise<{ workloads: { id: string; name: string; type: string }[] }>;
   },
+  relayCatalog: (token: string) => pulseFetch<RelayCatalog>("/api/v1/relay/catalog", token),
+  relayDownload: (token: string, model_id: string) =>
+    pulseFetch<RelayArtifact>("/api/v1/relay/download", token, {
+      method: "POST",
+      body: JSON.stringify({ model_id }),
+    }),
+  relayImport: (token: string, path: string, name?: string) =>
+    pulseFetch<RelayModel>("/api/v1/relay/import", token, {
+      method: "POST",
+      body: JSON.stringify({ path, name }),
+    }),
+  relayDeploy: (token: string, model_id: string, framework = "llama.cpp", port?: number) =>
+    pulseFetch<RelayDeployment>("/api/v1/relay/deploy", token, {
+      method: "POST",
+      body: JSON.stringify({ model_id, framework, port }),
+    }),
+  relayStop: (token: string, deploymentId: string) =>
+    pulseFetch<RelayDeployment>(`/api/v1/relay/deployments/${deploymentId}/stop`, token, {
+      method: "POST",
+    }),
 };

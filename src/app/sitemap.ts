@@ -11,6 +11,8 @@ const staticRoutes = [
   "/products",
   "/lens",
   "/pulse",
+  "/relay",
+  "/relay/compare",
   "/tools",
   "/docs",
   "/architecture-studies",
