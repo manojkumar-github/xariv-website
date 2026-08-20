@@ -8,6 +8,7 @@ const links = [
   { href: "/app/connect", label: "Connect agent" },
   { href: "/app/relay", label: "Relay" },
   { href: "/app/relay/compare", label: "Compare" },
+  { href: "/app/fusion/compare", label: "Fusion" },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {

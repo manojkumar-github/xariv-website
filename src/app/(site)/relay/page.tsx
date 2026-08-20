@@ -25,6 +25,9 @@ export default function RelayPublicPage() {
         <Button href="/relay/compare" size="lg">
           Compare F16 vs Q4
         </Button>
+        <Button href="/fusion/compare" variant="secondary" size="lg">
+          Kernel fusion replay
+        </Button>
         <Button href="/app/relay" variant="secondary" size="lg">
           Live local deploy
         </Button>

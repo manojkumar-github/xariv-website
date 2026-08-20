@@ -77,3 +77,12 @@ CLERK_JWKS_URL=https://<your-instance>.clerk.accounts.dev/.well-known/jwks.json
 - Cloud / K8s / AWS targets
 - Hosted GPUs
 - Public leaderboard privacy coupling (community submit still exists separately)
+
+## Browser demos (no API required)
+
+| Demo | Local URL | Notes |
+|------|-----------|--------|
+| Relay F16 vs Q4 | http://localhost:3000/relay/compare | See [RELAY_DEMO.md](./RELAY_DEMO.md) |
+| Kernel fusion | http://localhost:3000/fusion/compare | See [FUSION_DEMO.md](./FUSION_DEMO.md) |
+
+Both replays work on Vercel after deploy (`/relay/compare`, `/fusion/compare`).
