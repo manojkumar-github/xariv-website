@@ -115,6 +115,12 @@ export default function RelayPage() {
         </div>
         <div className="flex flex-wrap gap-2">
           <Link
+            href="/app/hearth"
+            className="rounded-lg bg-cta-gradient px-4 py-2 text-sm font-medium text-white"
+          >
+            Open Hearth chat
+          </Link>
+          <Link
             href="/relay/compare"
             className="rounded-lg border border-line bg-surface px-4 py-2 text-sm text-ink-soft hover:text-ink"
           >
@@ -122,7 +128,7 @@ export default function RelayPage() {
           </Link>
           <Link
             href="/app/relay/compare"
-            className="rounded-lg bg-cta-gradient px-4 py-2 text-sm font-medium text-white"
+            className="rounded-lg border border-line bg-surface px-4 py-2 text-sm text-ink-soft hover:text-ink"
           >
             Compare
           </Link>
@@ -266,9 +272,17 @@ export default function RelayPage() {
                   </button>
                 )}
                 {live && (
-                  <span className="rounded-lg bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800">
-                    Live on :{live.port}
-                  </span>
+                  <>
+                    <span className="rounded-lg bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-800">
+                      Live on :{live.port}
+                    </span>
+                    <Link
+                      href="/app/hearth"
+                      className="rounded-lg border border-line px-3 py-2 text-sm font-medium text-ink"
+                    >
+                      Chat in Hearth
+                    </Link>
+                  </>
                 )}
               </div>
             </div>

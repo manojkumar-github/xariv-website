@@ -187,4 +187,29 @@ export const pulseApi = {
     pulseFetch<RelayDeployment>(`/api/v1/relay/deployments/${deploymentId}/stop`, token, {
       method: "POST",
     }),
+  relayChat: async (
+    token: string,
+    deploymentId: string,
+    body: {
+      messages: { role: string; content: string }[];
+      temperature?: number;
+      max_tokens?: number;
+      stream?: boolean;
+    },
+  ) => {
+    const res = await fetch(`${pulseApiUrl}/api/v1/relay/deployments/${deploymentId}/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ stream: true, ...body }),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`${res.status}: ${text}`);
+    }
+    if (!res.body) throw new Error("No response body");
+    return res.body;
+  },
 };

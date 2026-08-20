@@ -55,6 +55,21 @@ export const products: Product[] = [
     ],
   },
   {
+    slug: "hearth",
+    name: "XARIV Hearth",
+    tagline: "Your private ChatGPT — on your Mac",
+    description:
+      "Host a ChatGPT-like app entirely on your machine. Small 1–3B open models via llama.cpp, multi-turn chat, zero cloud. Fine-tune and publish your own models through Relay later.",
+    status: "preview",
+    appPath: "/hearth",
+    capabilities: [
+      "Local chat UI over Relay deployments",
+      "1–3B GGUF models (Llama 3.2 family)",
+      "Streaming responses — data stays on Mac",
+      "Future: fine-tune, host, and publish custom models",
+    ],
+  },
+  {
     slug: "atlas",
     name: "XARIV Atlas",
     tagline: "Infrastructure Knowledge Graph",

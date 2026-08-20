@@ -84,5 +84,6 @@ CLERK_JWKS_URL=https://<your-instance>.clerk.accounts.dev/.well-known/jwks.json
 |------|-----------|--------|
 | Relay F16 vs Q4 | http://localhost:3000/relay/compare | See [RELAY_DEMO.md](./RELAY_DEMO.md) |
 | Kernel fusion | http://localhost:3000/fusion/compare | See [FUSION_DEMO.md](./FUSION_DEMO.md) |
+| **Hearth chat** | http://localhost:3000/app/hearth | See [HEARTH_DEMO.md](./HEARTH_DEMO.md) |
 
-Both replays work on Vercel after deploy (`/relay/compare`, `/fusion/compare`).
+Both replays work on Vercel after deploy (`/relay/compare`, `/fusion/compare`). Hearth chat needs local Pulse + llama.cpp.

@@ -7,6 +7,7 @@ const links = [
   { href: "/app/experiments/new", label: "New run" },
   { href: "/app/connect", label: "Connect agent" },
   { href: "/app/relay", label: "Relay" },
+  { href: "/app/hearth", label: "Hearth" },
   { href: "/app/relay/compare", label: "Compare" },
   { href: "/app/fusion/compare", label: "Fusion" },
 ];

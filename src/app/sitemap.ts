@@ -13,6 +13,7 @@ const staticRoutes = [
   "/pulse",
   "/relay",
   "/relay/compare",
+  "/hearth",
   "/fusion",
   "/fusion/compare",
   "/tools",
