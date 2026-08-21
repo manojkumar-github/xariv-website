@@ -64,7 +64,7 @@ async function replayPane(
 }
 
 export function RelayCompareStudio() {
-  const [prompt] = useState(RELAY_DEMO_PROMPT);
+  const [prompt, setPrompt] = useState(RELAY_DEMO_PROMPT);
   const [left, setLeft] = useState<PaneState>(empty);
   const [right, setRight] = useState<PaneState>(empty);
   const running = left.running || right.running;
@@ -87,9 +87,9 @@ export function RelayCompareStudio() {
         show the speed gap without downloading weights on Vercel.
       </p>
       <p className="mt-3 rounded-lg border border-line bg-canvas-subtle px-4 py-3 text-xs text-muted">
-        Illustrative replay (not live GPU inference in this browser). Real deploy still runs on your
-        Mac via llama.cpp; models cache in <code>~/.xariv/relay/models/</code> after the first
-        download.
+        Illustrative replay (not live GPU inference in this browser). Edit the prompt below — both
+        panes still stream the same canned answer so the speed gap stays clear. Real models cache in{" "}
+        <code>~/.xariv/relay/models/</code>.
       </p>
 
       <div className="mt-6 grid gap-3 md:grid-cols-2">
@@ -98,15 +98,17 @@ export function RelayCompareStudio() {
       </div>
 
       <textarea
-        readOnly
-        className="mt-4 w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm leading-relaxed"
+        className="mt-4 w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm leading-relaxed disabled:opacity-60"
         rows={3}
         value={prompt}
+        disabled={running}
+        onChange={(e) => setPrompt(e.target.value)}
+        placeholder="Enter a prompt to send to both…"
       />
 
       <button
         type="button"
-        disabled={running}
+        disabled={running || !prompt.trim()}
         onClick={() => void runBoth()}
         className="mt-3 rounded-lg bg-cta-gradient px-5 py-2.5 text-sm font-medium text-white disabled:opacity-50"
       >

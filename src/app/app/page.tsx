@@ -105,6 +105,25 @@ export default function AppHomePage() {
         </div>
       </div>
 
+      <div className="mt-6 rounded-lg border border-line bg-canvas-subtle px-4 py-3">
+        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted">
+          Workflow
+        </p>
+        <p className="mt-1.5 text-xs leading-relaxed text-ink-soft sm:text-sm">
+          Choose fine-tune or pre-trained
+          <span className="mx-1.5 text-muted">→</span>
+          Optionally benchmark
+          <span className="mx-1.5 text-muted">→</span>
+          Optionally estimate GPUs
+          <span className="mx-1.5 text-muted">→</span>
+          Compare candidates
+          <span className="mx-1.5 text-muted">→</span>
+          Deploy local (llama.cpp)
+          <span className="mx-1.5 text-muted">→</span>
+          Use on Mac or GPU host
+        </p>
+      </div>
+
       {error && (
         <div className="mt-6 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
           {error}
